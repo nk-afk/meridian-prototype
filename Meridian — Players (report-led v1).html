@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — Player Report P13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* shell frame — inlined so the page is self-contained (works on file:// and reload) */
+/* Meridian shared shell — design tokens, base reset, topbar + sidebar frame.
+   Loaded by all report surfaces (Today, Players, Gym). Page-specific component
+   styles stay inline in each page. Keep this the single source of truth for the shell. */
+:root{
+  --color-primary:#0F766E; --color-primary-hover:#115E59; --color-primary-active:#134E4A;
+  --color-primary-soft:#CCFBF1; --color-primary-tint:#F0FDFA; --color-primary-border:#99F6E4; --color-primary-ink:#134E4A;
+  --color-page:#F6F8FA; --color-surface:#FFFFFF; --color-surface-subtle:#F9FAFB; --color-surface-muted:#F1F5F9;
+  --color-border:#E5E7EB; --color-border-subtle:#EEF2F6; --color-separator:#E6EAF0;
+  --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF; --color-text-inverse:#FFFFFF;
+  --color-success:#16A34A; --color-success-soft:#DCFCE7; --color-success-ink:#166534;
+  --color-warning:#F59E0B; --color-warning-soft:#FEF3C7; --color-warning-ink:#92400E;
+  --color-danger:#DC2626; --color-danger-soft:#FEE2E2; --color-danger-ink:#991B1B;
+  --color-info:#2563EB; --color-info-soft:#DBEAFE; --color-info-ink:#1E3A8A;
+  --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 12px 28px rgba(15,23,42,.14);
+  --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --side:248px; --top:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
+a{color:inherit;text-decoration:none}
+
+/* topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 20px;z-index:40}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
+.brand .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--color-primary);display:grid;place-items:center}
+.brand .mark::after{content:"";width:2px;height:10px;background:var(--color-primary);transform:rotate(25deg)}
+.brand .club{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-left:12px;border-left:1px solid var(--color-separator)}
+.topbar .ctx{margin-left:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft)}
+.topbar .sp{flex:1}
+.btn{font-family:var(--ff);font-size:13px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.btn:hover{background:var(--color-surface-subtle)}
+.btn.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.btn.primary:hover{background:var(--color-primary-hover)}
+.btn svg{width:16px;height:16px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+
+/* sidebar */
+.side{position:fixed;top:var(--top);bottom:0;left:0;width:var(--side);background:var(--color-surface);border-right:1px solid var(--color-separator);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto;z-index:30}
+.side .grp{margin:14px 8px 6px}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);color:var(--color-text-muted);font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav svg{width:18px;height:18px;color:var(--color-text-soft)}
+.nav:hover{background:var(--color-surface-subtle)}
+.nav.active{background:var(--color-primary-tint);color:var(--color-primary-ink);font-weight:600}
+.nav.active svg{color:var(--color-primary)}
+.nav .badge{margin-left:auto;background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
+.concept{margin-top:auto;background:var(--color-surface-muted);color:var(--color-text-soft);border:1px solid var(--color-border-subtle);border-radius:var(--r-md);padding:10px 12px}
+.concept .t{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-disabled);margin-bottom:4px}
+.concept p{font-size:11px;line-height:1.45;color:var(--color-text-soft)}
+
+/* collapsible nav */
+.navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
+.navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.navtoggle svg{width:18px;height:18px}
+.side{transition:width .2s ease}
+.main{transition:margin-left .2s ease}
+body.nav-collapsed{--side:64px}
+body.nav-collapsed .side{padding:16px 8px}
+body.nav-collapsed .side .grp{display:none}
+body.nav-collapsed .nav{position:relative;justify-content:center;padding:9px 0;gap:0}
+body.nav-collapsed .nav .lbl{display:none}
+body.nav-collapsed .nav .badge{position:absolute;top:1px;right:9px;margin:0;min-width:15px;height:15px;padding:0 4px;display:grid;place-items:center;line-height:1}
+
+/* content frame */
+.main{margin-left:var(--side);margin-top:var(--top);padding:0 0 80px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+
+@media(max-width:920px){:root{--side:0px}.side{display:none}}
+
+</style>
+<style>
+/* shell frame — tokens, reset, topbar, sidebar, content frame (inlined; self-contained) */
+
+/* ---------- report header ---------- */
+.rhead{padding:28px 0 10px;display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.rhead .pid{width:64px;height:64px;border-radius:var(--r-lg);background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:700}
+.rhead h1{font-size:30px;line-height:1.1;letter-spacing:-.01em}
+.rhead .sub{color:var(--color-text-muted);font-size:14px;margin-top:4px}
+.rhead .rstack{margin-left:auto;align-self:center;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.rhead .masked{display:flex;align-items:center;gap:6px;color:var(--color-text-soft);font-size:12px}
+.rhead .masked svg{width:14px;height:14px}
+.flagchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 11px;background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.flagchip svg{width:13px;height:13px}
+.flagchip.done{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+
+/* roster rail */
+:root{--roster:208px}
+.main{margin-left:calc(var(--side) + var(--roster))}
+.roster{position:fixed;top:var(--top);left:var(--side);width:var(--roster);bottom:0;overflow:auto;background:var(--color-surface);border-right:1px solid var(--color-separator);padding:12px 10px 20px;z-index:25}
+.rost-head{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-soft);padding:6px 9px 10px}
+.rost-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:var(--r-md);cursor:pointer}
+.rost-item:hover{background:var(--color-surface-subtle)}
+.rost-item.active{background:var(--color-primary-tint)}
+.rost-num{width:22px;font-size:12px;font-weight:400;color:var(--color-text-soft)}
+.rost-item.active .rost-num{color:var(--color-primary)}
+.rost-info{display:flex;flex-direction:column;min-width:0;flex:1}
+.rost-name{font-size:13px;font-weight:600;color:var(--color-text)}
+.rost-pos{font-size:10.5px;color:var(--color-text-soft)}
+.rost-flag{background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:10px;font-weight:700;border-radius:var(--r-pill);min-width:16px;height:16px;display:grid;place-items:center;padding:0 4px}
+.rost-st{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.rost-st.mod{color:var(--color-warning-ink)}
+.rost-st.rehab{color:var(--color-info-ink)}
+.rost-st.out{color:var(--color-danger)}
+.exnote{margin-top:16px}
+.exnote p{font-size:13.5px;line-height:1.55;color:var(--color-text-muted)}
+.exnote a{color:var(--color-primary);font-weight:600}
+@media(max-width:900px){:root{--roster:0px}.roster{display:none}}
+
+/* ---------- section nav ---------- */
+.secnav{position:sticky;top:var(--top);z-index:20;background:rgba(246,248,250,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--color-separator);margin-bottom:22px}
+.secnav .inner{max-width:1120px;margin:0 auto;padding:10px 32px;display:flex;gap:6px;overflow:auto}
+.secnav a{white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--color-text-soft);padding:6px 11px;border-radius:var(--r-pill);border:1px solid transparent}
+.secnav a:hover{background:var(--color-surface)}
+.secnav a.active{background:var(--color-surface);border-color:var(--color-border);color:var(--color-primary-ink)}
+
+/* ---------- pills & bits ---------- */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:var(--r-pill);padding:2px 8px;white-space:nowrap}
+.pill svg{width:12px;height:12px}
+.src{background:var(--color-surface-muted);color:var(--color-text-soft)}
+.src.video{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+.src.test{background:var(--color-info-soft);color:var(--color-info-ink)}
+.src.plan{background:var(--color-surface-muted);color:var(--color-text-muted)}
+.testing{background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.rank{color:var(--color-text-soft);font-size:12px}
+.self{color:var(--color-primary);font-weight:600;font-size:12px}
+
+/* ---------- section / card ---------- */
+.section{scroll-margin-top:110px;margin-bottom:34px}
+.shead{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.shead .no{font-size:12px;font-weight:700;color:var(--color-primary);letter-spacing:.04em}
+.shead h2{font-size:20px;letter-spacing:-.01em}
+.shead .tag{margin-left:auto}
+.qa{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-card);margin-bottom:14px}
+.qa .q{font-size:15px;font-weight:600;margin:2px 0 10px}
+.qa .a{font-size:14px;line-height:1.55;color:var(--color-text)}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-card)}
+.card + .card{margin-top:14px}
+.grid{display:grid;gap:14px}
+.cardlabel{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+
+/* metric tiles */
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.tile{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:14px 15px;box-shadow:var(--shadow-card)}
+.tile .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft);font-weight:400;display:flex;align-items:center;gap:6px;min-height:14px}
+.tile .val{font-size:26px;font-weight:700;margin-top:8px;letter-spacing:-.02em}
+.tile .val small{font-size:14px;font-weight:600;color:var(--color-text-muted);margin-left:2px}
+.tile .meta{margin-top:6px;display:flex;flex-direction:column;gap:2px}
+
+/* five things */
+.five{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+.five .item{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:13px 0;border-top:1px solid var(--color-border-subtle)}
+.five .item:nth-child(1),.five .item:nth-child(2){border-top:0}
+.five .n{font-size:13px;font-weight:700;color:var(--color-text-disabled)}
+.five .h{font-size:13.5px;font-weight:650;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.five .d{font-size:12.5px;line-height:1.5;color:var(--color-text-muted);margin-top:3px}
+.five .d a{color:var(--color-primary);font-weight:600;text-decoration:none}
+.five .d a:hover{text-decoration:underline}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-soft);font-weight:400;padding:0 10px 8px;border-bottom:1px solid var(--color-border)}
+th.r,td.r{text-align:right}
+td{padding:9px 10px;border-bottom:1px solid var(--color-border-subtle);color:var(--color-text)}
+tr:last-child td{border-bottom:0}
+td .mut{color:var(--color-text-soft)}
+.brk{color:var(--color-text-disabled)}
+
+/* bars */
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.bar .top b{font-weight:700}
+.track{position:relative;height:10px;background:var(--color-surface-muted);border-radius:var(--r-pill)}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:var(--r-pill);background:var(--color-primary)}
+.track .fill.over{background:var(--color-warning)}
+.track .ref{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--color-text-disabled)}
+
+/* observation / for the coach / not saying */
+.obs{display:grid;grid-template-columns:1fr;gap:12px}
+.coachbox{border-left:3px solid var(--color-primary-border);background:var(--color-primary-tint);border-radius:0 var(--r-md) var(--r-md) 0;padding:11px 14px}
+.coachbox .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-primary);margin-bottom:4px}
+.coachbox p{font-size:13px;line-height:1.5;color:var(--color-text)}
+.notsaying{margin-top:14px;border-top:1px dashed var(--color-border);padding-top:11px}
+.notsaying .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-soft);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.notsaying ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.notsaying li{font-size:12.5px;line-height:1.45;color:var(--color-text-soft);padding-left:14px;position:relative}
+.notsaying li::before{content:"—";position:absolute;left:0;color:var(--color-text-disabled)}
+
+/* check before using callout */
+.check{display:flex;gap:11px;background:var(--color-warning-soft);border:1px solid #FDE68A;border-radius:var(--r-lg);padding:13px 15px}
+.check svg{width:18px;height:18px;color:var(--color-warning-ink);flex:none;margin-top:1px}
+.check .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-warning-ink)}
+.check p{font-size:13px;line-height:1.5;color:#7c5312;margin-top:3px}
+
+/* clips */
+.clips{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.clip{text-align:left;border:1px solid var(--color-border);border-radius:var(--r-lg);background:var(--color-surface);overflow:hidden;cursor:pointer;padding:0;font-family:var(--ff)}
+.clip:hover{border-color:var(--color-primary-border);box-shadow:var(--shadow-card)}
+.clip .thumb{height:104px;background:#0f172a;position:relative;display:grid;place-items:center}
+.clip .thumb svg{width:30px;height:30px;color:rgba(255,255,255,.9)}
+.clip .thumb .tc{position:absolute;right:8px;bottom:7px;font-size:10px;color:rgba(255,255,255,.85);background:rgba(0,0,0,.4);border-radius:4px;padding:1px 5px}
+.clip .cap{padding:9px 11px}
+.clip .cap .t{font-size:12.5px;font-weight:650}
+.clip .cap .m{font-size:11px;color:var(--color-text-soft);margin-top:3px}
+.clip .cap .decided{display:none;margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--color-success-ink);text-transform:uppercase}
+.clip.done .cap .decided{display:inline-flex;align-items:center;gap:4px}
+.clip.done .cap .decided svg{width:12px;height:12px}
+
+/* schematic */
+.pitch{background:linear-gradient(90deg,#f0fdf9,#f6fbff);border:1px solid var(--color-border);border-radius:var(--r-lg);height:150px;position:relative;overflow:hidden}
+.pitch .box{position:absolute;border:1px solid var(--color-primary-border);border-left:0}
+.deliv{position:absolute;width:14px;height:14px;border-radius:50%;display:grid;place-items:center;font-size:8px;font-weight:700;color:#fff;transform:translate(-50%,-50%)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--color-text-muted)}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%}
+
+.footnote{font-size:11px;line-height:1.5;color:var(--color-text-soft);margin-top:10px}
+.roadmap .pin{display:inline-flex;align-items:center;gap:6px;color:var(--color-text-soft);font-size:11px;font-weight:400;letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- review drawer ---------- */
+.scrim{position:fixed;inset:0;background:rgba(15,23,42,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:50}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:92vw;background:var(--color-surface);border-left:1px solid var(--color-border);box-shadow:var(--shadow-pop);transform:translateX(100%);transition:transform .2s ease;z-index:51;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.drawer .dh{padding:16px 18px;border-bottom:1px solid var(--color-separator);display:flex;align-items:flex-start;gap:10px}
+.drawer .dh h3{font-size:16px;line-height:1.25}
+.drawer .dh .m{font-size:11.5px;color:var(--color-text-soft);margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.drawer .x{margin-left:auto;border:0;background:transparent;cursor:pointer;color:var(--color-text-soft);padding:4px;border-radius:var(--r-sm)}
+.drawer .x:hover{background:var(--color-surface-subtle)}
+.drawer .body{padding:16px 18px;overflow:auto;flex:1}
+.frame{height:200px;background:#0f172a;border-radius:var(--r-md);display:grid;place-items:center;color:rgba(255,255,255,.65);font-size:11px;letter-spacing:.05em;position:relative}
+.frame svg{width:34px;height:34px;opacity:.8}
+.frame .anon{position:absolute;left:10px;bottom:9px;font-size:9.5px;letter-spacing:.05em;color:rgba(255,255,255,.5)}
+.block{margin-top:16px}
+.block .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-soft);margin-bottom:5px}
+.block p{font-size:13.5px;line-height:1.55}
+.verdict{padding:14px 18px;border-top:1px solid var(--color-separator);background:var(--color-surface-subtle)}
+.vbtns{display:flex;gap:8px;margin:8px 0 10px}
+.vbtn{flex:1;height:38px;border-radius:var(--r-md);font-family:var(--ff);font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--color-border);background:#fff;color:var(--color-text-muted)}
+.vbtn.confirm{border-color:var(--color-primary-border);background:var(--color-primary-tint);color:var(--color-primary)}
+.vbtn:hover{filter:brightness(.98)}
+.vchanges{font-size:11.5px;line-height:1.5;color:var(--color-text-soft)}
+.vchanges b{color:var(--color-text-muted)}
+.never{font-size:11px;color:var(--color-text-soft);margin-top:9px;display:flex;align-items:center;gap:6px}
+.never svg{width:13px;height:13px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:26px;transform:transl(-50%,20px);translate:-50% 20px;background:var(--color-primary-active);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:var(--r-md);box-shadow:var(--shadow-pop);opacity:0;pointer-events:none;transition:.2s;z-index:60;display:flex;align-items:center;gap:10px}
+.toast.show{opacity:1;translate:-50% 0}
+.toast button{background:transparent;border:0;color:#9df3ea;font-weight:700;cursor:pointer;font-family:var(--ff);font-size:12px}
+
+.disc{font-size:11px;color:var(--color-text-soft);border-top:1px solid var(--color-separator);margin-top:26px;padding-top:14px}
+
+@media(max-width:1180px){.five{grid-template-columns:1fr}.five .item:nth-child(2){border-top:1px solid var(--color-border-subtle)}}
+@media(max-width:1080px){.tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:920px){:root{--side:0px}.side{display:none}.tiles{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div id="shell-top"></div>
+<div id="shell-side"></div>
+
+<main class="main">
+  <aside class="roster" id="roster"></aside>
+  <div class="wrap">
+    <div class="rhead">
+      <div class="pid" id="hPid">P13</div>
+      <div>
+        <h1 id="hName">P13</h1>
+        <div class="sub" id="hSub">Right winger · Team B · Training · Session F03 · 88 min of drills</div>
+      </div>
+      <div class="rstack">
+        <span class="flagchip" id="flagChip"><i data-lucide="flag" id="flagIcon"></i><span id="flagText">3 clips flagged for review</span></span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="secnav" id="secnavWrap"><div class="inner" id="secnav">
+    <a href="#top" class="active">His session</a>
+    <a href="#s1">Profile</a>
+    <a href="#s2">Load</a>
+    <a href="#s3">Drill by drill</a>
+    <a href="#s4">Speed &amp; braking</a>
+    <a href="#s5">Cutting</a>
+    <a href="#s6">Crossing &amp; scanning</a>
+    <a href="#s7">Roadmap</a>
+  </div></nav>
+
+  <div class="wrap">
+
+    <!-- ===== HIS SESSION + FIVE THINGS ===== -->
+    <section class="section" id="top">
+      <div class="cardlabel"><span class="eyebrow">His session</span><span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+      <div class="tiles" id="tiles">
+        <div class="tile"><div class="lab">Distance</div><div class="val num">6,774<small>m</small></div><div class="meta"><span class="rank num">6th of 22</span></div></div>
+        <div class="tile"><div class="lab">&gt;19.8 km/h</div><div class="val num">376<small>m</small></div><div class="meta"><span class="rank num">2nd of 22</span></div></div>
+        <div class="tile"><div class="lab">&gt;25.2 km/h</div><div class="val num">57<small>m</small></div><div class="meta"><span class="rank num">2nd of 22</span></div></div>
+        <div class="tile"><div class="lab">Acc + dec</div><div class="val num">225</div><div class="meta"><span class="rank num">1st of 22</span></div></div>
+        <div class="tile"><div class="lab">Top speed</div><div class="val num">29.2<small>km/h</small></div><div class="meta"><span class="self num">91% of his peak</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="cardlabel"><span class="eyebrow">Five things for staff</span></div>
+        <div class="five" id="fiveList">
+          <div class="item"><div class="n num">1</div><div>
+            <div class="h">Load <span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+            <div class="d">376 m above 19.8 km/h (2nd in the squad) and 225 accelerations and decelerations (1st). Per minute, his most intense session of the week, and 106% of his match rate for acc + dec. <a href="#s2">See Load →</a></div>
+          </div></div>
+          <div class="item"><div class="n num">2</div><div>
+            <div class="h">Braking <span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+            <div class="d">−7.17 m/s² in the 11v11 — his hardest stop in any export (best May match −6.80; earlier this week −4.83). Check the clip before it goes into a load model. <a href="#s4">See Speed &amp; braking →</a></div>
+          </div></div>
+          <div class="item"><div class="n num">3</div><div>
+            <div class="h">Crossing <span class="pill src video"><i data-lucide="video"></i>VIDEO</span></div>
+            <div class="d">5 of 9 deliveries found an attacker first, against 30% and 38% in the July crossing sessions. Too few per session to call a trend. <a href="#s6">See Crossing &amp; scanning →</a></div>
+          </div></div>
+          <div class="item"><div class="n num">4</div><div>
+            <div class="h">Scanning <span class="pill src video"><i data-lucide="video"></i>VIDEO</span> <span class="pill testing">In testing</span></div>
+            <div class="d">0.29 scans/s before receiving, inside his preseason range (0.24–0.33/s) and close to the squad median today (0.32/s). <a href="#s6">See Crossing &amp; scanning →</a></div>
+          </div></div>
+          <div class="item"><div class="n num">5</div><div>
+            <div class="h">Cutting <span class="pill src"><i data-lucide="gauge"></i>GPS</span><span class="pill src video"><i data-lucide="video"></i>VIDEO</span></div>
+            <div class="d">Preseason cuts were 57% right; GPS direction changes were 56% right. Different definitions and role context need review. <a href="#s5">See Cutting →</a></div>
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <div id="deepNotice" style="display:none">
+      <div class="card exnote">
+        <div class="cardlabel"><span class="eyebrow">Full report</span></div>
+        <p>The full report — Profile, Load, Speed &amp; braking, Cutting, Crossing &amp; scanning and Roadmap — is generated for every player from their own session video and GPS. <b id="dnName">this player</b>'s is produced the same way.</p>
+        <p style="margin-top:8px"><b>P13</b> is shown as the fully worked example. <a href="#top" id="dnP13">View P13's full report →</a></p>
+      </div>
+    </div>
+
+    <!-- ===== 2.1 PROFILE ===== -->
+    <section class="section" id="s1">
+      <div class="shead"><h2>Profile &amp; reference values</h2></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Who is P13 in the data, and what do we compare him with?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">A right winger with the best jump in the squad and upper-half sprint speed. His May match halves average 92 m/min and 2.42 accelerations and decelerations per minute — that is the bar this report uses.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.35fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Testing</span><span class="pill src test"><i data-lucide="clipboard-list"></i>Testing</span></div>
+          <table>
+            <thead><tr><th>Test</th><th class="r">P13</th><th class="r">Squad rank</th><th class="r">Median</th></tr></thead>
+            <tbody>
+              <tr><td>30 m sprint, s</td><td class="r num">4.08</td><td class="r num">6 of 15</td><td class="r num mut">4.12</td></tr>
+              <tr><td>0–10 m split, s</td><td class="r num">1.74</td><td class="r num">6 of 15</td><td class="r num mut">1.76</td></tr>
+              <tr><td>CMJ, cm</td><td class="r num">55.0</td><td class="r num">1 of 15</td><td class="r num mut">41.8</td></tr>
+              <tr><td>Arrow agility L / R, s</td><td class="r num">7.34 / 7.41</td><td class="r num">4 of 15</td><td class="r num mut">7.57 / 7.57</td></tr>
+              <tr><td>Yo-yo level</td><td class="r num">21.1</td><td class="r num">2 of 15</td><td class="r num mut">20.4</td></tr>
+              <tr><td>NordBord L / R, N</td><td class="r num">352 / 365</td><td class="r num">6 of 15</td><td class="r num mut">348 / 303</td></tr>
+              <tr><td>ForceFrame adduction L / R, N</td><td class="r num">473 / 489</td><td class="r num">—</td><td class="r num mut">439 / 433</td></tr>
+            </tbody>
+          </table>
+          <p class="footnote">Hip flexion and extension are left out: in this data they lean to one side for 12–13 of 14 players, which points to the set-up, not the players.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Match reference · the baseline</span><span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+          <table>
+            <tbody>
+              <tr><td>Halves used</td><td class="r num">6 of ≥40 min</td></tr>
+              <tr><td>m/min</td><td class="r num">92</td></tr>
+              <tr><td>&gt;19.8 km/h, m/min</td><td class="r num">7.4</td></tr>
+              <tr><td>&gt;25.2 km/h, m/min</td><td class="r num">2.14</td></tr>
+              <tr><td>Acc + dec /min</td><td class="r num">2.42</td></tr>
+              <tr><td>Peak speed</td><td class="r num">31.97 km/h</td></tr>
+            </tbody>
+          </table>
+          <p class="footnote">This is the bar behind every “% of his match” in this report. Match reference uses only matches before this session.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2.2 LOAD ===== -->
+    <section class="section" id="s2">
+      <div class="shead"><h2>This week against his own GPS</h2></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">How did F03 compare with the rest of his week and with his matches?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">His most intense session of the week per minute (77 m/min, 106% of his match rate for accelerations and decelerations) — but not his biggest: an earlier session ran longer and further.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Per minute, as % of his May match average</span><span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+          <div class="bars">
+            <div class="bar"><div class="top"><span>Metres per minute</span><b class="num">84%</b></div><div class="track"><div class="fill" style="width:56%"></div><div class="ref" style="left:66.6%"></div></div></div>
+            <div class="bar"><div class="top"><span>Running &gt;19.8 km/h</span><b class="num">58%</b></div><div class="track"><div class="fill" style="width:38.6%"></div><div class="ref" style="left:66.6%"></div></div></div>
+            <div class="bar"><div class="top"><span>Running &gt;25.2 km/h</span><b class="num">30%</b></div><div class="track"><div class="fill" style="width:20%"></div><div class="ref" style="left:66.6%"></div></div></div>
+            <div class="bar"><div class="top"><span>Accelerations + decelerations</span><b class="num">106%</b></div><div class="track"><div class="fill over" style="width:70.6%"></div><div class="ref" style="left:66.6%"></div></div></div>
+          </div>
+          <p class="footnote">His May match average = 100% (the grey marker). Only acc + dec is above his match rate.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Exported totals</span><span class="pill src video"><i data-lucide="gauge"></i>GPS</span></div>
+          <table>
+            <thead><tr><th>Metric</th><th class="r">F01</th><th class="r">F02</th><th class="r">F03</th><th class="r">May mean</th></tr></thead>
+            <tbody>
+              <tr><td>Minutes</td><td class="r num mut">183</td><td class="r num mut">86</td><td class="r num">88</td><td class="r num mut">102</td></tr>
+              <tr><td>Distance, m</td><td class="r num mut">10,294</td><td class="r num mut">5,652</td><td class="r num">6,774</td><td class="r num mut">9,366</td></tr>
+              <tr><td>&gt;19.8 km/h, m</td><td class="r num mut">498</td><td class="r num mut">635</td><td class="r num">376</td><td class="r num mut">754</td></tr>
+              <tr><td>&gt;25.2 km/h, m</td><td class="r num mut">168</td><td class="r num mut">50</td><td class="r num">57</td><td class="r num mut">218</td></tr>
+              <tr><td>Acc + dec</td><td class="r num mut">256</td><td class="r num mut">209</td><td class="r num">225</td><td class="r num mut">248</td></tr>
+              <tr><td>Peak decel, m/s²</td><td class="r num mut">−4.57</td><td class="r num mut">−4.83</td><td class="r num">−7.17</td><td class="r num mut">−6.80</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="notsaying" style="border-top:0;padding-top:0">
+          <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>What we are not saying</div>
+          <ul>
+            <li>These are whole-session exports, breaks included, so per-minute values sit below drill values.</li>
+            <li>&gt;19.8 and &gt;25.2 km/h are the club’s own GPS bands, the same for every player.</li>
+            <li>Three sessions show his week, not a trend.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2.3 DRILL BY DRILL ===== -->
+    <section class="section" id="s3">
+      <div class="shead"><h2>Load and ball actions, drill by drill</h2>
+        <span class="tag"><span class="pill src"><i data-lucide="gauge"></i>GPS</span> <span class="pill src video"><i data-lucide="video"></i>VIDEO</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">What did P13 do in each drill, and where?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">His high-speed running came in the 11v11 and the crossing drill. Squad mean is shown in brackets.</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Drill</th><th class="r">m/min</th><th class="r">&gt;19.8 m</th><th class="r">&gt;25.2 m</th><th class="r">Acc+dec</th><th class="r">Top</th><th class="r">Passes</th><th class="r">Pressures</th><th class="r">Scans/s</th><th class="r">Cuts L/R</th><th class="r">Crosses</th></tr></thead>
+          <tbody>
+            <tr><td>Warm-up &amp; 3v2 <span class="mut">30 min</span></td><td class="r num">55 <span class="brk">(56)</span></td><td class="r num">30 <span class="brk">(7)</span></td><td class="r num">0</td><td class="r num">56 <span class="brk">(38)</span></td><td class="r num">23.2</td><td class="r brk">–</td><td class="r brk">–</td><td class="r brk">–</td><td class="r num">2 / 3</td><td class="r brk">–</td></tr>
+            <tr><td>10v10 game <span class="mut">16 min</span></td><td class="r num">100 <span class="brk">(103)</span></td><td class="r num">78 <span class="brk">(42)</span></td><td class="r num">9</td><td class="r num">73 <span class="brk">(40)</span></td><td class="r num">26.2</td><td class="r num">12 · 75%</td><td class="r num">1</td><td class="r num">0.20 <span class="brk">(6)</span></td><td class="r num">6 / 7</td><td class="r brk">–</td></tr>
+            <tr><td>11v11 <span class="mut">27 min</span></td><td class="r num">101 <span class="brk">(89)</span></td><td class="r num">168 <span class="brk">(113)</span></td><td class="r num">48</td><td class="r num">79 <span class="brk">(57)</span></td><td class="r num">29.2</td><td class="r num">16 · 100%</td><td class="r num">6</td><td class="r num">0.34 <span class="brk">(11)</span></td><td class="r num">3 / 3</td><td class="r brk">–</td></tr>
+            <tr><td>Crossing &amp; finishing <span class="mut">15 min</span></td><td class="r num">53 <span class="brk">(49)</span></td><td class="r num">101 <span class="brk">(29)</span></td><td class="r num">0</td><td class="r num">17 <span class="brk">(26)</span></td><td class="r num">23.3</td><td class="r brk">–</td><td class="r brk">–</td><td class="r brk">–</td><td class="r num">0 / 0</td><td class="r num">9</td></tr>
+          </tbody>
+        </table>
+        <p class="footnote"><span class="pill testing" style="margin-right:6px">In testing</span>Pressures and scans/s are model measurements, built to the club’s definition and being baselined. 11v11 coverage: 1,039 / 1,075 s (96.7%); 36 s unaccounted.</p>
+      </div>
+    </section>
+
+    <!-- ===== 2.4 SPEED & BRAKING ===== -->
+    <section class="section" id="s4">
+      <div class="shead"><h2>Speed &amp; braking</h2>
+        <span class="tag"><span class="pill src"><i data-lucide="gauge"></i>GPS</span> <span class="pill src video"><i data-lucide="video"></i>VIDEO</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">How fast did he go, and what should staff check about his hardest stop?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">He reached 91% of his top speed. His −7.17 m/s² stop is the hardest in any of his exports, so confirm it on the clip before it enters a load model.</div>
+      </div>
+
+      <div class="check" style="margin-bottom:14px">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <div class="l">Check before using</div>
+          <p>−7.17 m/s² (11v11, 8:49) is beyond anything in his match exports. The clip is queued so a coach can confirm a real stop rather than a GPS spike before it goes into any load model.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="grid-template-columns:1fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Hardest stop of the session</span><span class="pill src"><i data-lucide="gauge"></i>GPS</span><span class="pill src video"><i data-lucide="video"></i>VIDEO</span></div>
+          <table><tbody>
+            <tr><td>GPS peak deceleration</td><td class="r num">−7.17 m/s²</td></tr>
+            <tr><td>Wide camera</td><td class="r num">23.7 → 6.1 km/h · 0.96 s · 4.0 m</td></tr>
+            <tr><td>Mean deceleration</td><td class="r num">5.10 m/s² <span class="mut">(71% of peak)</span></td></tr>
+          </tbody></table>
+          <p class="footnote">For scale: in a maximal stop test, team-sport athletes averaged 4.2–5.0 m/s² from 7.4–7.8 m/s (Harper et al. 2020); this stop ends at 6 km/h, not standstill.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">His peak decelerations, every export</span><span class="pill src"><i data-lucide="gauge"></i>GPS</span></div>
+          <table>
+            <thead><tr><th>Session</th><th class="r">Peak decel m/s²</th><th class="r">Top km/h</th></tr></thead>
+            <tbody>
+              <tr><td>Training F03</td><td class="r num" style="color:var(--color-warning-ink);font-weight:700">−7.17</td><td class="r num">29.2</td></tr>
+              <tr><td>Match</td><td class="r num mut">−6.80</td><td class="r num mut">31.5</td></tr>
+              <tr><td>Match</td><td class="r num mut">−6.34</td><td class="r num mut">32.0</td></tr>
+              <tr><td>Match</td><td class="r num mut">−6.29</td><td class="r num mut">31.0</td></tr>
+              <tr><td>Training F02</td><td class="r num mut">−4.83</td><td class="r num mut">28.5</td></tr>
+              <tr><td>Training F01</td><td class="r num mut">−4.57</td><td class="r num mut">31.6</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="cardlabel"><span class="eyebrow">Linked clips</span></div>
+        <div class="clips">
+          <button class="clip" data-clip="stop"><div class="thumb"><i data-lucide="play"></i><span class="tc num">08:49</span></div><div class="cap"><div class="t">Stop from 23.7 km/h</div><div class="m">11v11 · GPS + video</div><div class="decided"><i data-lucide="check"></i><span></span></div></div></button>
+          <button class="clip" data-clip="topspeed"><div class="thumb"><i data-lucide="play"></i><span class="tc">top-speed</span></div><div class="cap"><div class="t">Top-speed effort, 8 steps</div><div class="m">11v11 · GPS + video</div><div class="decided"><i data-lucide="check"></i><span></span></div></div></button>
+        </div>
+        <p class="footnote">Step rate and step length come from the 50 fps sideline camera, averaged over the steps in view. A 50 fps camera can count steps; it cannot time ground contacts.</p>
+      </div>
+    </section>
+
+    <!-- ===== 2.5 CUTTING ===== -->
+    <section class="section" id="s5">
+      <div class="shead"><h2>Cutting left and right</h2>
+        <span class="tag"><span class="pill src"><i data-lucide="gauge"></i>GPS</span> <span class="pill src video"><i data-lucide="video"></i>VIDEO</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Does P13 favour one side when he changes direction?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">Preseason cuts were 57% right (95% CI 52–62%); GPS direction changes were 56% right. Role, drill context and measurement definitions need separate review.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.1fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Share of cuts to the right · cumulative over preseason</span><span class="pill src video"><i data-lucide="video"></i>VIDEO</span></div>
+          <svg viewBox="0 0 420 180" width="100%" role="img" aria-label="Cumulative right-cut share converging to 57.3% with a 95% confidence band">
+            <line x1="40" y1="20" x2="40" y2="150" stroke="#E5E7EB"/>
+            <line x1="40" y1="150" x2="410" y2="150" stroke="#E5E7EB"/>
+            <text x="8" y="34" font-size="9" fill="#9CA3AF">75</text>
+            <text x="8" y="89" font-size="9" fill="#9CA3AF">55</text>
+            <text x="8" y="123" font-size="9" fill="#9CA3AF">45</text>
+            <line x1="40" y1="95.5" x2="410" y2="95.5" stroke="#9CA3AF" stroke-dasharray="3 3"/>
+            <text x="366" y="92" font-size="9" fill="#9CA3AF">50/50</text>
+            <path d="M40,40 C140,120 240,96 410,86 L410,66 C240,74 140,96 40,20 Z" fill="#CCFBF1" opacity="0.6"/>
+            <path d="M40,30 C140,110 240,88 410,78" fill="none" stroke="#0F766E" stroke-width="2.5"/>
+            <circle cx="410" cy="78" r="3.5" fill="#0F766E"/>
+            <text x="362" y="72" font-size="10" font-weight="700" fill="#134E4A">57.3%</text>
+          </svg>
+          <p class="footnote">Shaded band is the 95% confidence interval (52.5–61.9%). 14 analysed sessions; cuts defined as 45°+ from 14.4 km/h+.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">What the numbers support</span></div>
+          <table><tbody>
+            <tr><td>F03 alone</td><td class="r num">11 L, 13 R</td></tr>
+            <tr><td><span class="mut">significance</span></td><td class="r num mut">p = 0.84 — not conclusive</td></tr>
+            <tr><td>Preseason, video</td><td class="r num">240 / 419 right · 57%</td></tr>
+            <tr><td><span class="mut">95% CI</span></td><td class="r num mut">52–62%</td></tr>
+            <tr><td>GPS, every export</td><td class="r num">63 / 112 right · 56%</td></tr>
+          </tbody></table>
+          <div class="notsaying">
+            <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>What we are not saying</div>
+            <ul>
+              <li>One session cannot establish a stable side preference.</li>
+              <li>This is not an injury or risk signal.</li>
+              <li>Directional share alone does not establish stance-leg loading, asymmetry or movement quality.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2.6 CROSSING & SCANNING ===== -->
+    <section class="section" id="s6">
+      <div class="shead"><h2>Crossing &amp; scanning</h2>
+        <span class="tag"><span class="pill src video"><i data-lucide="video"></i>VIDEO</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Where did his deliveries go, and does he check around him before receiving?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">5 of 9 deliveries found an attacker first, most of them aimed at the six-yard area. His scanning (0.29/s) sat inside his preseason range.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.1fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">His 9 deliveries · schematic</span><span class="pill src video"><i data-lucide="video"></i>VIDEO</span></div>
+          <div class="pitch" id="pitch"></div>
+          <div class="leg">
+            <span><i class="dot" style="background:#16A34A"></i>Attacker first</span>
+            <span><i class="dot" style="background:#DC2626"></i>Defender first</span>
+            <span><i class="dot" style="background:#9CA3AF"></i>Nobody touched it</span>
+          </div>
+          <p class="footnote">8 driven, 1 whipped. Mean ball speed 22.3 m/s over the first 5 m. Numbers are delivery order. Schematic shows zones, not exact points.</p>
+        </div>
+        <div>
+          <div class="card">
+            <div class="cardlabel"><span class="eyebrow">Crossing sessions this preseason</span></div>
+            <table>
+              <thead><tr><th>Session</th><th class="r">Deliveries</th><th class="r">Attacker first</th><th class="r">Ball m/s</th></tr></thead>
+              <tbody>
+                <tr><td>July A</td><td class="r num">10</td><td class="r num mut">30%</td><td class="r num mut">21.8</td></tr>
+                <tr><td>July B</td><td class="r num">8</td><td class="r num mut">38%</td><td class="r num mut">20.5</td></tr>
+                <tr><td>F03</td><td class="r num">9</td><td class="r num">56%</td><td class="r num">22.3</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="cardlabel"><span class="eyebrow">Scans per second before receiving</span><span class="pill src video"><i data-lucide="video"></i>VIDEO</span><span class="pill testing">In testing</span></div>
+            <div class="bars">
+              <div class="bar"><div class="top"><span>P13 today</span><b class="num">0.29/s</b></div><div class="track"><div class="fill" style="width:58%"></div><div class="ref" style="left:64%"></div></div></div>
+            </div>
+            <p class="footnote">His preseason range 0.24–0.33/s; squad median today 0.32/s (grey marker; players with 6+ readable receptions). Scan = head turn away from the ball and back (Jordet).</p>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="cardlabel"><span class="eyebrow">Linked clips</span></div>
+        <div class="clips">
+          <button class="clip" data-clip="nearpost"><div class="thumb"><i data-lucide="play"></i><span class="tc num">04:41</span></div><div class="cap"><div class="t">Near-post delivery</div><div class="m">Crossing · delivery 2 of 9</div><div class="decided"><i data-lucide="check"></i><span></span></div></div></button>
+          <button class="clip" data-clip="scan"><div class="thumb"><i data-lucide="play"></i><span class="tc num">14:46</span></div><div class="cap"><div class="t">Receives after 4 scans in 10 s</div><div class="m">11v11 · video · in testing</div><div class="decided"><i data-lucide="check"></i><span></span></div></div></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2.7 ROADMAP ===== -->
+    <section class="section roadmap" id="s7">
+      <div class="shead"><h2>Next on roadmap</h2><span class="tag roadmap"><span class="pin"><i data-lucide="hammer" style="width:13px;height:13px"></i>Not in this report yet</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">What is being built next for his running?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">What each of his high-speed runs was for. It is not in this report yet, and no F03 numbers are shown for it.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">What it will answer</span></div>
+          <p style="font-size:13.5px;line-height:1.55;color:var(--color-text-muted)">For each run above 19.8 km/h: was it a recovery run, a pressing run, an off-ball run in possession, or a run with the ball?</p>
+          <div class="cardlabel" style="margin-top:16px"><span class="eyebrow">What we are building</span></div>
+          <p style="font-size:13.5px;line-height:1.55;color:var(--color-text-muted)">Possession state for every second, so each run is tagged in or out of possession. A run-purpose model that reads the run against the ball, teammates and the back line. Carrier attribution, so runs with the ball are credited to the right player.</p>
+          <div class="notsaying">
+            <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>What we are not saying</div>
+            <ul><li>This is not a finding. It moves into the drill-by-drill view once its outputs agree with coach-labelled clips.</li></ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Illustrative clip</span><span class="pill testing">In testing</span></div>
+          <div class="clips" style="grid-template-columns:1fr">
+            <button class="clip" data-clip="recovery"><div class="thumb"><i data-lucide="play"></i><span class="tc num">01:07</span></div><div class="cap"><div class="t">Recovery run above 19.8 km/h</div><div class="m">11v11 · run purpose not yet modelled</div></div></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="disc" id="discLine">Illustrative concept — Northbank FC is a fictional club and every value is sample data. GPS and testing are customer exports; VIDEO is Meridian model measurement. Images are anonymised source frames and model overlays; source footage is restricted.</p>
+  </div>
+</main>
+
+<!-- review drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dh">
+    <div>
+      <h3 id="dTitle">—</h3>
+      <div class="m" id="dMeta"></div>
+    </div>
+    <button class="x" id="dClose" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="body">
+    <div class="frame"><i data-lucide="play"></i><span class="anon">ANONYMISED SOURCE FRAME · MODEL OVERLAY</span></div>
+    <div class="block"><div class="l">What the clip shows</div><p id="dObs"></p></div>
+    <div class="block" id="dCoachWrap"><div class="coachbox"><div class="l">For the coach</div><p id="dCoach"></p></div></div>
+  </div>
+  <div class="verdict">
+    <div class="vbtns">
+      <button class="vbtn confirm" data-v="Confirm">Confirm</button>
+      <button class="vbtn" data-v="Correct">Correct</button>
+      <button class="vbtn" data-v="Dismiss">Dismiss</button>
+    </div>
+    <div class="vchanges"><b>Confirm</b> — the observation stands and is logged. <b>Correct</b> — staff enter what actually happened. <b>Dismiss</b> — set aside, marked unverified.</div>
+    <div class="never"><i data-lucide="shield-check"></i>Staff decide. Meridian never decides.</div>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo">Undo</button></div>
+
+<script>
+/* shell builder — inlined (self-contained) */
+/* Meridian shared shell — builds the topbar + sidebar for every report surface.
+   Single source of truth for nav items and cross-surface links.
+   Usage: put <div id="shell-top"></div><div id="shell-side"></div> in the page,
+   then call MeridianShell({ active, badge, club, ctx, actions, concept }). */
+(function(){
+  var HOME="Meridian%20%E2%80%94%20Today%20(home)%20v1.html";
+  var PLAYERS="Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
+  var GYM="Meridian%20%E2%80%94%20Gym%20(report-led%20v1).html";
+  var NAV=[
+    {k:'today',label:'Today',icon:'sun',href:HOME},
+    {k:'review',label:'Review queue',icon:'clipboard-list',href:HOME+'#queue',badge:true},
+    {group:'Tactical intelligence'},
+    {k:'pressing',label:'Pressing',icon:'gauge'},
+    {k:'scanning',label:'Scanning',icon:'eye'},
+    {k:'setpieces',label:'Set pieces',icon:'target'},
+    {k:'shape',label:'Team shape',icon:'layout-grid'},
+    {group:'Physical'},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM},
+    {group:'People'},
+    {k:'players',label:'Players',icon:'user',href:PLAYERS},
+    {k:'squad',label:'Squad trends',icon:'trending-up'}
+  ];
+  function esc(s){return (s==null?'':String(s));}
+  window.MeridianShell=function(o){
+    o=o||{};
+    var club=o.club||'Northbank FC';
+    var ctx=o.ctx||'';
+    var active=o.active||'';
+    var badge=(o.badge==null?'':o.badge);
+    var actions=o.actions||[{label:'Plan a session',icon:'mic',primary:true}];
+    var concept=o.concept||{title:'Illustrative concept',text:'Northbank FC is a fictional club. Every value is sample data.'};
+
+    var acts=actions.map(function(a){
+      return '<button class="btn'+(a.primary?' primary':'')+'">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>';
+    }).join('');
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN<span class="club">'+esc(club)+'</span></div>'+
+      (ctx?'<span class="ctx">'+esc(ctx)+'</span>':'')+
+      '<span class="sp"></span>'+acts+'<div class="avatar">YO</div></header>';
+
+    var items='';
+    NAV.forEach(function(n){
+      if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
+      var isA=(n.k===active);
+      var href=n.href||'';
+      var badgeHtml=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'><i data-lucide="'+n.icon+'"></i><span class="lbl">'+n.label+'</span>'+badgeHtml+'</a>';
+    });
+    var side='<aside class="side">'+items+'</aside>';
+
+    var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
+    var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML=side;
+    try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
+    var tg=document.getElementById('navToggle');
+    if(tg) tg.onclick=function(){ var c=document.body.classList.toggle('nav-collapsed'); try{localStorage.setItem('meridian-nav-collapsed',c?'1':'0');}catch(e){} };
+    if(window.lucide) lucide.createIcons();
+  };
+})();
+
+</script>
+<script>
+MeridianShell({active:'players',badge:7,ctx:'',actions:[{label:'Export',icon:'download'},{label:'Plan a session',icon:'mic',primary:true}]});
+const CLIPS = {
+  stop:{title:"Stop from 23.7 km/h",meta:["11v11 · 08:49","GPS + VIDEO"],obs:"GPS logged a −7.17 m/s² deceleration. Wide-camera tracking reads 23.7 → 6.1 km/h in 0.96 s over 4.0 m — a hard stop that ends at 6 km/h, not a standstill. It happened outside the 50 fps sideline camera, so there is no braking-step count.",coach:"Confirm this was a real stop, not a GPS spike, before it enters any load model.",flag:true},
+  topspeed:{title:"Top-speed effort, 8 steps",meta:["11v11 top-speed run","GPS + VIDEO"],obs:"GPS top speed 29.18 km/h, 91% of his 31.97 km/h peak. Over 8 steps the sideline camera reads 28.6 km/h · 4.49 steps/s · 1.77 m per step.",coach:"A 50 fps camera can count steps; it cannot time ground contacts. Read step rate and length, not contact time."},
+  nearpost:{title:"Near-post delivery",meta:["Crossing · 04:41 · delivery 2 of 9","VIDEO"],obs:"A driven delivery to the near post. First contact was an attacker. Mean ball speed over the first 5 m was in line with his session average.",coach:"Was the near-post target the intended one for this routine?",flag:true},
+  scan:{title:"Receives after 4 scans in 10 s",meta:["11v11 · 14:46","VIDEO · in testing"],obs:"In the 10 s before receiving, 4 head turns away from the ball and back were counted. Scan definition follows Jordet.",coach:"Scanning is in testing and being baselined — treat the count as indicative.",flag:true},
+  recovery:{title:"Recovery run above 19.8 km/h",meta:["11v11 · 01:07","VIDEO · roadmap"],obs:"A high-speed run above 19.8 km/h. Run purpose (recovery / pressing / off-ball / with the ball) is not yet modelled, so no label is attached.",coach:""}
+};
+const scrim=document.getElementById('scrim'),drawer=document.getElementById('drawer');
+let activeClip=null;
+function openClip(id){const c=CLIPS[id];if(!c)return;activeClip=id;
+  document.getElementById('dTitle').textContent=c.title;
+  document.getElementById('dMeta').innerHTML=c.meta.map(m=>'<span>'+m+'</span>').join('<span>·</span>');
+  document.getElementById('dObs').textContent=c.obs;
+  const cw=document.getElementById('dCoachWrap');
+  if(c.coach){cw.style.display='';document.getElementById('dCoach').textContent=c.coach;}else{cw.style.display='none';}
+  scrim.classList.add('open');drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');
+}
+function closeClip(){scrim.classList.remove('open');drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');activeClip=null;}
+document.querySelectorAll('.clip').forEach(b=>b.addEventListener('click',()=>openClip(b.dataset.clip)));
+document.getElementById('dClose').addEventListener('click',closeClip);
+scrim.addEventListener('click',closeClip);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeClip();});
+
+// verdicts
+const toast=document.getElementById('toast');let toastT=null,lastDecided=null,decided={};
+function updateFlags(){
+  const flags=Object.keys(CLIPS).filter(k=>CLIPS[k].flag);
+  const open=flags.filter(k=>!decided[k]).length;
+  const chip=document.getElementById('flagChip');
+  if(open>0){chip.classList.remove('done');document.getElementById('flagIcon').outerHTML='<i data-lucide="flag" id="flagIcon"></i>';document.getElementById('flagText').textContent=open+' clip'+(open>1?'s':'')+' flagged for review';}
+  else{chip.classList.add('done');document.getElementById('flagIcon').outerHTML='<i data-lucide="check" id="flagIcon"></i>';document.getElementById('flagText').textContent='All flagged clips reviewed';}
+  if(window.lucide)lucide.createIcons();
+}
+document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click',()=>{
+  const v=b.dataset.v;const id=activeClip;
+  const card=document.querySelector('.clip[data-clip="'+id+'"]');
+  if(card){card.classList.add('done');const s=card.querySelector('.decided span');if(s)s.textContent=v;}
+  decided[id]=v;lastDecided={card,id};updateFlags();
+  document.getElementById('toastMsg').textContent='Logged · '+v;
+  toast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.remove('show'),3200);
+  closeClip();
+}));
+document.getElementById('toastUndo').addEventListener('click',()=>{
+  if(lastDecided){if(lastDecided.card)lastDecided.card.classList.remove('done');delete decided[lastDecided.id];lastDecided=null;updateFlags();}
+  toast.classList.remove('show');
+});
+updateFlags();
+
+// section nav active-on-scroll
+const links=[...document.querySelectorAll('#secnav a')];
+const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const obsv=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map.get(e.target.id);if(a)a.classList.add('active');}});},{rootMargin:'-120px 0px -70% 0px'});
+document.querySelectorAll('section.section').forEach(s=>obsv.observe(s));
+links.forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);const el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'','#'+id);links.forEach(l=>l.classList.remove('active'));a.classList.add('active');}}));
+
+// deliveries schematic
+const pitch=document.getElementById('pitch');
+if(pitch){
+  const box=document.createElement('div');box.className='box';box.style.cssText='right:0;top:28px;bottom:28px;width:70px';pitch.appendChild(box);
+  const box2=document.createElement('div');box2.className='box';box2.style.cssText='right:0;top:55px;bottom:55px;width:34px';pitch.appendChild(box2);
+  const D=[['88','18',1],['70','40',1],['84','62',2],['60','30',1],['90','50',1],['66','72',3],['80','35',1],['58','58',2],['86','78',1]];
+  const col={1:'#16A34A',2:'#DC2626',3:'#9CA3AF'};
+  D.forEach((d,i)=>{const e=document.createElement('div');e.className='deliv';e.style.left=d[0]+'%';e.style.top=d[1]+'%';e.style.background=col[d[2]];e.textContent=i+1;pitch.appendChild(e);});
+}
+
+// ---- squad roster ----
+const P13_TILES=document.getElementById('tiles').innerHTML;
+const P13_FIVE=document.getElementById('fiveList').innerHTML;
+const ROSTER=[
+ [2,'Right back','FULL',0],[3,'Centre back','FULL',0],[4,'Centre back','FULL',1],
+ [5,'Centre back','REHAB',0],[6,'Defensive midfield','FULL',0],[7,'Central midfield','FULL',0],
+ [8,'Central midfield','FULL',1],[9,'Centre forward','MOD',0],[10,'Attacking midfield','FULL',0],
+ [11,'Left wing','FULL',0],[12,'Right wing','FULL',1],[13,'Right winger','FULL',3],
+ [14,'Right back','FULL',0],[15,'Centre back','FULL',0],[16,'Central midfield','FULL',0],
+ [17,'Left back','MOD',0],[18,'Central midfield','FULL',0],[19,'Right wing','FULL',0],
+ [20,'Centre forward','FULL',0],[21,'Left wing','OUT',0],[22,'Defensive midfield','MOD',0],
+ [23,'Left back','FULL',0]
+];
+function rnd(s){const x=Math.sin(s*97.13)*10000;return x-Math.floor(x);}
+const SQUAD=ROSTER.map(r=>{const n=r[0];let t;
+  if(n===13){t={dist:6774,hsr:376,gt25:57,ad:225,top:29.2,pk:91};}
+  else{t={dist:Math.round((5600+rnd(n)*2000)/10)*10,hsr:Math.round(140+rnd(n+1)*320),gt25:Math.round(20+rnd(n+2)*80),ad:Math.round(180+rnd(n+3)*90),top:+(28+rnd(n+4)*5).toFixed(1),pk:Math.round(85+rnd(n+5)*12)};}
+  return {num:n,pos:r[1],status:r[2],flags:r[3],t};});
+const NSQ=SQUAD.length;
+function ord(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+function rankOf(k,v){return SQUAD.map(p=>p.t[k]).sort((a,b)=>b-a).indexOf(v)+1;}
+function pad(n){return n<10?'0'+n:''+n;}
+function fmt(n){return n.toLocaleString();}
+function statusWord(s){return s==='FULL'?'Full training':s==='MOD'?'Modified':s==='REHAB'?'Rehab':'Out';}
+function tile(lab,val,meta,cls){return '<div class="tile"><div class="lab">'+lab+'</div><div class="val num">'+val+'</div><div class="meta"><span class="'+cls+' num">'+meta+'</span></div></div>';}
+function tilesHTML(p){if(p.num===13)return P13_TILES;const t=p.t;
+  return tile('Distance',fmt(t.dist)+'<small>m</small>',ord(rankOf('dist',t.dist))+' of '+NSQ,'rank')
+   +tile('&gt;19.8 km/h',fmt(t.hsr)+'<small>m</small>',ord(rankOf('hsr',t.hsr))+' of '+NSQ,'rank')
+   +tile('&gt;25.2 km/h',fmt(t.gt25)+'<small>m</small>',ord(rankOf('gt25',t.gt25))+' of '+NSQ,'rank')
+   +tile('Acc + dec',t.ad,ord(rankOf('ad',t.ad))+' of '+NSQ,'rank')
+   +tile('Top speed',t.top+'<small>km/h</small>',t.pk+'% of his peak','self');}
+const GPSP='<span class="pill src video"><i data-lucide="gauge"></i>GPS</span>';
+const VIDP='<span class="pill src video"><i data-lucide="video"></i>VIDEO</span>';
+function fthing(nn,h,pills,d){return '<div class="item"><div class="n num">'+nn+'</div><div><div class="h">'+h+' '+pills+'</div><div class="d">'+d+'</div></div></div>';}
+function fiveHTML(p){if(p.num===13)return P13_FIVE;const t=p.t;
+  return [
+    fthing(1,'Load',GPSP,fmt(t.hsr)+' m above 19.8 km/h ('+ord(rankOf('hsr',t.hsr))+' in the squad) and '+t.ad+' accelerations and decelerations ('+ord(rankOf('ad',t.ad))+').'),
+    fthing(2,'Top speed',GPSP,t.top+' km/h, '+t.pk+'% of his peak.'),
+    fthing(3,'Review',VIDP,p.flags>0?(p.flags+' clip'+(p.flags>1?'s':'')+' flagged for a coach to review this session.'):'No clips flagged this session.')
+  ].join('');}
+function setFlagChip(n){const chip=document.getElementById('flagChip');
+  if(n>0){chip.classList.remove('done');document.getElementById('flagIcon').outerHTML='<i data-lucide="flag" id="flagIcon"></i>';document.getElementById('flagText').textContent=n+' clip'+(n>1?'s':'')+' flagged for review';}
+  else{chip.classList.add('done');document.getElementById('flagIcon').outerHTML='<i data-lucide="check" id="flagIcon"></i>';document.getElementById('flagText').textContent='No clips flagged this session';}
+  if(window.lucide)lucide.createIcons();}
+function renderRoster(){const host=document.getElementById('roster');
+  host.innerHTML='<div class="rost-head">Squad &middot; '+NSQ+'</div>'+SQUAD.map(p=>{
+    const st=p.status!=='FULL'?'<span class="rost-st '+p.status.toLowerCase()+'">'+p.status+'</span>':'';
+    const fl=p.flags>0?'<span class="rost-flag num">'+p.flags+'</span>':'';
+    return '<div class="rost-item" data-num="'+p.num+'"><span class="rost-num num">'+pad(p.num)+'</span><span class="rost-info"><span class="rost-name">Player '+pad(p.num)+'</span><span class="rost-pos">'+p.pos+'</span></span>'+fl+st+'</div>';}).join('');
+  host.querySelectorAll('.rost-item').forEach(el=>el.onclick=()=>selectPlayer(+el.dataset.num));}
+function selectPlayer(num){const p=SQUAD.find(x=>x.num===num);if(!p)return;
+  document.getElementById('hPid').textContent='P'+pad(num);
+  document.getElementById('hName').textContent='P'+pad(num);
+  document.getElementById('hSub').textContent=p.pos+' · '+statusWord(p.status)+' · Session F03';
+  document.getElementById('tiles').innerHTML=tilesHTML(p);
+  document.getElementById('fiveList').innerHTML=fiveHTML(p);
+  document.querySelectorAll('.rost-item').forEach(el=>el.classList.toggle('active',+el.dataset.num===num));
+  const deep=(num===13);
+  document.getElementById('secnavWrap').style.display=deep?'':'none';
+  ['s1','s2','s3','s4','s5','s6','s7'].forEach(id=>{const s=document.getElementById(id);if(s)s.style.display=deep?'':'none';});
+  const disc=document.getElementById('discLine');if(disc)disc.style.display=deep?'':'none';
+  document.getElementById('deepNotice').style.display=deep?'none':'';
+  if(!deep)document.getElementById('dnName').textContent='P'+pad(num);
+  if(deep)updateFlags();else setFlagChip(p.flags);
+  window.scrollTo({top:0});
+  lucide.createIcons();}
+const dnP13=document.getElementById('dnP13');if(dnP13)dnP13.addEventListener('click',e=>{e.preventDefault();selectPlayer(13);});
+renderRoster();selectPlayer(13);
+
+lucide.createIcons();
+</script>
+</body>
+</html>

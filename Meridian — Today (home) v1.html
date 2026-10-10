@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* shell frame — inlined so the page is self-contained (works on file:// and reload) */
+/* Meridian shared shell — design tokens, base reset, topbar + sidebar frame.
+   Loaded by all report surfaces (Today, Players, Gym). Page-specific component
+   styles stay inline in each page. Keep this the single source of truth for the shell. */
+:root{
+  --color-primary:#0F766E; --color-primary-hover:#115E59; --color-primary-active:#134E4A;
+  --color-primary-soft:#CCFBF1; --color-primary-tint:#F0FDFA; --color-primary-border:#99F6E4; --color-primary-ink:#134E4A;
+  --color-page:#F6F8FA; --color-surface:#FFFFFF; --color-surface-subtle:#F9FAFB; --color-surface-muted:#F1F5F9;
+  --color-border:#E5E7EB; --color-border-subtle:#EEF2F6; --color-separator:#E6EAF0;
+  --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF; --color-text-inverse:#FFFFFF;
+  --color-success:#16A34A; --color-success-soft:#DCFCE7; --color-success-ink:#166534;
+  --color-warning:#F59E0B; --color-warning-soft:#FEF3C7; --color-warning-ink:#92400E;
+  --color-danger:#DC2626; --color-danger-soft:#FEE2E2; --color-danger-ink:#991B1B;
+  --color-info:#2563EB; --color-info-soft:#DBEAFE; --color-info-ink:#1E3A8A;
+  --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 12px 28px rgba(15,23,42,.14);
+  --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --side:248px; --top:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
+a{color:inherit;text-decoration:none}
+
+/* topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 20px;z-index:40}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
+.brand .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--color-primary);display:grid;place-items:center}
+.brand .mark::after{content:"";width:2px;height:10px;background:var(--color-primary);transform:rotate(25deg)}
+.brand .club{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-left:12px;border-left:1px solid var(--color-separator)}
+.topbar .ctx{margin-left:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft)}
+.topbar .sp{flex:1}
+.btn{font-family:var(--ff);font-size:13px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.btn:hover{background:var(--color-surface-subtle)}
+.btn.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.btn.primary:hover{background:var(--color-primary-hover)}
+.btn svg{width:16px;height:16px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+
+/* sidebar */
+.side{position:fixed;top:var(--top);bottom:0;left:0;width:var(--side);background:var(--color-surface);border-right:1px solid var(--color-separator);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto;z-index:30}
+.side .grp{margin:14px 8px 6px}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);color:var(--color-text-muted);font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav svg{width:18px;height:18px;color:var(--color-text-soft)}
+.nav:hover{background:var(--color-surface-subtle)}
+.nav.active{background:var(--color-primary-tint);color:var(--color-primary-ink);font-weight:600}
+.nav.active svg{color:var(--color-primary)}
+.nav .badge{margin-left:auto;background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
+.concept{margin-top:auto;background:var(--color-surface-muted);color:var(--color-text-soft);border:1px solid var(--color-border-subtle);border-radius:var(--r-md);padding:10px 12px}
+.concept .t{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-disabled);margin-bottom:4px}
+.concept p{font-size:11px;line-height:1.45;color:var(--color-text-soft)}
+
+/* collapsible nav */
+.navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
+.navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.navtoggle svg{width:18px;height:18px}
+.side{transition:width .2s ease}
+.main{transition:margin-left .2s ease}
+body.nav-collapsed{--side:64px}
+body.nav-collapsed .side{padding:16px 8px}
+body.nav-collapsed .side .grp{display:none}
+body.nav-collapsed .nav{position:relative;justify-content:center;padding:9px 0;gap:0}
+body.nav-collapsed .nav .lbl{display:none}
+body.nav-collapsed .nav .badge{position:absolute;top:1px;right:9px;margin:0;min-width:15px;height:15px;padding:0 4px;display:grid;place-items:center;line-height:1}
+
+/* content frame */
+.main{margin-left:var(--side);margin-top:var(--top);padding:0 0 80px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+
+@media(max-width:920px){:root{--side:0px}.side{display:none}}
+
+</style>
+<style>
+/* shell frame — tokens, reset, topbar, sidebar, content frame (inlined; self-contained) */
+.wrap{max-width:1180px}
+.main{padding-top:28px}
+
+.hello{margin-bottom:22px}
+.hello h1{font-size:28px;letter-spacing:-.01em;margin:4px 0 8px}
+.hello .line{font-size:15px;color:var(--color-text-muted);max-width:720px;line-height:1.5}
+.hello .line b{color:var(--color-text)}
+
+.cols{display:grid;grid-template-columns:1.9fr 1fr;gap:18px;align-items:start}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-card)}
+.card + .card{margin-top:18px}
+.chead{display:flex;align-items:center;gap:10px;padding:15px 18px 0}
+.chead h2{font-size:15px;font-weight:650}
+.chead .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.cbody{padding:12px 18px 16px}
+
+/* filter pills */
+.fp{display:inline-flex;gap:4px;background:var(--color-surface-muted);border-radius:var(--r-pill);padding:3px}
+.fp button{font-family:var(--ff);border:0;background:transparent;font-size:12px;font-weight:600;color:var(--color-text-soft);padding:4px 11px;border-radius:var(--r-pill);cursor:pointer}
+.fp button.on{background:var(--color-surface);color:var(--color-primary-ink);box-shadow:var(--shadow-card)}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:var(--r-pill);padding:2px 8px;white-space:nowrap}
+.pill svg{width:12px;height:12px}
+.src{background:var(--color-surface-muted);color:var(--color-text-soft)}
+.src.video{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+.testing{background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-sm);padding:2px 6px}
+.tag.pitch{background:var(--color-info-soft);color:var(--color-info-ink)}
+.tag.gym{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+
+/* queue rows */
+.qrow{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--color-border-subtle);border-radius:var(--r-lg);margin-bottom:10px;background:var(--color-surface)}
+.qrow:last-child{margin-bottom:0}
+.qrow:hover{border-color:var(--color-border)}
+.qthumb{height:48px;width:72px;border-radius:var(--r-md);background:#0f172a;position:relative;display:grid;place-items:center;cursor:pointer}
+.qthumb svg{width:18px;height:18px;color:rgba(255,255,255,.85)}
+.qthumb .tc{position:absolute;right:4px;bottom:3px;font-size:9px;color:rgba(255,255,255,.85)}
+.qmid{cursor:pointer;min-width:0}
+.qsub{font-size:14px;font-weight:650;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qsub .who{color:var(--color-text)}
+.qobs{color:var(--color-text-muted);font-weight:500}
+.qctx{font-size:12px;color:var(--color-text-soft);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qopen{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--color-primary);display:inline-flex;align-items:center;gap:4px;margin-top:5px}
+.qopen svg{width:12px;height:12px}
+.vmini{display:flex;gap:6px}
+.vmini button{font-family:var(--ff);font-size:11.5px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:#fff;color:var(--color-text-muted);padding:6px 10px;cursor:pointer}
+.vmini button.c{border-color:var(--color-primary-border);background:var(--color-primary-tint);color:var(--color-primary)}
+.vmini button:hover{filter:brightness(.98)}
+.qempty{padding:22px;text-align:center;color:var(--color-text-soft);font-size:13px}
+.qnote{font-size:11px;color:var(--color-text-soft);padding:0 18px 15px;display:flex;align-items:center;gap:6px}
+.qnote svg{width:13px;height:13px}
+
+/* right column rows */
+.srow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--color-border-subtle)}
+.srow:first-child{border-top:0}
+.srow .ic{width:34px;height:34px;border-radius:var(--r-md);background:var(--color-surface-muted);display:grid;place-items:center;color:var(--color-text-soft);flex:none}
+.srow .ic svg{width:17px;height:17px}
+.srow .t{font-size:13.5px;font-weight:600}
+.srow .m{font-size:12px;color:var(--color-text-soft);margin-top:2px}
+.srow .go{margin-left:auto;color:var(--color-text-disabled)}
+.srow.link{cursor:pointer;margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:var(--r-md)}
+.srow.link:hover{background:var(--color-surface-subtle)}
+.chip{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:var(--r-pill);padding:2px 8px}
+.chip.warn{background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.chip.ok{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+
+/* squad status */
+.status{display:flex;gap:16px;padding-bottom:6px;flex-wrap:wrap}
+.status div{font-size:12px;color:var(--color-text-soft)}
+.status b{font-size:18px;font-weight:700;color:var(--color-text);margin-right:5px}
+.status .mod b{color:var(--color-warning-ink)}
+.status .out b{color:var(--color-danger)}
+.sq{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--color-border-subtle);font-size:13px}
+.sq .n{width:28px;color:var(--color-text-soft);font-weight:600}
+.sq .st{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.sq .st.mod{color:var(--color-warning-ink)}
+.sq .st.rehab{color:var(--color-info-ink)}
+.sq .st.out{color:var(--color-danger)}
+
+.toast{position:fixed;left:50%;bottom:26px;background:var(--color-primary-active);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:var(--r-md);box-shadow:var(--shadow-pop);opacity:0;pointer-events:none;transition:.2s;z-index:60;display:flex;align-items:center;gap:10px;translate:-50% 20px}
+.toast.show{opacity:1;translate:-50% 0}
+.toast button{background:transparent;border:0;color:#9df3ea;font-weight:700;cursor:pointer;font-family:var(--ff);font-size:12px}
+
+@media(max-width:1080px){.cols{grid-template-columns:1fr}}
+@media(max-width:920px){:root{--side:0px}.side{display:none}}
+</style>
+</head>
+<body>
+
+<div id="shell-top"></div>
+<div id="shell-side"></div>
+
+<main class="main">
+  <div class="wrap">
+    <div class="hello">
+      <div class="eyebrow">Thursday 10 September</div>
+      <h1>Good morning, Yohahn</h1>
+      <div class="line"><b id="helloCount">7 flags</b> are waiting for a staff decision before the 08:00 meeting. Today's AM Pitch has no plan yet.</div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT: review queue -->
+      <div>
+        <div class="card" id="queue">
+          <div class="chead">
+            <h2>Needs a decision</h2>
+            <div class="r">
+              <span class="fp">
+                <button class="on" data-f="all">All</button>
+                <button data-f="pitch">Pitch</button>
+                <button data-f="gym">Gym</button>
+              </span>
+            </div>
+          </div>
+          <div class="cbody"><div id="rows"></div><div class="qempty" id="qempty" style="display:none">Nothing waiting — every flag has a staff decision.</div></div>
+          <div class="qnote"><i data-lucide="shield-check"></i>A flag asks for a coach's view, not a verdict. Open the report for full context, or decide here. Meridian never decides.</div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <div class="card">
+          <div class="chead"><h2>Today's sessions</h2></div>
+          <div class="cbody">
+            <div class="srow">
+              <div class="ic"><i data-lucide="clipboard-list"></i></div>
+              <div><div class="t">AM Pitch · 10:30</div><div class="m">Two fixed wide cameras</div></div>
+              <div class="go"><span class="chip warn">No plan yet</span></div>
+            </div>
+            <div class="srow">
+              <div class="ic"><i data-lucide="dumbbell"></i></div>
+              <div><div class="t">PM Gym 3 · 15:00</div><div class="m">21 players · four ceiling cameras</div></div>
+              <div class="go"><span class="chip ok">Programme loaded</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chead"><h2>Reports ready</h2><div class="r eyebrow">Since yesterday</div></div>
+          <div class="cbody">
+            <a class="srow link" href="Meridian%20%E2%80%94%20Players%20(report-led%20v1).html">
+              <div class="ic"><i data-lucide="user"></i></div>
+              <div><div class="t">Player report · P13</div><div class="m">Training · Session F03 · ready 22:05</div></div>
+              <div class="go"><i data-lucide="arrow-right"></i></div>
+            </a>
+            <a class="srow link" href="Meridian%20%E2%80%94%20Gym%20(report-led%20v1).html">
+              <div class="ic"><i data-lucide="dumbbell"></i></div>
+              <div><div class="t">Gym report · GYM-006</div><div class="m">Session G06 · 3 items need a verdict</div></div>
+              <div class="go"><i data-lucide="arrow-right"></i></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chead"><h2>Squad today</h2><div class="r eyebrow">24 players</div></div>
+          <div class="cbody">
+            <div class="status">
+              <div><b class="num">19</b>Full</div>
+              <div class="mod"><b class="num">3</b>Modified</div>
+              <div><b class="num">1</b>Rehab</div>
+              <div class="out"><b class="num">1</b>Out</div>
+            </div>
+            <div class="sq"><span class="n num">05</span><span>Rehab · week 3 · hamstring</span><span class="st rehab">Rehab</span></div>
+            <div class="sq"><span class="n num">09</span><span>Reduced sprint volume</span><span class="st mod">Modified</span></div>
+            <div class="sq"><span class="n num">17</span><span>No heading drills</span><span class="st mod">Modified</span></div>
+            <div class="sq"><span class="n num">21</span><span>Not training · illness</span><span class="st out">Out</span></div>
+            <div class="sq"><span class="n num">22</span><span>Load managed after match</span><span class="st mod">Modified</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo">Undo</button></div>
+
+<script>
+/* shell builder — inlined (self-contained) */
+/* Meridian shared shell — builds the topbar + sidebar for every report surface.
+   Single source of truth for nav items and cross-surface links.
+   Usage: put <div id="shell-top"></div><div id="shell-side"></div> in the page,
+   then call MeridianShell({ active, badge, club, ctx, actions, concept }). */
+(function(){
+  var HOME="Meridian%20%E2%80%94%20Today%20(home)%20v1.html";
+  var PLAYERS="Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
+  var GYM="Meridian%20%E2%80%94%20Gym%20(report-led%20v1).html";
+  var NAV=[
+    {k:'today',label:'Today',icon:'sun',href:HOME},
+    {k:'review',label:'Review queue',icon:'clipboard-list',href:HOME+'#queue',badge:true},
+    {group:'Tactical intelligence'},
+    {k:'pressing',label:'Pressing',icon:'gauge'},
+    {k:'scanning',label:'Scanning',icon:'eye'},
+    {k:'setpieces',label:'Set pieces',icon:'target'},
+    {k:'shape',label:'Team shape',icon:'layout-grid'},
+    {group:'Physical'},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM},
+    {group:'People'},
+    {k:'players',label:'Players',icon:'user',href:PLAYERS},
+    {k:'squad',label:'Squad trends',icon:'trending-up'}
+  ];
+  function esc(s){return (s==null?'':String(s));}
+  window.MeridianShell=function(o){
+    o=o||{};
+    var club=o.club||'Northbank FC';
+    var ctx=o.ctx||'';
+    var active=o.active||'';
+    var badge=(o.badge==null?'':o.badge);
+    var actions=o.actions||[{label:'Plan a session',icon:'mic',primary:true}];
+    var concept=o.concept||{title:'Illustrative concept',text:'Northbank FC is a fictional club. Every value is sample data.'};
+
+    var acts=actions.map(function(a){
+      return '<button class="btn'+(a.primary?' primary':'')+'">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>';
+    }).join('');
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN<span class="club">'+esc(club)+'</span></div>'+
+      (ctx?'<span class="ctx">'+esc(ctx)+'</span>':'')+
+      '<span class="sp"></span>'+acts+'<div class="avatar">YO</div></header>';
+
+    var items='';
+    NAV.forEach(function(n){
+      if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
+      var isA=(n.k===active);
+      var href=n.href||'';
+      var badgeHtml=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'><i data-lucide="'+n.icon+'"></i><span class="lbl">'+n.label+'</span>'+badgeHtml+'</a>';
+    });
+    var side='<aside class="side">'+items+'</aside>';
+
+    var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
+    var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML=side;
+    try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
+    var tg=document.getElementById('navToggle');
+    if(tg) tg.onclick=function(){ var c=document.body.classList.toggle('nav-collapsed'); try{localStorage.setItem('meridian-nav-collapsed',c?'1':'0');}catch(e){} };
+    if(window.lucide) lucide.createIcons();
+  };
+})();
+
+</script>
+<script>
+MeridianShell({active:'today',badge:7,ctx:'',actions:[{label:'Plan a session',icon:'mic',primary:true}]});
+const PLAYERS="Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
+const GYM="Meridian%20%E2%80%94%20Gym%20(report-led%20v1).html";
+const FLAGS=[
+  {id:'f1',type:'pitch',who:'P13',obs:'Hardest stop −7.17 m/s² — check before using',ctx:'11v11 · 08:49',tc:'08:49',pills:['gps','video'],href:PLAYERS+'#s4',dest:'speed & braking'},
+  {id:'f2',type:'pitch',who:'P12',obs:'Right foot not pushing off fully',ctx:'Possession 6v6+3 · 41:09',tc:'41:09',pills:['gps','video'],href:PLAYERS+'#s4',dest:'speed & braking'},
+  {id:'f3',type:'pitch',who:'P13',obs:'Few scans before receiving',ctx:'11v11 · 14:46',tc:'14:46',pills:['video'],testing:true,href:PLAYERS+'#s6',dest:'crossing & scanning'},
+  {id:'f4',type:'pitch',who:'P08',obs:'Late first step after press trigger',ctx:'Pressing · training · 1.3s',tc:'52:16',pills:['video'],href:PLAYERS,dest:'player report'},
+  {id:'f5',type:'gym',who:'G07',obs:'Cable hip extension — full set unconfirmed',ctx:'Gym G06 · 00:24–00:43',tc:'00:33',pills:['video'],href:GYM+'#s1',dest:'gym review'},
+  {id:'f6',type:'gym',who:'G12',obs:'Split squat drop — camera cuts',ctx:'Gym G06 · 02:20–02:33',tc:'02:24',pills:['video'],href:GYM+'#s1',dest:'gym review'},
+  {id:'f7',type:'gym',who:'G18',obs:'Calf isometric — feet hidden',ctx:'Gym G06 · 03:15–03:36',tc:'03:22',pills:['video'],href:GYM+'#s1',dest:'gym review'}
+];
+let decided={},filter='all';
+const PILL={gps:'<span class="pill src"><i data-lucide="gauge"></i>GPS</span>',video:'<span class="pill src video"><i data-lucide="video"></i>VIDEO</span>'};
+
+function render(){
+  const host=document.getElementById('rows');host.innerHTML='';
+  const open=FLAGS.filter(f=>!decided[f.id] && (filter==='all'||f.type===filter));
+  open.forEach(f=>{
+    const el=document.createElement('div');el.className='qrow';el.dataset.id=f.id;
+    const pills=f.pills.map(p=>PILL[p]).join(' ')+(f.testing?' <span class="pill testing">In testing</span>':'');
+    el.innerHTML=`
+      <div class="qthumb" data-go="${f.href}"><i data-lucide="play"></i><span class="tc num">${f.tc}</span></div>
+      <div class="qmid" data-go="${f.href}">
+        <div class="qsub"><span class="tag ${f.type}">${f.type}</span><span class="who">${f.who}</span> <span class="qobs">${f.obs}</span></div>
+        <div class="qctx">${f.ctx} ${pills}</div>
+        <div class="qopen">Open in ${f.dest} <i data-lucide="arrow-right"></i></div>
+      </div>
+      <div class="vmini"><button class="c" data-v="Confirm">Confirm</button><button data-v="Correct">Correct</button><button data-v="Dismiss">Dismiss</button></div>`;
+    host.appendChild(el);
+  });
+  const total=FLAGS.filter(f=>!decided[f.id]).length;
+  document.getElementById('qempty').style.display=open.length?'none':'block';
+  document.getElementById('navBadge').textContent=total;
+  document.getElementById('navBadge').style.display=total?'':'none';
+  document.getElementById('helloCount').textContent=total?(total+' flag'+(total>1?'s':'')):'No flags';
+  bind();lucide.createIcons();
+}
+function bind(){
+  document.querySelectorAll('[data-go]').forEach(e=>e.onclick=()=>{window.location.href=e.dataset.go;});
+  document.querySelectorAll('.vmini button').forEach(b=>b.onclick=()=>{
+    const row=b.closest('.qrow');const id=row.dataset.id;const v=b.dataset.v;
+    lastDecided={id};decided[id]=v;render();
+    document.getElementById('toastMsg').textContent='Logged · '+v+' · '+(FLAGS.find(f=>f.id===id).who);
+    toast.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>toast.classList.remove('show'),3200);
+  });
+}
+const toast=document.getElementById('toast');let tT=null,lastDecided=null;
+document.getElementById('toastUndo').onclick=()=>{if(lastDecided){delete decided[lastDecided.id];lastDecided=null;render();}toast.classList.remove('show');};
+document.querySelectorAll('.fp button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.fp button').forEach(x=>x.classList.remove('on'));b.classList.add('on');filter=b.dataset.f;render();});
+
+render();lucide.createIcons();
+</script>
+</body>
+</html>

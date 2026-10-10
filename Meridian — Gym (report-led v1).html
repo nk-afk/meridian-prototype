@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — Gym Report GYM-006</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* shell frame — inlined so the page is self-contained (works on file:// and reload) */
+/* Meridian shared shell — design tokens, base reset, topbar + sidebar frame.
+   Loaded by all report surfaces (Today, Players, Gym). Page-specific component
+   styles stay inline in each page. Keep this the single source of truth for the shell. */
+:root{
+  --color-primary:#0F766E; --color-primary-hover:#115E59; --color-primary-active:#134E4A;
+  --color-primary-soft:#CCFBF1; --color-primary-tint:#F0FDFA; --color-primary-border:#99F6E4; --color-primary-ink:#134E4A;
+  --color-page:#F6F8FA; --color-surface:#FFFFFF; --color-surface-subtle:#F9FAFB; --color-surface-muted:#F1F5F9;
+  --color-border:#E5E7EB; --color-border-subtle:#EEF2F6; --color-separator:#E6EAF0;
+  --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF; --color-text-inverse:#FFFFFF;
+  --color-success:#16A34A; --color-success-soft:#DCFCE7; --color-success-ink:#166534;
+  --color-warning:#F59E0B; --color-warning-soft:#FEF3C7; --color-warning-ink:#92400E;
+  --color-danger:#DC2626; --color-danger-soft:#FEE2E2; --color-danger-ink:#991B1B;
+  --color-info:#2563EB; --color-info-soft:#DBEAFE; --color-info-ink:#1E3A8A;
+  --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 12px 28px rgba(15,23,42,.14);
+  --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --side:248px; --top:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
+a{color:inherit;text-decoration:none}
+
+/* topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 20px;z-index:40}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
+.brand .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--color-primary);display:grid;place-items:center}
+.brand .mark::after{content:"";width:2px;height:10px;background:var(--color-primary);transform:rotate(25deg)}
+.brand .club{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-left:12px;border-left:1px solid var(--color-separator)}
+.topbar .ctx{margin-left:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft)}
+.topbar .sp{flex:1}
+.btn{font-family:var(--ff);font-size:13px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.btn:hover{background:var(--color-surface-subtle)}
+.btn.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.btn.primary:hover{background:var(--color-primary-hover)}
+.btn svg{width:16px;height:16px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+
+/* sidebar */
+.side{position:fixed;top:var(--top);bottom:0;left:0;width:var(--side);background:var(--color-surface);border-right:1px solid var(--color-separator);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto;z-index:30}
+.side .grp{margin:14px 8px 6px}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);color:var(--color-text-muted);font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav svg{width:18px;height:18px;color:var(--color-text-soft)}
+.nav:hover{background:var(--color-surface-subtle)}
+.nav.active{background:var(--color-primary-tint);color:var(--color-primary-ink);font-weight:600}
+.nav.active svg{color:var(--color-primary)}
+.nav .badge{margin-left:auto;background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
+.concept{margin-top:auto;background:var(--color-surface-muted);color:var(--color-text-soft);border:1px solid var(--color-border-subtle);border-radius:var(--r-md);padding:10px 12px}
+.concept .t{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-disabled);margin-bottom:4px}
+.concept p{font-size:11px;line-height:1.45;color:var(--color-text-soft)}
+
+/* collapsible nav */
+.navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
+.navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.navtoggle svg{width:18px;height:18px}
+.side{transition:width .2s ease}
+.main{transition:margin-left .2s ease}
+body.nav-collapsed{--side:64px}
+body.nav-collapsed .side{padding:16px 8px}
+body.nav-collapsed .side .grp{display:none}
+body.nav-collapsed .nav{position:relative;justify-content:center;padding:9px 0;gap:0}
+body.nav-collapsed .nav .lbl{display:none}
+body.nav-collapsed .nav .badge{position:absolute;top:1px;right:9px;margin:0;min-width:15px;height:15px;padding:0 4px;display:grid;place-items:center;line-height:1}
+
+/* content frame */
+.main{margin-left:var(--side);margin-top:var(--top);padding:0 0 80px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+
+@media(max-width:920px){:root{--side:0px}.side{display:none}}
+
+</style>
+<style>
+/* shell frame — tokens, reset, topbar, sidebar, content frame (inlined; self-contained) */
+
+/* header */
+.rhead{padding:28px 0 10px;display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.rhead .pid{width:64px;height:64px;border-radius:var(--r-lg);background:var(--color-primary);color:#fff;display:grid;place-items:center}
+.rhead .pid svg{width:30px;height:30px}
+.rhead h1{font-size:30px;line-height:1.1;letter-spacing:-.01em}
+.rhead .sub{color:var(--color-text-muted);font-size:14px;margin-top:4px}
+.rhead .masked{margin-left:auto;align-self:center;display:flex;flex-direction:column;align-items:flex-end;gap:4px;color:var(--color-text-soft);font-size:12px;text-align:right}
+.rhead .masked .r1{display:flex;align-items:center;gap:6px}
+.rhead .masked svg{width:14px;height:14px}
+.rhead .masked .sep{font-size:11px;color:var(--color-text-disabled);max-width:220px;line-height:1.4}
+
+/* section nav */
+.secnav{position:sticky;top:var(--top);z-index:20;background:rgba(246,248,250,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--color-separator);margin-bottom:22px}
+.secnav .inner{max-width:1120px;margin:0 auto;padding:10px 32px;display:flex;gap:6px;overflow:auto}
+.secnav a{white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--color-text-soft);padding:6px 11px;border-radius:var(--r-pill);border:1px solid transparent}
+.secnav a:hover{background:var(--color-surface)}
+.secnav a.active{background:var(--color-surface);border-color:var(--color-border);color:var(--color-primary-ink)}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:var(--r-pill);padding:2px 8px;white-space:nowrap}
+.pill svg{width:12px;height:12px}
+.src{background:var(--color-surface-muted);color:var(--color-text-soft)}
+.src.video{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+.src.plan{background:var(--color-info-soft);color:var(--color-info-ink)}
+.testing{background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.rank{color:var(--color-text-soft);font-size:12px}
+.self{color:var(--color-primary);font-weight:600;font-size:12px}
+.chip{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:var(--r-pill);padding:2px 9px;white-space:nowrap}
+.chip.done{background:var(--color-success-soft);color:var(--color-success-ink)}
+.chip.review{background:var(--color-warning-soft);color:var(--color-warning-ink)}
+.chip.full{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+.chip.dismiss{background:var(--color-surface-muted);color:var(--color-text-soft)}
+
+/* section / card */
+.section{scroll-margin-top:110px;margin-bottom:34px}
+.shead{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.shead .no{font-size:12px;font-weight:700;color:var(--color-primary);letter-spacing:.04em}
+.shead h2{font-size:20px;letter-spacing:-.01em}
+.shead .tag{margin-left:auto}
+.qa{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-card);margin-bottom:14px}
+.qa .q{font-size:15px;font-weight:600;margin:2px 0 10px}
+.qa .a{font-size:14px;line-height:1.55;color:var(--color-text)}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-card)}
+.card + .card{margin-top:14px}
+.grid{display:grid;gap:14px}
+.cardlabel{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.tile{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:14px 15px;box-shadow:var(--shadow-card)}
+.tile .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft);font-weight:400;min-height:14px}
+.tile .val{font-size:26px;font-weight:700;margin-top:8px;letter-spacing:-.02em}
+.tile .val small{font-size:14px;font-weight:600;color:var(--color-text-muted);margin-left:2px}
+.tile .meta{margin-top:6px}
+.tile.warn .val{color:var(--color-warning-ink)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-soft);font-weight:400;padding:0 10px 8px;border-bottom:1px solid var(--color-border)}
+th.r,td.r{text-align:right}
+td{padding:9px 10px;border-bottom:1px solid var(--color-border-subtle);color:var(--color-text);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td .mut{color:var(--color-text-soft)}
+.brk{color:var(--color-text-disabled)}
+tr.flagged td{background:var(--color-warning-soft);opacity:.001}
+tr.open td{background:#FFFBEB}
+
+/* observation / not-saying */
+.coachbox{border-left:3px solid var(--color-primary-border);background:var(--color-primary-tint);border-radius:0 var(--r-md) var(--r-md) 0;padding:11px 14px}
+.coachbox .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-primary);margin-bottom:4px}
+.coachbox p{font-size:13px;line-height:1.5;color:var(--color-text)}
+.notsaying{margin-top:14px;border-top:1px dashed var(--color-border);padding-top:11px}
+.notsaying.flush{border-top:0;padding-top:0;margin-top:0}
+.notsaying .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-soft);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.notsaying ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.notsaying li{font-size:12.5px;line-height:1.45;color:var(--color-text-soft);padding-left:14px;position:relative}
+.notsaying li::before{content:"—";position:absolute;left:0;color:var(--color-text-disabled)}
+
+/* callout */
+.check{display:flex;gap:11px;background:var(--color-warning-soft);border:1px solid #FDE68A;border-radius:var(--r-lg);padding:13px 15px;margin-bottom:14px}
+.check svg{width:18px;height:18px;color:var(--color-warning-ink);flex:none;margin-top:1px}
+.check .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-warning-ink)}
+.check p{font-size:13px;line-height:1.5;color:#7c5312;margin-top:3px}
+.check a{color:var(--color-warning-ink);font-weight:700}
+.check.ready{background:var(--color-primary-tint);border-color:var(--color-primary-border)}
+.check.ready svg{color:var(--color-primary)}
+.check.ready .l{color:var(--color-primary)}
+.check.ready p{color:var(--color-text-muted)}
+
+/* review items (3.1) */
+.ritems{display:flex;flex-direction:column;gap:12px}
+.ritem{display:grid;grid-template-columns:184px 1fr;gap:16px;border:1px solid var(--color-border);border-radius:var(--r-lg);background:var(--color-surface);padding:13px;cursor:pointer;box-shadow:var(--shadow-card)}
+.ritem:hover{border-color:var(--color-primary-border)}
+.ritem .thumb{height:118px;border-radius:var(--r-md);background:#0f172a;position:relative;display:grid;place-items:center}
+.ritem .thumb svg{width:28px;height:28px;color:rgba(255,255,255,.9)}
+.ritem .thumb .tc{position:absolute;right:8px;bottom:7px;font-size:10px;color:rgba(255,255,255,.85);background:rgba(0,0,0,.4);border-radius:4px;padding:1px 5px}
+.ritem h4{font-size:15px;font-weight:650;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ritem .rec{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;margin:9px 0 8px}
+.ritem .rec div{font-size:12px;color:var(--color-text-soft)}
+.ritem .rec b{color:var(--color-text);font-weight:600}
+.ritem .shows{font-size:12.5px;line-height:1.5;color:var(--color-text-muted)}
+.ritem .go{margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-primary);display:inline-flex;align-items:center;gap:5px}
+.ritem .go svg{width:13px;height:13px}
+.empty{background:var(--color-surface);border:1px dashed var(--color-border);border-radius:var(--r-lg);padding:22px;text-align:center;color:var(--color-text-soft);font-size:13px}
+
+/* completion grid */
+.cgrid6{font-size:12.5px}
+.cgrow{display:grid;grid-template-columns:1.6fr repeat(6,1fr);align-items:center;gap:0;padding:7px 0;border-bottom:1px solid var(--color-border-subtle)}
+.cgrow.head{border-bottom:1px solid var(--color-border);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:400}
+.cgrow .ex{color:var(--color-text)}
+.cgrow .c{display:flex;justify-content:center}
+.cd{width:11px;height:11px;border-radius:50%}
+.cd.done{background:var(--color-success)}
+.cd.review{background:var(--color-warning)}
+
+/* mini bar chart */
+.mbar{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:6px}
+.mbar .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end}
+.mbar .b .bar{width:100%;max-width:30px;background:var(--color-primary);border-radius:4px 4px 0 0}
+.mbar .b .bar.low{background:var(--color-warning)}
+.mbar .b .v{font-size:10.5px;color:var(--color-text-soft);font-variant-numeric:tabular-nums}
+.mbar .b .w{font-size:9.5px;color:var(--color-text-disabled);letter-spacing:.04em}
+
+.footnote{font-size:11px;line-height:1.5;color:var(--color-text-soft);margin-top:10px}
+.noclaim{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.noclaim span{font-size:12px;background:var(--color-surface-muted);color:var(--color-text-muted);border-radius:var(--r-md);padding:6px 11px;display:inline-flex;align-items:center;gap:7px}
+.noclaim span svg{width:13px;height:13px;color:var(--color-text-disabled)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(15,23,42,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:50}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:460px;max-width:92vw;background:var(--color-surface);border-left:1px solid var(--color-border);box-shadow:var(--shadow-pop);transform:translateX(100%);transition:transform .2s ease;z-index:51;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.drawer .dh{padding:16px 18px;border-bottom:1px solid var(--color-separator);display:flex;align-items:flex-start;gap:10px}
+.drawer .dh h3{font-size:16px;line-height:1.25}
+.drawer .dh .m{font-size:11.5px;color:var(--color-text-soft);margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.drawer .x{margin-left:auto;border:0;background:transparent;cursor:pointer;color:var(--color-text-soft);padding:4px;border-radius:var(--r-sm)}
+.drawer .x:hover{background:var(--color-surface-subtle)}
+.drawer .body{padding:16px 18px;overflow:auto;flex:1}
+.frame{height:190px;background:#0f172a;border-radius:var(--r-md);display:grid;place-items:center;color:rgba(255,255,255,.65);font-size:11px;position:relative}
+.frame svg{width:34px;height:34px;opacity:.8}
+.frame .anon{position:absolute;left:10px;bottom:9px;font-size:9.5px;letter-spacing:.05em;color:rgba(255,255,255,.5)}
+.drec{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}
+.drec div{font-size:12.5px;color:var(--color-text-soft)}
+.drec b{color:var(--color-text);font-weight:600}
+.block{margin-top:16px}
+.block .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--color-text-soft);margin-bottom:5px}
+.block p{font-size:13.5px;line-height:1.55}
+.ruleline{margin-top:12px;font-size:12px;color:var(--color-text-soft);background:var(--color-surface-subtle);border:1px solid var(--color-border-subtle);border-radius:var(--r-md);padding:9px 11px}
+.ruleline b{color:var(--color-text-muted)}
+.verdict{padding:14px 18px;border-top:1px solid var(--color-separator);background:var(--color-surface-subtle)}
+.vbtns{display:flex;gap:8px;margin:8px 0 10px}
+.vbtn{flex:1;height:38px;border-radius:var(--r-md);font-family:var(--ff);font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--color-border);background:#fff;color:var(--color-text-muted)}
+.vbtn.confirm{border-color:var(--color-primary-border);background:var(--color-primary-tint);color:var(--color-primary)}
+.vbtn:hover{filter:brightness(.98)}
+.vchanges{font-size:11.5px;line-height:1.5;color:var(--color-text-soft)}
+.vchanges b{color:var(--color-text-muted)}
+.never{font-size:11px;color:var(--color-text-soft);margin-top:9px;display:flex;align-items:center;gap:6px}
+.never svg{width:13px;height:13px}
+
+.toast{position:fixed;left:50%;bottom:26px;background:var(--color-primary-active);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:var(--r-md);box-shadow:var(--shadow-pop);opacity:0;pointer-events:none;transition:.2s;z-index:60;display:flex;align-items:center;gap:10px;translate:-50% 20px}
+.toast.show{opacity:1;translate:-50% 0}
+.toast button{background:transparent;border:0;color:#9df3ea;font-weight:700;cursor:pointer;font-family:var(--ff);font-size:12px}
+.disc{font-size:11px;color:var(--color-text-soft);border-top:1px solid var(--color-separator);margin-top:26px;padding-top:14px}
+
+@media(max-width:1080px){.tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:920px){:root{--side:0px}.side{display:none}.tiles{grid-template-columns:repeat(2,1fr)}.ritem{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="shell-top"></div>
+<div id="shell-side"></div>
+
+<main class="main">
+  <div class="wrap">
+    <div class="rhead">
+      <div class="pid"><i data-lucide="dumbbell"></i></div>
+      <div>
+        <h1>Team gym session</h1>
+        <div class="sub">Session G06 · GYM-006 · lower-body strength, single-leg control and trunk work · 20 players · 8 exercises</div>
+      </div>
+      <div class="masked">
+        <div class="sep">Separate customer, with its own athlete identities and records</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="secnav"><div class="inner" id="secnav">
+    <a href="#top" class="active">Overview</a>
+    <a href="#s1">Clips for review</a>
+    <a href="#s2">Flags &amp; verdicts</a>
+    <a href="#s3">G07 today</a>
+    <a href="#s4">Six sessions</a>
+    <a href="#s5">Every player</a>
+    <a href="#s6">Method</a>
+  </div></nav>
+
+  <div class="wrap">
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="section" id="top">
+      <div class="cardlabel"><span class="eyebrow">The session record</span><span class="pill src"><i data-lucide="clipboard-check"></i>Record</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="lab">Players assigned</div><div class="val num">20</div><div class="meta"><span class="rank">G01–G20</span></div></div>
+        <div class="tile"><div class="lab">Recorded in full</div><div class="val num" id="tFull">17</div><div class="meta"><span class="rank">every prescribed exercise</span></div></div>
+        <div class="tile warn"><div class="lab">Waiting for a coach</div><div class="val num" id="tWait">3</div><div class="meta"><span class="rank">one exercise each</span></div></div>
+        <div class="tile"><div class="lab">Exercises</div><div class="val num">8</div><div class="meta"><span class="rank">17 had 7, 3 had 8</span></div></div>
+        <div class="tile"><div class="lab">Free-weight volume</div><div class="val num">38,376</div><div class="meta"><span class="self">of 38,376 planned kg·reps</span></div></div>
+      </div>
+
+      <div class="check" id="callout">
+        <i data-lucide="alert-triangle" id="coIcon"></i>
+        <div>
+          <div class="l" id="coLabel">Before today goes into the load totals</div>
+          <p id="coText">A coach needs to give a verdict on <b><span id="coWait">3</span> items the clips could not confirm</b> — <span id="coList">G07 cable hip extension, G12 split squat drop, G18 calf isometric</span>. <a href="#s1">Go to review →</a></p>
+        </div>
+      </div>
+
+      <div class="grid" style="grid-template-columns:1.5fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">The programme</span><span class="pill src plan"><i data-lucide="clipboard-list"></i>Coach plan</span></div>
+          <table>
+            <thead><tr><th>Exercise</th><th>Counted in load</th><th class="r">Players</th></tr></thead>
+            <tbody>
+              <tr><td>Trap-bar deadlift</td><td class="mut">reps · bar total, kg</td><td class="r num">20</td></tr>
+              <tr><td>Rear-foot-elevated split squat</td><td class="mut">reps each side · kg per dumbbell</td><td class="r num">20</td></tr>
+              <tr><td>Hamstring curl</td><td class="mut">reps · machine setting</td><td class="r num">18</td></tr>
+              <tr><td>Copenhagen hold</td><td class="mut">seconds each side · bodyweight</td><td class="r num">18</td></tr>
+              <tr><td>Cable hip extension</td><td class="mut">reps each side · machine setting</td><td class="r num">17</td></tr>
+              <tr><td>Split squat drop</td><td class="mut">reps each side · added plates, kg*</td><td class="r num">14</td></tr>
+              <tr><td>Calf isometric</td><td class="mut">seconds · kg per dumbbell</td><td class="r num">18</td></tr>
+              <tr><td>Pallof press</td><td class="mut">reps each side · machine setting</td><td class="r num">18</td></tr>
+            </tbody>
+          </table>
+          <p class="footnote">*Added plates; the bar is not included.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">How load is counted</span></div>
+          <p style="font-size:13.5px;line-height:1.55;color:var(--color-text-muted)">Free-weight volume = <b>kg × completed reps</b> — the trap bar at its total, the split squat with both dumbbells and both sides.</p>
+          <p style="font-size:13px;line-height:1.55;color:var(--color-text-soft);margin-top:10px">Machine settings, plates and holds are listed but <b>not added</b>: a setting is not a weight lifted.</p>
+          <div class="notsaying">
+            <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>How to read a flag</div>
+            <ul><li>A flag asks for a coach's view. It does not assert a technique fault.</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3.1 CLIPS FOR REVIEW ===== -->
+    <section class="section" id="s1">
+      <div class="shead"><h2>Clips for coach review</h2><span class="tag"><span class="pill testing" id="itemCount">3 items</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Which records could the clips not confirm, and what does the coach need to check?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">Three exercises: G07's cable hip extension (one rep in view), G12's split squat drop (camera cuts) and G18's calf hold (feet hidden, then a cut away). Each needs a coach verdict before it counts.</div>
+      </div>
+      <div class="ritems" id="ritems"></div>
+      <div class="empty" id="emptyQueue" style="display:none">Nothing waiting — every flagged record in this session has a staff decision. Confirm / Correct / Dismiss outcomes are stored with the clip.</div>
+      <p class="footnote">Each clip window is the stretch of footage the flag was raised on. <b>Confirm</b>: done as prescribed. <b>Correct</b>: staff enter what was done. <b>Dismiss</b>: not worth checking. What each verdict changes is in Flags &amp; verdicts.</p>
+    </section>
+
+    <!-- ===== 3.2 FLAGS & VERDICTS ===== -->
+    <section class="section" id="s2">
+      <div class="shead"><h2>How a flag is raised and closed</h2></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">When is a record flagged, what does each verdict change, and how do we get fewer flags?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">A record is flagged when the footage cannot show the work was done. The verdict decides what counts in the load totals. All three flags today trace back to edited or blocked footage, which fixed, well-placed station cameras should prevent.</div>
+      </div>
+      <div class="card">
+        <div class="cardlabel"><span class="eyebrow">Flag rules</span><span class="pill src video"><i data-lucide="video"></i>Clip</span></div>
+        <table>
+          <thead><tr><th>Flag the record when…</th><th>What it catches</th><th class="r">Today</th></tr></thead>
+          <tbody>
+            <tr><td>The clip window does not cover every prescribed set and both sides</td><td class="mut">Reps or a side done off camera</td><td class="r"><span class="chip review">G07</span></td></tr>
+            <tr><td>A camera cut falls inside the movement</td><td class="mut">Position or depth that cannot be judged</td><td class="r"><span class="chip review">G12</span> <span class="chip review">G18</span></td></tr>
+            <tr><td>The body part the exercise depends on is out of view</td><td class="mut">A hold that cannot be timed</td><td class="r"><span class="chip review">G18</span></td></tr>
+            <tr><td>The view cuts to another athlete during a timed set</td><td class="mut">A broken hold record</td><td class="r"><span class="chip review">G18</span></td></tr>
+          </tbody>
+        </table>
+        <p class="footnote">Written from the gym team's own clip notes. They are rules about what the footage shows, not thresholds on a score.</p>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">What each verdict changes</span></div>
+          <table>
+            <thead><tr><th>Verdict</th><th>The record</th><th>Load totals</th></tr></thead>
+            <tbody>
+              <tr><td><span class="chip full">Confirm</span></td><td class="mut">Marked confirmed, done as prescribed</td><td class="mut">Counts as prescribed</td></tr>
+              <tr><td><span class="chip review">Correct</span></td><td class="mut">Staff enter what was actually done</td><td class="mut">Recalculated from corrected numbers</td></tr>
+              <tr><td><span class="chip dismiss">Dismiss</span></td><td class="mut">Stays as logged, marked unverified</td><td class="mut">Counts as logged</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Cause &amp; fix at capture</span></div>
+          <table>
+            <thead><tr><th>Item</th><th>Cause</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>G07</td><td class="mut">An edited excerpt, not the whole set</td><td class="mut">Record each station continuously for the full set</td></tr>
+              <tr><td>G12</td><td class="mut">Edited footage switching between views</td><td class="mut">One fixed, uncut view per station</td></tr>
+              <tr><td>G18</td><td class="mut">Camera height and angle; edited footage</td><td class="mut">Side-on camera at foot height, no cuts; or the session timer</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="notsaying flush">
+          <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>Read</div>
+          <ul><li>All three flags come from how the footage was captured, not from anything the players did. Continuous footage from cameras placed for each station is the fix to test first.</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3.3 G07 TODAY ===== -->
+    <section class="section" id="s3">
+      <div class="shead"><h2>Focus player · G07 today</h2><span class="tag"><span class="pill src video"><i data-lucide="video"></i>Record</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">What did G07 do today, and what is still open?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">Seven of his eight exercises are recorded as prescribed. The cable hip extension is open until a coach confirms the full set. His free-weight volume, 2,040 kg·reps, was 8th of 20.</div>
+      </div>
+      <div class="card">
+        <div class="cardlabel"><span class="eyebrow">His session, exercise by exercise</span></div>
+        <table>
+          <thead><tr><th>Exercise</th><th>Prescribed</th><th>Recorded</th><th class="r">Load</th><th class="r">Free-weight kg·reps</th><th class="r">Status</th></tr></thead>
+          <tbody>
+            <tr><td>Trap-bar deadlift</td><td class="mut">3 × 4</td><td class="mut">As prescribed</td><td class="r num">110 kg bar total</td><td class="r num">1,320</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr><td>Rear-foot-elevated split squat</td><td class="mut">2 × 5 each side</td><td class="mut">As prescribed</td><td class="r num">18 kg / dumbbell</td><td class="r num">720</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr><td>Hamstring curl</td><td class="mut">2 × 6</td><td class="mut">As prescribed</td><td class="r num">35 kg setting</td><td class="r brk">–</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr><td>Copenhagen hold</td><td class="mut">2 × 20 s each side</td><td class="mut">As prescribed</td><td class="r num">Bodyweight</td><td class="r brk">–</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr id="g07row" class="open"><td>Cable hip extension</td><td class="mut">2 × 6 each side</td><td class="mut" id="g07rec">Full set unconfirmed</td><td class="r num">7.5 kg setting</td><td class="r brk">–</td><td class="r" id="g07status"><span class="chip review">Review</span></td></tr>
+            <tr><td>Split squat drop</td><td class="mut">2 × 4 each side</td><td class="mut">As prescribed</td><td class="r num">15 kg plates*</td><td class="r brk">–</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr><td>Calf isometric</td><td class="mut">2 × 20 s</td><td class="mut">As prescribed</td><td class="r num">14 kg / dumbbell</td><td class="r brk">–</td><td class="r"><span class="chip done">Done</span></td></tr>
+            <tr><td>Pallof press</td><td class="mut">2 × 8 each side</td><td class="mut">As prescribed</td><td class="r num">12.5 kg setting</td><td class="r brk">–</td><td class="r"><span class="chip done">Done</span></td></tr>
+          </tbody>
+        </table>
+        <p class="footnote">Free-weight volume = kg × completed reps. Machine settings, plates and holds are listed but not added. *Added plates; the bar is not included.</p>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Against the group today</span></div>
+          <table><tbody>
+            <tr><td>Trap-bar deadlift</td><td class="r num">3 × 4 · 110 kg</td></tr>
+            <tr><td><span class="mut">group median · range</span></td><td class="r num mut">102.5 kg · 85–135</td></tr>
+            <tr><td>Split squat</td><td class="r num">2 × 5 · 18 kg</td></tr>
+            <tr><td><span class="mut">group median</span></td><td class="r num mut">22 kg</td></tr>
+            <tr><td>Free-weight volume</td><td class="r num">2,040 · 8th of 20</td></tr>
+            <tr><td><span class="mut">group median</span></td><td class="r num mut">1,935</td></tr>
+          </tbody></table>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">The open item</span></div>
+          <div class="ritems"><div class="ritem" data-rid="g07" style="grid-template-columns:140px 1fr">
+            <div class="thumb"><i data-lucide="play"></i><span class="tc num">00:33</span></div>
+            <div>
+              <h4 style="font-size:14px">Cable hip extension</h4>
+              <div class="shows" style="margin-top:6px">One complete rep is visible; the clip does not show the full set or both sides.</div>
+              <div class="go">Review clip <i data-lucide="arrow-right"></i></div>
+            </div>
+          </div></div>
+          <div class="notsaying">
+            <div class="l"><i data-lucide="info" style="width:13px;height:13px"></i>What we are not saying</div>
+            <ul><li>Nothing here is a technique or form score, and nothing is an injury signal. Pose points decide whether the work is visible, not to grade it.</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3.4 SIX SESSIONS ===== -->
+    <section class="section" id="s4">
+      <div class="shead"><h2>G07 over six sessions</h2></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Has G07 been doing his programme, and how has his main lift moved?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">Yes — five clean sessions before today. His trap bar rose from 100 to 110 kg, with one lighter prescription in week 4. The only open item in six weeks is today's cable hip extension.</div>
+      </div>
+      <div class="card">
+        <div class="cardlabel"><span class="eyebrow">Completion, six sessions</span></div>
+        <div class="cgrid6" id="cgrid6"></div>
+        <p class="footnote">Green = recorded as prescribed; amber = waiting for a coach. W01–W06 are successive weekly sessions.</p>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Trap-bar deadlift · prescribed kg</span></div>
+          <div class="mbar" id="chartKg"></div>
+          <p class="footnote">W04: a lighter prescription, 2 × 4 at 95 kg; split squat 2 × 4 each side. Both done.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Trap-bar deadlift · kg·reps recorded</span></div>
+          <div class="mbar" id="chartVol"></div>
+          <p class="footnote">kg·reps = sets × reps × kg. W04: 2 sets instead of 3. Held at 3 × 4 at 110 for the last two sessions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3.5 EVERY PLAYER ===== -->
+    <section class="section" id="s5">
+      <div class="shead"><h2>Every player</h2><span class="tag"><span class="pill src"><i data-lucide="clipboard-check"></i>Record</span></span></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Did every player get through the programme?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a"><span id="fullSummary">17 of 20</span> players are recorded as done in full. G07, G12 and G18 each have one exercise waiting for a coach verdict.</div>
+      </div>
+      <div class="card">
+        <div class="cardlabel"><span class="eyebrow">The group</span></div>
+        <table><tbody>
+          <tr><td>Recorded in full</td><td class="r num" id="groupFull">17 of 20</td></tr>
+          <tr><td>Trap bar</td><td class="r num mut">10 did 3 sets, 10 did 2 · 85–135 kg</td></tr>
+          <tr><td>Free-weight volume</td><td class="r num mut">1,296–2,660 kg·reps · median 1,935</td></tr>
+          <tr><td>Recorded so far</td><td class="r num mut">38,376 of 38,376 planned kg·reps</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="cardlabel"><span class="eyebrow">All 20 players</span></div>
+        <table id="ledger">
+          <thead><tr><th>Player</th><th class="r">Exercises confirmed</th><th class="r">Trap bar</th><th class="r">Split squat</th><th class="r">Planned kg·reps</th><th>Open item</th></tr></thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+        <p class="footnote">Highlighted rows have one exercise waiting for a coach verdict. Exercises confirmed = recorded as prescribed.</p>
+      </div>
+    </section>
+
+    <!-- ===== 3.6 METHOD ===== -->
+    <section class="section" id="s6">
+      <div class="shead"><h2>Method &amp; sources</h2></div>
+      <div class="qa">
+        <div class="eyebrow">This page answers</div>
+        <div class="q">Which records come from coaches, models and manual input?</div>
+        <div class="eyebrow">Answer</div>
+        <div class="a">Coach plans and identities; full-session model sets and reps; loads from model identification and manual input. Volume includes free weights only.</div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.3fr 1fr">
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">Where each field comes from</span></div>
+          <table>
+            <thead><tr><th>Field</th><th>Source</th></tr></thead>
+            <tbody>
+              <tr><td>Plan: exercises, sets, reps, loads</td><td class="mut"><span class="pill src plan"><i data-lucide="clipboard-list"></i>Coach plan</span></td></tr>
+              <tr><td>Completion record</td><td class="mut"><span class="pill src video"><i data-lucide="video"></i>Full-session model</span></td></tr>
+              <tr><td>Free-weight volume</td><td class="mut">Calculated: kg × completed reps</td></tr>
+              <tr><td>People &amp; pose points</td><td class="mut">YOLOX-m + RTMPose-m · 17 points · 636 frames @ 12 Hz</td></tr>
+              <tr><td>Which player a clip shows</td><td class="mut">Model identification + coach mapping</td></tr>
+            </tbody>
+          </table>
+          <p class="footnote">Excerpts shown: three windows, 53 s; full session analysed. Low-confidence cases receive manual review.</p>
+        </div>
+        <div class="card">
+          <div class="cardlabel"><span class="eyebrow">One pose measurement — and why we don't score it</span></div>
+          <p style="font-size:13px;line-height:1.55;color:var(--color-text-muted)">In G07's frame at 00:33.33, the left shoulder, hip and knee points give an angle of about 110°. That is a <b>2D projection, not a 3D joint angle</b>: camera angle and point error limit what it means. The report uses pose points to decide whether the work is <b>in view</b>, not to grade it.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="cardlabel"><span class="eyebrow">What this report does not claim</span></div>
+        <div class="noclaim">
+          <span><i data-lucide="x"></i>Bar speed, force or power</span>
+          <span><i data-lucide="x"></i>Fatigue or readiness</span>
+          <span><i data-lucide="x"></i>Injury risk or prediction</span>
+          <span><i data-lucide="x"></i>Technique or form scores</span>
+          <span><i data-lucide="x"></i>Tracking across the whole gym</span>
+        </div>
+        <p class="footnote">Does not provide measured rep-count error, identity-switch rates or projected-angle accuracy. Loads: model identification and manual load input. Frames and pose overlays are anonymised.</p>
+      </div>
+    </section>
+
+    <p class="disc">Illustrative concept — a separate customer gym session; G01–G20 are unrelated to the football athletes and every value is sample data. Plans: coach input. Completion: full-session model analysis. Loads: model identification and manual input. Frames and pose overlays are anonymised.</p>
+  </div>
+</main>
+
+<!-- review drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dh">
+    <div><h3 id="dTitle">—</h3><div class="m" id="dMeta"></div></div>
+    <button class="x" id="dClose" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="body">
+    <div class="frame"><i data-lucide="play"></i><span class="anon">ANONYMISED SOURCE FRAME · MODEL OVERLAY</span></div>
+    <div class="drec" id="dRec"></div>
+    <div class="block"><div class="l">What the clip shows</div><p id="dObs"></p></div>
+    <div class="block"><div class="coachbox"><div class="l">For the coach</div><p id="dCoach"></p></div></div>
+    <div class="ruleline" id="dRule"></div>
+  </div>
+  <div class="verdict">
+    <div class="vbtns">
+      <button class="vbtn confirm" data-v="Confirm">Confirm</button>
+      <button class="vbtn" data-v="Correct">Correct</button>
+      <button class="vbtn" data-v="Dismiss">Dismiss</button>
+    </div>
+    <div class="vchanges"><b>Confirm</b> → counts as prescribed. <b>Correct</b> → staff enter actuals, totals recalculated. <b>Dismiss</b> → stays as logged, marked unverified.</div>
+    <div class="never"><i data-lucide="shield-check"></i>Staff decide. Meridian never decides.</div>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo">Undo</button></div>
+
+<script>
+/* shell builder — inlined (self-contained) */
+/* Meridian shared shell — builds the topbar + sidebar for every report surface.
+   Single source of truth for nav items and cross-surface links.
+   Usage: put <div id="shell-top"></div><div id="shell-side"></div> in the page,
+   then call MeridianShell({ active, badge, club, ctx, actions, concept }). */
+(function(){
+  var HOME="Meridian%20%E2%80%94%20Today%20(home)%20v1.html";
+  var PLAYERS="Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
+  var GYM="Meridian%20%E2%80%94%20Gym%20(report-led%20v1).html";
+  var NAV=[
+    {k:'today',label:'Today',icon:'sun',href:HOME},
+    {k:'review',label:'Review queue',icon:'clipboard-list',href:HOME+'#queue',badge:true},
+    {group:'Tactical intelligence'},
+    {k:'pressing',label:'Pressing',icon:'gauge'},
+    {k:'scanning',label:'Scanning',icon:'eye'},
+    {k:'setpieces',label:'Set pieces',icon:'target'},
+    {k:'shape',label:'Team shape',icon:'layout-grid'},
+    {group:'Physical'},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM},
+    {group:'People'},
+    {k:'players',label:'Players',icon:'user',href:PLAYERS},
+    {k:'squad',label:'Squad trends',icon:'trending-up'}
+  ];
+  function esc(s){return (s==null?'':String(s));}
+  window.MeridianShell=function(o){
+    o=o||{};
+    var club=o.club||'Northbank FC';
+    var ctx=o.ctx||'';
+    var active=o.active||'';
+    var badge=(o.badge==null?'':o.badge);
+    var actions=o.actions||[{label:'Plan a session',icon:'mic',primary:true}];
+    var concept=o.concept||{title:'Illustrative concept',text:'Northbank FC is a fictional club. Every value is sample data.'};
+
+    var acts=actions.map(function(a){
+      return '<button class="btn'+(a.primary?' primary':'')+'">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>';
+    }).join('');
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN<span class="club">'+esc(club)+'</span></div>'+
+      (ctx?'<span class="ctx">'+esc(ctx)+'</span>':'')+
+      '<span class="sp"></span>'+acts+'<div class="avatar">YO</div></header>';
+
+    var items='';
+    NAV.forEach(function(n){
+      if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
+      var isA=(n.k===active);
+      var href=n.href||'';
+      var badgeHtml=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'><i data-lucide="'+n.icon+'"></i><span class="lbl">'+n.label+'</span>'+badgeHtml+'</a>';
+    });
+    var side='<aside class="side">'+items+'</aside>';
+
+    var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
+    var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML=side;
+    try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
+    var tg=document.getElementById('navToggle');
+    if(tg) tg.onclick=function(){ var c=document.body.classList.toggle('nav-collapsed'); try{localStorage.setItem('meridian-nav-collapsed',c?'1':'0');}catch(e){} };
+    if(window.lucide) lucide.createIcons();
+  };
+})();
+
+</script>
+<script>
+MeridianShell({active:'gym',badge:3,club:'Gym · GYM-006',ctx:'',actions:[{label:'Export',icon:'download'},{label:'Close out session',icon:'check-check',primary:true}],concept:{title:'Illustrative concept',text:'A separate customer gym session. G01–G20 are unrelated to the football squad. Every value is sample data.'}});
+/* ---------- data ---------- */
+const ITEMS = [
+  {id:'g07',title:'G07 · Cable hip extension',pills:'<span class="pill src video"><i data-lucide="video"></i>Clip</span>',
+   prescribed:'2 × 6 reps each side',load:'7.5 kg setting',recorded:'2 / ? sets, unconfirmed',window:'00:24–00:43',tc:'00:33',
+   shows:'One complete rep is visible. The clip does not show the full set or both sides.',
+   coach:'Confirm the full set: 2 × 6 reps each side.',
+   rule:'Flagged because the clip window does not cover every prescribed set and both sides.'},
+  {id:'g12',title:'G12 · Split squat drop',pills:'<span class="pill src video"><i data-lucide="video"></i>Clip</span>',
+   prescribed:'2 × 4 reps each side',load:'25 kg plates*',recorded:'2 / ? sets, unconfirmed',window:'02:20–02:33',tc:'02:24',
+   shows:'Front knee flexed and rear knee lowered in the held stance. Camera cuts prevent assessment of the full drop.',
+   coach:'Check the position against the prescribed variation, and confirm the sets.',
+   rule:'Flagged because a camera cut falls inside the movement.'},
+  {id:'g18',title:'G18 · Calf isometric',pills:'<span class="pill src video"><i data-lucide="video"></i>Clip</span>',
+   prescribed:'2 × 20 s',load:'20 kg per dumbbell',recorded:'2 / ? sets, unconfirmed',window:'03:15–03:36',tc:'03:22',
+   shows:'Feet are intermittently obscured. A cut to another athlete interrupts the hold.',
+   coach:'Confirm the hold duration from another view or the session record.',
+   rule:'Flagged because the body part the hold depends on is out of view, and the view cuts to another athlete.'}
+];
+const LEDGER = [
+  ['G01','7 of 7','3 × 4 · 100','2 × 5 · 18','1,920',''],
+  ['G02','7 of 7','3 × 4 · 120','2 × 5 · 20','2,240',''],
+  ['G03','7 of 7','3 × 4 · 110','2 × 4 · 22','2,024',''],
+  ['G04','7 of 7','2 × 5 · 95','2 × 5 · 24','1,910',''],
+  ['G05','7 of 7','3 × 4 · 130','2 × 5 · 26','2,600',''],
+  ['G06','7 of 7','3 × 4 · 105','2 × 4 · 28','2,156',''],
+  ['G07','7 of 8','3 × 4 · 110','2 × 5 · 18','2,040','Cable hip extension'],
+  ['G08','7 of 7','2 × 5 · 115','2 × 5 · 20','1,950',''],
+  ['G09','7 of 7','3 × 4 · 125','2 × 4 · 22','2,204',''],
+  ['G10','7 of 7','3 × 4 · 100','2 × 5 · 24','2,160',''],
+  ['G11','7 of 7','3 × 4 · 135','2 × 5 · 26','2,660',''],
+  ['G12','7 of 8','3 × 4 · 110','2 × 5 · 28','2,440','Split squat drop'],
+  ['G13','7 of 7','2 × 4 · 90','2 × 4 · 18','1,296',''],
+  ['G14','7 of 7','2 × 4 · 100','2 × 4 · 20','1,440',''],
+  ['G15','7 of 7','2 × 4 · 95','2 × 4 · 22','1,464',''],
+  ['G16','7 of 7','2 × 5 · 85','2 × 4 · 24','1,618',''],
+  ['G17','7 of 7','2 × 4 · 105','2 × 4 · 26','1,672',''],
+  ['G18','7 of 8','2 × 4 · 90','2 × 4 · 28','1,616','Calf isometric'],
+  ['G19','7 of 7','2 × 4 · 100','2 × 4 · 18','1,376',''],
+  ['G20','7 of 7','2 × 5 · 95','2 × 4 · 20','1,590','']
+];
+const EXS = ['Trap-bar deadlift','Rear-foot-elevated split squat','Hamstring curl','Copenhagen hold','Cable hip extension','Split squat drop','Calf isometric','Pallof press'];
+const PRESC_KG = [100,105,105,95,110,110];
+const VOL = [1200,1260,1260,760,1320,1320];
+
+/* ---------- state ---------- */
+let state = {}; // id -> verdict
+let fullCount = 17, waitCount = 3;
+
+/* ---------- render ---------- */
+function renderQueue(){
+  const host=document.getElementById('ritems');host.innerHTML='';
+  const open=ITEMS.filter(i=>!state[i.id]);
+  open.forEach(i=>{
+    const el=document.createElement('div');el.className='ritem';el.dataset.rid=i.id;
+    el.innerHTML=`<div class="thumb"><i data-lucide="play"></i><span class="tc num">${i.tc}</span></div>
+      <div><h4>${i.title} ${i.pills}</h4>
+      <div class="rec"><div>Prescribed <b>${i.prescribed}</b></div><div>Load <b>${i.load}</b></div><div>Recorded <b>${i.recorded}</b></div><div>Clip window <b class="num">${i.window}</b></div></div>
+      <div class="shows">${i.shows}</div>
+      <div class="go">Review &amp; decide <i data-lucide="arrow-right"></i></div></div>`;
+    host.appendChild(el);
+  });
+  document.getElementById('emptyQueue').style.display=open.length?'none':'block';
+  document.getElementById('itemCount').textContent=open.length?(open.length+' item'+(open.length>1?'s':'')):'All reviewed';
+  document.getElementById('navBadge').textContent=waitCount;
+  document.getElementById('navBadge').style.display=waitCount?'':'none';
+  bindItems();lucide.createIcons();
+}
+function renderLedger(){
+  const b=document.getElementById('ledgerBody');b.innerHTML='';
+  LEDGER.forEach(r=>{
+    const id=r[0].toLowerCase();const v=state[id];const open=['g07','g12','g18'].includes(id);
+    let conf=r[1],item=r[5],cls='';
+    if(open&&v){ if(v==='Dismiss'){conf=r[1];item='Dismissed · unverified';} else {conf='8 of 8';item='';} }
+    else if(open){cls='open';}
+    const tr=document.createElement('tr');if(cls)tr.className=cls;
+    tr.innerHTML=`<td>${r[0]}</td><td class="r num">${conf}</td><td class="r num mut">${r[2]}</td><td class="r num mut">${r[3]}</td><td class="r num mut">${r[4]}</td><td class="mut">${item||''}</td>`;
+    b.appendChild(tr);
+  });
+}
+function renderCompletion(){
+  const host=document.getElementById('cgrid6');host.innerHTML='';
+  const head=document.createElement('div');head.className='cgrow head';
+  head.innerHTML='<div class="ex">Exercise</div>'+['W01','W02','W03','W04','W05','W06'].map(w=>`<div class="c">${w}</div>`).join('');
+  host.appendChild(head);
+  EXS.forEach(ex=>{
+    const row=document.createElement('div');row.className='cgrow';
+    let cells='';for(let w=0;w<6;w++){const review=(ex==='Cable hip extension'&&w===5);cells+=`<div class="c"><span class="cd ${review?'review':'done'}"></span></div>`;}
+    row.innerHTML=`<div class="ex">${ex}</div>${cells}`;host.appendChild(row);
+  });
+}
+function bars(host,data,fmt,lowIdx){
+  const el=document.getElementById(host);el.innerHTML='';const max=Math.max(...data);
+  data.forEach((v,i)=>{const b=document.createElement('div');b.className='b';
+    b.innerHTML=`<div class="v num">${fmt(v)}</div><div class="bar ${i===lowIdx?'low':''}" style="height:${Math.round(v/max*78)}%"></div><div class="w">W0${i+1}</div>`;el.appendChild(b);});
+}
+
+/* ---------- drawer + verdicts ---------- */
+const scrim=document.getElementById('scrim'),drawer=document.getElementById('drawer');let activeId=null;
+function openItem(id){
+  const i=ITEMS.find(x=>x.id===id);if(!i)return;activeId=id;
+  document.getElementById('dTitle').textContent=i.title;
+  document.getElementById('dMeta').innerHTML='<span>Clip window '+i.window+'</span><span>·</span><span>GYM-006</span>';
+  document.getElementById('dRec').innerHTML=`<div>Prescribed <b>${i.prescribed}</b></div><div>Load <b>${i.load}</b></div><div>Recorded <b>${i.recorded}</b></div><div>Clip window <b class="num">${i.window}</b></div>`;
+  document.getElementById('dObs').textContent=i.shows;
+  document.getElementById('dCoach').textContent=i.coach;
+  document.getElementById('dRule').innerHTML='<b>Why it was flagged.</b> '+i.rule;
+  scrim.classList.add('open');drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');
+  lucide.createIcons();
+}
+function closeItem(){scrim.classList.remove('open');drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');activeId=null;}
+function bindItems(){document.querySelectorAll('.ritem').forEach(el=>el.onclick=()=>openItem(el.dataset.rid));}
+document.getElementById('dClose').onclick=closeItem;scrim.onclick=closeItem;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeItem();});
+
+const toast=document.getElementById('toast');let toastT=null,last=null;
+document.querySelectorAll('.vbtn').forEach(b=>b.onclick=()=>{
+  const v=b.dataset.v,id=activeId;if(!id||state[id])return;
+  last={id,v,prevFull:fullCount,prevWait:waitCount};
+  state[id]=v;waitCount--;if(v!=='Dismiss')fullCount++;
+  // G07 row in 3.3
+  if(id==='g07'){document.getElementById('g07rec').textContent=(v==='Dismiss')?'Logged, unverified':(v==='Correct'?'Corrected by staff':'Confirmed as prescribed');
+    document.getElementById('g07status').innerHTML=(v==='Dismiss')?'<span class="chip dismiss">Unverified</span>':'<span class="chip done">Done</span>';
+    document.getElementById('g07row').classList.remove('open');}
+  syncCounts();renderQueue();renderLedger();
+  document.getElementById('toastMsg').textContent='Logged · '+v+' · '+id.toUpperCase();
+  toast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.remove('show'),3400);
+  closeItem();
+});
+document.getElementById('toastUndo').onclick=()=>{
+  if(last){delete state[last.id];fullCount=last.prevFull;waitCount=last.prevWait;
+    if(last.id==='g07'){document.getElementById('g07rec').textContent='Full set unconfirmed';document.getElementById('g07status').innerHTML='<span class="chip review">Review</span>';document.getElementById('g07row').classList.add('open');}
+    syncCounts();renderQueue();renderLedger();last=null;}
+  toast.classList.remove('show');
+};
+function syncCounts(){
+  document.getElementById('tFull').textContent=fullCount;
+  document.getElementById('tWait').textContent=waitCount;
+  document.getElementById('fullSummary').textContent=fullCount+' of 20';
+  document.getElementById('groupFull').textContent=fullCount+' of 20';
+  updateCallout();
+}
+function updateCallout(){
+  const open=ITEMS.filter(i=>!state[i.id]);
+  const co=document.getElementById('callout');
+  if(open.length){
+    co.classList.remove('ready');
+    document.getElementById('coIcon').outerHTML='<i data-lucide="alert-triangle" id="coIcon"></i>';
+    document.getElementById('coLabel').textContent='Before today goes into the load totals';
+    const list=open.map(i=>{const p=i.title.split(' · ');return p[0]+' '+p[1].toLowerCase();}).join(', ');
+    document.getElementById('coText').innerHTML='A coach needs to give a verdict on <b>'+open.length+' item'+(open.length>1?'s':'')+' the clips could not confirm</b> — '+list+'. <a href="#s1">Go to review →</a>';
+  }else{
+    co.classList.add('ready');
+    document.getElementById('coIcon').outerHTML='<i data-lucide="check-circle-2" id="coIcon"></i>';
+    document.getElementById('coLabel').textContent='Ready';
+    document.getElementById('coText').innerHTML='Every flagged record has a staff decision. Today’s load totals are ready.';
+  }
+  if(window.lucide)lucide.createIcons();
+}
+
+/* section nav */
+const links=[...document.querySelectorAll('#secnav a')];
+const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map.get(e.target.id);if(a)a.classList.add('active');}});},{rootMargin:'-120px 0px -70% 0px'}).observe&&
+document.querySelectorAll('section.section').forEach(s=>{const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map.get(e.target.id);if(a)a.classList.add('active');}});},{rootMargin:'-120px 0px -70% 0px'});io.observe(s);});
+links.forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);const el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'','#'+id);links.forEach(l=>l.classList.remove('active'));a.classList.add('active');}}));
+
+/* init */
+renderQueue();renderLedger();renderCompletion();
+bars('chartKg',PRESC_KG,v=>v,3);
+bars('chartVol',VOL,v=>v.toLocaleString(),3);
+lucide.createIcons();
+</script>
+</body>
+</html>
