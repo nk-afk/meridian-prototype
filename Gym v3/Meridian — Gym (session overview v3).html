@@ -80,8 +80,34 @@ body.nav-collapsed .profile .pname{display:none}
 .datelabel{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--color-text);white-space:nowrap;cursor:pointer;padding:6px 8px;border-radius:var(--r-md);border:0;background:none;font-family:inherit}
 .datelabel:hover{background:var(--color-surface-subtle)}
 .datelabel:focus{outline:none}
+.datelabel #dateLabelTxt{display:inline-block;min-width:98px;text-align:left}
 .datelabel svg{width:16px;height:16px;color:var(--color-text-soft)}
 .datelabel .dl-chev{width:14px;height:14px}
+/* custom date popup */
+.dp-anchor{position:relative;display:inline-flex}
+.datepop{position:absolute;top:calc(100% + 10px);left:0;z-index:50;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:14px;width:296px}
+.datepop[hidden]{display:none}
+.dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.dp-my{font-size:14px;font-weight:700;color:var(--color-text)}
+.dp-nav{display:flex;gap:4px}
+.dp-arrow{width:28px;height:28px;border:0;background:none;border-radius:var(--r-md);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer}
+.dp-arrow:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.dp-arrow svg{width:16px;height:16px}
+.dp-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
+.dp-dow span{text-align:center;font-size:11px;font-weight:600;color:var(--color-text-soft);padding:4px 0}
+.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dp-cell{aspect-ratio:1;border:0;background:none;border-radius:var(--r-md);font-family:inherit;font-size:13px;font-weight:500;color:var(--color-text);cursor:pointer;display:grid;place-items:center;position:relative}
+.dp-cell:hover{background:var(--color-surface-subtle)}
+.dp-cell.out{color:var(--color-text-disabled)}
+.dp-cell.disabled{color:var(--color-text-disabled);opacity:.4;cursor:default;pointer-events:none}
+.dp-cell.today{font-weight:700}
+.dp-cell.today::after{content:"";position:absolute;bottom:5px;width:4px;height:4px;border-radius:50%;background:var(--c-plan)}
+.dp-cell.sel{background:var(--color-primary);color:#fff;font-weight:600}
+.dp-cell.sel:hover{background:var(--color-primary-hover)}
+.dp-cell.sel.today::after{background:#fff}
+.dp-foot{display:flex;justify-content:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid var(--color-separator)}
+.dp-today{border:0;background:none;color:var(--color-primary);font-size:13px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:var(--r-md);font-family:inherit}
+.dp-today:hover{background:var(--color-primary-tint)}
 .weeknav{width:28px;height:40px;border:0;background:none;color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;border-radius:var(--r-md)}
 .weeknav:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .weeknav svg{width:18px;height:18px}
@@ -187,6 +213,31 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .minibar{width:90px;height:7px;border-radius:var(--r-pill);background:var(--color-surface-muted);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
 .minibar>i{display:block;height:100%;background:var(--c-plan);border-radius:var(--r-pill)}
 
+/* exercises view — per-player breakdown */
+.exlegend{margin-left:auto;display:flex;align-items:center;gap:16px;padding-bottom:6px}
+.exlegend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
+.exlegend .lgi{width:18px;height:18px;display:inline-grid;place-items:center}
+.exlegend .lgi svg{width:18px;height:18px}
+.extable{table-layout:fixed}
+.extable th.ex-c,.extable td.ex-c{text-align:center}
+.extable col.c-presc,.extable col.c-done{width:150px}
+.extable col.c-status{width:120px}
+.extable td.ex-c.num{color:var(--color-text-muted);font-variant-numeric:tabular-nums}
+.exgroup{cursor:pointer}
+.exgroup>td{background:var(--color-surface-subtle);border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);padding:11px 12px}
+.exgroup:hover>td{background:var(--color-surface-muted)}
+.exg-inner{display:flex;align-items:center;gap:11px}
+.exg-chev{width:18px;height:18px;color:var(--color-text-soft);flex:none;transition:transform .15s}
+.exgroup.collapsed .exg-chev{transform:rotate(-90deg)}
+.exg-name{font-weight:700;color:var(--color-text)}
+.exg-bar{width:1px;height:15px;background:var(--color-separator);margin:0 2px;flex:none}
+.exg-prog{color:var(--color-text-muted);font-size:13.5px}
+.exg-count{margin-left:auto;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
+.exitem>td{padding:11px 12px;border-bottom:1px solid var(--color-border-subtle);font-size:13.5px}
+.exitem .ex-name{padding-left:34px;color:var(--color-text)}
+.sti{display:inline-grid;place-items:center;width:20px;height:20px;vertical-align:middle}
+.sti svg{width:20px;height:20px}
+
 .tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;font-size:13px;color:var(--color-text-soft)}
 .pager{display:flex;gap:4px;align-items:center}
 .pgb{min-width:30px;height:30px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--color-text-muted);cursor:pointer;display:grid;place-items:center;padding:0 7px}
@@ -260,8 +311,15 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 <!-- week strip -->
 <div class="weekstrip">
-  <button class="datelabel" id="dateLabel"><i data-lucide="calendar"></i><span id="dateLabelTxt"></span><i data-lucide="chevron-down" class="dl-chev"></i></button>
-  <input type="date" id="datePick" aria-label="Pick a date" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+  <div class="dp-anchor">
+    <button class="datelabel" id="dateLabel"><i data-lucide="calendar"></i><span id="dateLabelTxt"></span><i data-lucide="chevron-down" class="dl-chev"></i></button>
+    <div class="datepop" id="datePop" hidden>
+      <div class="dp-head"><span class="dp-my" id="dpMy"></span><div class="dp-nav"><button class="dp-arrow" id="dpPrev" aria-label="Previous month"><i data-lucide="chevron-left"></i></button><button class="dp-arrow" id="dpNext" aria-label="Next month"><i data-lucide="chevron-right"></i></button></div></div>
+      <div class="dp-dow" id="dpDow"></div>
+      <div class="dp-grid" id="dpGrid"></div>
+      <div class="dp-foot"><button class="dp-today" id="dpToday">Today</button></div>
+    </div>
+  </div>
   <button class="weeknav" id="prevWk" aria-label="Previous week"><i data-lucide="chevron-left"></i></button>
   <button class="weeknav" id="nextWk" aria-label="Next week"><i data-lucide="chevron-right"></i></button>
   <button class="todaybtn" id="todayBtn">Today</button>
@@ -362,17 +420,29 @@ const PLAYERS=[
  {n:'19',prog:'Posterior chain',st:'notobs',ex:['n','n','n','n'],det:'No activity observed'},
  {n:'21',prog:'Posterior chain',st:'notobs',ex:['n','n','n','n'],det:'No activity observed'},
 ];
-const EXERCISES=[
- {name:'Trap-bar deadlift',prog:'Lower body',obs:6,exp:6},
- {name:'Rear-foot split squat',prog:'Lower body',obs:5,exp:6},
- {name:'Hamstring curl',prog:'Lower body',obs:6,exp:6},
- {name:'Bench press',prog:'Upper push',obs:5,exp:6,flag:true},
- {name:'Overhead press',prog:'Upper push',obs:6,exp:6},
- {name:'Cable row',prog:'Upper push',obs:5,exp:6},
- {name:'Hip thrust',prog:'Posterior chain',obs:5,exp:5},
- {name:'Nordic curl',prog:'Posterior chain',obs:4,exp:5},
- {name:'Copenhagen hold',prog:'Posterior chain',obs:4,exp:5},
- {name:'Calf isometric',prog:'Rehab block',obs:1,exp:1},
+/* per-player assigned exercises — ex:[name, prescribed sets, done sets] */
+const EXPLAYERS=[
+ {n:'01',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Rear-foot split squat',3,2],['Hamstring curl',3,3]]},
+ {n:'02',prog:'Lower body',ex:[['Goblet squat',3,3],['Step-up',3,3]]},
+ {n:'03',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Hamstring curl',3,3],['Step-up',3,3]]},
+ {n:'04',prog:'Lower body',ex:[['Goblet squat',3,2],['Rear-foot split squat',3,0]]},
+ {n:'05',prog:'Rehab block',ex:[['Spanish squat',3,3],['Calf isometric',4,4],['Band walk',3,2]]},
+ {n:'06',prog:'Upper push',ex:[['Bench press',3,3],['Cable row',3,3]]},
+ {n:'07',prog:'Upper push',flag:true,ex:[['Bench press',3,3],['Overhead press',3,1],['Incline dumbbell press',3,0]]},
+ {n:'08',prog:'Upper push',ex:[['Overhead press',3,3],['Cable row',3,2]]},
+ {n:'09',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Nordic curl',3,2],['Copenhagen hold',3,3]]},
+ {n:'10',prog:'Posterior chain',ex:[['Romanian deadlift',4,4],['Hip thrust',3,3]]},
+ {n:'11',prog:'Posterior chain',ex:[['Nordic curl',3,3],['Copenhagen hold',3,3],['Hip thrust',3,3]]},
+ {n:'12',prog:'Posterior chain',ex:[['Hip thrust',3,1],['Nordic curl',3,0]]},
+ {n:'13',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Goblet squat',3,3]]},
+ {n:'14',prog:'Lower body',flag:true,ex:[['Rear-foot split squat',3,0],['Hamstring curl',3,3],['Step-up',3,2]]},
+ {n:'15',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Hamstring curl',3,2]]},
+ {n:'16',prog:'Upper push',ex:[['Bench press',3,0],['Overhead press',3,0]]},
+ {n:'17',prog:'Upper push',ex:[['Cable row',3,3],['Incline dumbbell press',3,2]]},
+ {n:'18',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,3]]},
+ {n:'19',prog:'Posterior chain',ex:[['Copenhagen hold',3,3],['Nordic curl',3,1]]},
+ {n:'20',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Romanian deadlift',4,3],['Nordic curl',3,3]]},
+ {n:'21',prog:'Posterior chain',ex:[['Nordic curl',3,0],['Copenhagen hold',3,0],['Hip thrust',3,0]]},
 ];
 const LABEL={plan:'Plan met',partial:'Partial',review:'Requires review',notobs:'Not observed'};
 const SEV={review:0,partial:1,plan:2,notobs:3};
@@ -380,7 +450,8 @@ const COL={plan:'var(--c-plan)',partial:'var(--c-partial)',review:'var(--c-revie
 
 /* ============ STATE ============ */
 let tab='all', search='', prog='all', view='players', sortKey='default', sortDir=1, page=1;
-const PER=10;
+const PER=10, PER_EX=6;
+const exCollapsed=new Set();
 function icons(){ if(window.lucide) lucide.createIcons(); }
 function counts(){ const c={expected:PLAYERS.length,plan:0,partial:0,review:0,notobs:0}; PLAYERS.forEach(p=>c[p.st]++); c.observed=c.plan+c.partial+c.review; return c; }
 
@@ -397,10 +468,27 @@ function renderStats(){
   renderTabs();
 }
 function renderTabs(){
+  const host=document.getElementById('ptabs');
+  if(view==='exercises'){
+    const inc=EXPLAYERS.filter(p=>exComplete(p)<p.ex.length).length;
+    const nr=EXPLAYERS.filter(p=>p.flag).length;
+    const t=[['all','All players',EXPLAYERS.length],['incomplete','Incomplete',inc],['needsreview','Needs review',nr]];
+    host.innerHTML=t.map(x=>
+      `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span></button>`).join('')+exLegend();
+    icons();
+    return;
+  }
   const c=counts();
   const t=[['all','All',c.expected],['review','Needs review',c.review],['partial','Partial',c.partial],['notobs','Not observed',c.notobs]];
-  document.getElementById('ptabs').innerHTML=t.map(x=>
+  host.innerHTML=t.map(x=>
     `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span></button>`).join('');
+}
+function exLegend(){
+  return '<div class="exlegend">'
+    +'<span><span class="lgi">'+legIcon()+'</span>Complete</span>'
+    +'<span><span class="lgi">'+stIcon('partial')+'</span>Partial</span>'
+    +'<span><span class="lgi">'+stIcon('notstarted')+'</span>Not started</span>'
+    +'</div>';
 }
 
 /* ============ TABLE ============ */
@@ -448,20 +536,49 @@ function renderTable(){
   foot.innerHTML=`<span>Showing ${rows.length} of ${PLAYERS.length} players</span>`;
   icons();
 }
+function exStatus(e){ const pr=e[1], dn=e[2]; return dn>=pr?'complete':(dn>0?'partial':'notstarted'); }
+function exComplete(p){ return p.ex.map(exStatus).filter(s=>s==='complete').length; }
+function stIcon(s){
+  if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#EAB308" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#EAB308"/></svg></span>';
+  return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#CBD2D9" stroke-width="2"/></svg></span>';
+}
+function legIcon(){ return '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#16A34A"/><path d="M5.8 10.4l2.6 2.6 5.8-5.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+function filteredEx(){
+  let rows=EXPLAYERS.slice();
+  if(tab==='incomplete') rows=rows.filter(p=>exComplete(p)<p.ex.length);
+  else if(tab==='needsreview') rows=rows.filter(p=>p.flag);
+  if(prog!=='all') rows=rows.filter(p=>p.prog===prog);
+  if(search){ const q=search.toLowerCase(); rows=rows.filter(p=>('player '+p.n).includes(q)||p.n.includes(q)); }
+  return rows;
+}
+function pagerHTML(pages){
+  if(pages<=1) return '';
+  let h=`<button class="pgb" data-pg="prev"${page===1?' disabled':''}><i data-lucide="chevron-left"></i></button>`;
+  for(let i=1;i<=pages;i++) h+=`<button class="pgb${i===page?' active':''}" data-pg="${i}">${i}</button>`;
+  h+=`<button class="pgb" data-pg="next"${page===pages?' disabled':''}><i data-lucide="chevron-right"></i></button>`;
+  return h;
+}
 function renderExercises(host,foot){
-  let h=`<table class="ptable"><thead><tr><th>Exercise</th><th>Programme</th><th>Players observed</th><th>Status</th></tr></thead><tbody>`;
-  EXERCISES.forEach(e=>{
-    const pct=Math.round(e.obs/e.exp*100);
-    const st= e.flag?'<span class="stag review"><span class="sd" style="background:var(--c-review)"></span>Flagged</span>'
-            : e.obs<e.exp?'<span class="stag partial"><span class="sd" style="background:var(--c-partial)"></span>Partial</span>'
-            : '<span class="stag plan"><span class="sd" style="background:var(--c-plan)"></span>Complete</span>';
-    h+=`<tr><td><span class="pname">${e.name}</span></td><td>${e.prog}</td>
-      <td><span class="minibar"><i style="width:${pct}%;background:${e.flag?'var(--c-review)':(e.obs<e.exp?'var(--c-partial)':'var(--c-plan)')}"></i></span><span class="num">${e.obs}/${e.exp}</span></td>
-      <td>${st}</td></tr>`;
+  const all=filteredEx();
+  const pages=Math.max(1,Math.ceil(all.length/PER_EX));
+  if(page>pages) page=pages;
+  const rows=all.slice((page-1)*PER_EX,(page-1)*PER_EX+PER_EX);
+  const sets=n=>n+' set'+(n===1?'':'s');
+  let h=`<table class="ptable extable"><colgroup><col class="c-ex"><col class="c-presc"><col class="c-done"><col class="c-status"></colgroup><thead><tr>
+    <th>Assigned exercise</th><th class="ex-c">Prescribed</th><th class="ex-c">Done</th><th class="ex-c">Status</th>
+    </tr></thead><tbody>`;
+  if(!rows.length) h+=`<tr><td colspan="4" style="text-align:center;color:var(--color-text-soft);padding:30px">No players match.</td></tr>`;
+  rows.forEach(p=>{
+    const col=exCollapsed.has(p.n);
+    h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i><span class="pnum num">${p.n}</span><span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${exComplete(p)} of ${p.ex.length} exercises</span></div></td></tr>`;
+    p.ex.forEach(e=>{
+      h+=`<tr class="exitem" data-gi="${p.n}"${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(e[2])}</td><td class="ex-c">${stIcon(exStatus(e))}</td></tr>`;
+    });
   });
   h+='</tbody></table>';
   host.innerHTML=h;
-  foot.innerHTML=`<span>Showing ${EXERCISES.length} exercises across the session</span><div class="pager"></div>`;
+  foot.innerHTML=`<span>Showing ${rows.length} of ${all.length} players</span><div class="pager">${pagerHTML(pages)}</div>`;
 }
 
 /* ============ RIGHT RAIL ============ */
@@ -564,6 +681,7 @@ function toast(msg,undo){
 
 /* ============ CALENDAR (Sunday→Saturday, navigable) ============ */
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
 const SESSION_DAYS={'2026-09-08':true,'2026-09-09':true,'2026-09-10':true};
@@ -592,21 +710,47 @@ function updateTitle(){
 document.getElementById('prevWk').onclick=function(){viewStart.setDate(viewStart.getDate()-7);renderWeek();icons();};
 document.getElementById('nextWk').onclick=function(){viewStart.setDate(viewStart.getDate()+7);renderWeek();icons();};
 document.getElementById('todayBtn').onclick=function(){selected=new Date(TODAY);viewStart=weekStartSun(selected);renderWeek();updateTitle();icons();};
-document.getElementById('dateLabel').onclick=function(){var dp=document.getElementById('datePick');dp.value=isoDay(selected);dp.max=isoDay(TODAY);if(dp.showPicker){try{dp.showPicker();}catch(e){dp.focus();}}else dp.focus();};
-document.getElementById('datePick').addEventListener('change',function(){if(!this.value)return;var p=this.value.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);if(d.getTime()>TODAY.getTime())return;selected=d;viewStart=weekStartSun(selected);renderWeek();updateTitle();icons();});
+// ---- custom date-picker popup ----
+let popY, popM;
+const DOW_MON=['M','T','W','T','F','S','S'];
+function renderDatePop(){
+  document.getElementById('dpMy').textContent=MONTHS_FULL[popM]+' '+popY;
+  document.getElementById('dpDow').innerHTML=DOW_MON.map(d=>'<span>'+d+'</span>').join('');
+  const first=new Date(popY,popM,1);
+  const offset=(first.getDay()+6)%7; // Monday-first
+  const start=new Date(popY,popM,1-offset);
+  let html='';
+  for(let i=0;i<42;i++){
+    const d=new Date(start); d.setDate(start.getDate()+i);
+    const out=d.getMonth()!==popM, dis=d.getTime()>TODAY.getTime(), sel=sameDay(d,selected), tod=sameDay(d,TODAY);
+    html+=`<button class="dp-cell${out?' out':''}${dis?' disabled':''}${sel?' sel':''}${tod?' today':''}" data-iso="${isoDay(d)}">${d.getDate()}</button>`;
+  }
+  document.getElementById('dpGrid').innerHTML=html;
+}
+function openDatePop(){ popY=selected.getFullYear(); popM=selected.getMonth(); renderDatePop(); document.getElementById('datePop').hidden=false; icons(); }
+function closeDatePop(){ document.getElementById('datePop').hidden=true; }
+function pickDate(d){ selected=d; viewStart=weekStartSun(selected); closeDatePop(); renderWeek(); updateTitle(); icons(); }
+document.getElementById('dateLabel').onclick=function(e){ e.stopPropagation(); var p=document.getElementById('datePop'); if(p.hidden) openDatePop(); else closeDatePop(); };
+document.getElementById('dpPrev').onclick=function(e){ e.stopPropagation(); popM--; if(popM<0){popM=11;popY--;} renderDatePop(); icons(); };
+document.getElementById('dpNext').onclick=function(e){ e.stopPropagation(); popM++; if(popM>11){popM=0;popY++;} renderDatePop(); icons(); };
+document.getElementById('dpToday').onclick=function(e){ e.stopPropagation(); pickDate(new Date(TODAY)); };
+document.getElementById('dpGrid').addEventListener('click',function(e){ var c=e.target.closest('.dp-cell'); if(!c||c.classList.contains('disabled'))return; var p=c.dataset.iso.split('-'); pickDate(new Date(+p[0],+p[1]-1,+p[2])); });
+document.addEventListener('click',function(e){ var pop=document.getElementById('datePop'); if(pop && !pop.hidden && !e.target.closest('.dp-anchor')) closeDatePop(); });
 document.getElementById('days').addEventListener('click',function(e){const el=e.target.closest('.day');if(!el||el.classList.contains('future'))return;const d=new Date(viewStart);d.setDate(viewStart.getDate()+(+el.dataset.i));selected=d;renderWeek();updateTitle();icons();});
 document.getElementById('sesspicker').addEventListener('click',function(e){const b=e.target.closest('.sesspill');if(!b)return;currentSess=b.dataset.sess;this.querySelectorAll('.sesspill').forEach(x=>x.classList.toggle('active',x===b));updateTitle();});
 
 /* ============ TABLE/FILTER WIRING ============ */
 document.getElementById('ptabs').addEventListener('click',e=>{const b=e.target.closest('.ptab');if(!b)return;tab=b.dataset.tab;page=1;renderTabs();renderTable();});
-document.getElementById('viewSeg').addEventListener('click',e=>{const b=e.target.closest('.segb');if(!b)return;view=b.dataset.view;document.querySelectorAll('#viewSeg .segb').forEach(x=>x.classList.toggle('active',x===b));page=1;renderTable();});
+document.getElementById('viewSeg').addEventListener('click',e=>{const b=e.target.closest('.segb');if(!b)return;view=b.dataset.view;document.querySelectorAll('#viewSeg .segb').forEach(x=>x.classList.toggle('active',x===b));tab='all';page=1;renderTabs();renderTable();});
 document.getElementById('search').addEventListener('input',e=>{search=e.target.value.trim();page=1;renderTable();});
 document.getElementById('progSel').addEventListener('change',e=>{prog=e.target.value;page=1;renderTable();});
 document.getElementById('tableHost').addEventListener('click',e=>{
+  const g=e.target.closest('.exgroup');
+  if(g){ const n=g.dataset.g; if(exCollapsed.has(n)) exCollapsed.delete(n); else exCollapsed.add(n); renderTable(); return; }
+  const pg=e.target.closest('.pgb');
+  if(pg){ const v=pg.dataset.pg; const list=view==='exercises'?filteredEx():filteredPlayers(); const per=view==='exercises'?PER_EX:PER; const pages=Math.max(1,Math.ceil(list.length/per)); if(v==='prev')page=Math.max(1,page-1); else if(v==='next')page=Math.min(pages,page+1); else page=+v; renderTable(); return; }
   const th=e.target.closest('th.sortable');
   if(th){ const k=th.dataset.sort; if(sortKey===k) sortDir=-sortDir; else {sortKey=k; sortDir=1;} renderTable(); return; }
-  const pg=e.target.closest('.pgb');
-  if(pg){ const v=pg.dataset.pg; const rows=filteredPlayers(); const pages=Math.max(1,Math.ceil(rows.length/PER)); if(v==='prev')page=Math.max(1,page-1); else if(v==='next')page=Math.min(pages,page+1); else page=+v; renderTable(); return; }
   const row=e.target.closest('.prow'); if(row) openClip(row.dataset.n);
 });
 document.getElementById('reviewBtn').onclick=function(){ tab='review'; page=1; renderTabs(); renderTable(); document.querySelector('.tablepanel').scrollIntoView({behavior:'smooth',block:'start'}); };
