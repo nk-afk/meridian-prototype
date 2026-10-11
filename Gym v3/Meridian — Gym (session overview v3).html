@@ -303,7 +303,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .dw-head .pnum{width:34px;height:34px}
 .dw-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--color-border);background:none;border-radius:var(--r-md);cursor:pointer;display:grid;place-items:center;color:var(--color-text-soft)}
 .dw-close svg{width:16px;height:16px}
-.dw-body{padding:18px 20px;display:flex;flex-direction:column;gap:16px}
+.dw-body{padding:18px 20px;display:flex;flex-direction:column;gap:28px}
 .dw-sec .l{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin-bottom:6px}
 .dw-sec p{font-size:13.5px;line-height:1.5;color:var(--color-text)}
 .forcoach{border-left:3px solid var(--color-primary-border);background:var(--color-primary-tint);padding:10px 12px;border-radius:0 var(--r-md) var(--r-md) 0}
@@ -336,6 +336,20 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .pp-ex-name{font-size:13px;color:var(--color-text)}
 .pp-ex-rx{font-size:12.5px;color:var(--color-text-muted);white-space:nowrap}
 .plan-foot{font-size:11.5px;color:var(--color-text-disabled);padding-top:2px}
+/* drawer: assigned-exercise breakdown */
+.dw-exc-head{display:flex;align-items:center;justify-content:space-between}
+.dw-exc-count{text-transform:none;letter-spacing:0;font-weight:600;color:var(--color-text-soft);font-size:12px}
+.dw-exlist{border:1px solid var(--color-border);border-radius:var(--r-md);overflow:hidden}
+.dw-exrow{display:flex;align-items:center;gap:12px;padding:11px 13px;border-bottom:1px solid var(--color-border-subtle)}
+.dw-exrow:last-child{border-bottom:0}
+.dw-ex-main{flex:1;min-width:0}
+.dw-ex-name{font-size:13.5px;font-weight:600;color:var(--color-text)}
+.dw-ex-meta{font-size:12px;color:var(--color-text-soft);margin-top:2px}
+.dw-exrow .sti{flex:none}
+.dw-exleg{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px}
+.dw-exleg span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
+.dw-exleg .lgi{width:18px;height:18px;display:inline-grid;place-items:center;flex:none}
+.dw-exleg .lgi svg{width:18px;height:18px}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--color-text);color:#fff;font-size:13px;font-weight:500;border-radius:var(--r-md);padding:10px 16px;display:flex;align-items:center;gap:12px;opacity:0;pointer-events:none;transition:all .2s;z-index:70}
@@ -693,6 +707,21 @@ function renderRail(){
 }
 
 /* ============ DRAWER ============ */
+function exerciseSection(n,notObserved){
+  const ep=EXPLAYERS.find(x=>x.n===n);
+  if(!ep) return '';
+  if(notObserved){
+    const rows=ep.ex.map(e=>`
+      <div class="dw-exrow"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} set${e[1]===1?'':'s'} · not observed</div></div>${stIcon('notstarted')}</div>`).join('');
+    const note=`<div class="dw-exleg"><span><span class="lgi">${stIcon('notstarted')}</span>Not observed — no capture recorded for this exercise</span></div>`;
+    return `<div class="dw-sec"><div class="l dw-exc-head">Prescribed exercises <span class="dw-exc-count">${ep.ex.length} assigned</span></div><div class="dw-exlist">${rows}</div>${note}</div>`;
+  }
+  const done=ep.ex.filter(e=>exStatus(e)==='complete').length;
+  const rows=ep.ex.map(e=>`
+    <div class="dw-exrow"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} · Done ${e[2]} set${e[2]===1?'':'s'}</div></div>${stIcon(exStatus(e))}</div>`).join('');
+  const legend=`<div class="dw-exleg"><span><span class="lgi">${legIcon()}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span><span><span class="lgi">${stIcon('notstarted')}</span>Not started</span></div>`;
+  return `<div class="dw-sec"><div class="l dw-exc-head">Assigned exercises <span class="dw-exc-count num">${done} of ${ep.ex.length} completed</span></div><div class="dw-exlist">${rows}</div>${legend}</div>`;
+}
 function openClip(n){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
   const isRev=p.st==='review', isNot=p.st==='notobs';
@@ -707,16 +736,16 @@ function openClip(n){
       <div class="dw-sec"><div class="l">Your verdict</div>
         <div class="verdicts"><button class="vbtn confirm" data-v="Confirmed">Confirm</button><button class="vbtn" data-v="Corrected">Correct</button><button class="vbtn" data-v="Dismissed">Dismiss</button></div>
         <p class="dw-note" style="margin-top:10px">Confirm → counts as prescribed · Correct → staff enter actuals · Dismiss → stays unverified.<br>Meridian never decides.</p>
-      </div>`;
+      </div>`+exerciseSection(p.n);
   } else if(isNot){
     tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>No capture isn't proof of absence — it can be a camera gap or a blind spot the cameras missed. If this player trained, log it so the session record is accurate.</p></div>
       <div class="dw-sec"><div class="l">Did this player train?</div>
         <div class="verdicts"><button class="vbtn confirm" data-pres="present">Player was present</button><button class="vbtn" data-pres="absent">Confirm absent</button></div>
         <p class="dw-note" style="margin-top:10px">Present → logged by staff and added to the session · Absent → stays not observed, marked confirmed.<br>Meridian never decides.</p>
-      </div>`;
+      </div>`+exerciseSection(p.n,true);
   } else {
-    tail=`<div class="dw-sec"><div class="l">Exercise checks</div>${exDots(p.ex)}</div>
-       <div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`;
+    const exSec=exerciseSection(p.n) || `<div class="dw-sec"><div class="l">Exercise checks</div>${exDots(p.ex)}</div>`;
+    tail=`<div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`+exSec;
   }
   dw.innerHTML=`
     <div class="dw-head"><span class="pnum num">${p.n}</span><div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
