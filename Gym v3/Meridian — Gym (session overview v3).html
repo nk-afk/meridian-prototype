@@ -27,6 +27,8 @@
   --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 16px 40px rgba(15,23,42,.18);
   --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --side:248px; --top:52px;
+  /* right inset that matches .wrap's content right edge (max-width 1420, 28px pad), at any width */
+  --rail-inset:max(28px, calc((100vw - var(--side) - 1420px)/2 + 28px));
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
@@ -36,11 +38,12 @@ a{color:inherit;text-decoration:none}
 button{font-family:var(--ff)}
 
 /* ---------- app shell ---------- */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 20px;z-index:40}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 var(--rail-inset) 0 20px;z-index:40}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
 .brand .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--color-primary);display:grid;place-items:center}
 .brand .mark::after{content:"";width:2px;height:10px;background:var(--color-primary);transform:rotate(25deg)}
 .brand .club{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-left:12px;border-left:1px solid var(--color-separator)}
+.topclub{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-right:14px;margin-right:2px;border-right:1px solid var(--color-separator)}
 .topbar .sp{flex:1}
 .btn{font-size:13px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
 .btn:hover{background:var(--color-surface-subtle)}
@@ -76,16 +79,18 @@ body.nav-collapsed .profile .pname{display:none}
 .main{margin-left:var(--side);margin-top:var(--top);transition:margin-left .2s ease;padding-bottom:70px}
 
 /* ---------- week strip ---------- */
-.weekstrip{display:flex;align-items:center;gap:3px;background:var(--color-surface);border-bottom:1px solid var(--color-separator);padding:8px 24px}
-.datelabel{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--color-text);white-space:nowrap;cursor:pointer;padding:6px 8px;border-radius:var(--r-md);border:0;background:none;font-family:inherit}
+.weekstrip{display:flex;align-items:center;gap:3px;background:var(--color-surface);border-bottom:1px solid var(--color-separator);padding:8px var(--rail-inset) 8px 24px}
+.datelabel{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--color-text);white-space:nowrap;cursor:pointer;padding:6px 0 6px 8px;border-radius:var(--r-md);border:0;background:none;font-family:inherit}
 .datelabel:hover{background:var(--color-surface-subtle)}
 .datelabel:focus{outline:none}
-.datelabel #dateLabelTxt{display:inline-block;min-width:98px;text-align:left}
+.datelabel #dateLabelTxt{display:inline-block}
+.datelabel .dl-chev{margin-left:-3px}
 .datelabel svg{width:16px;height:16px;color:var(--color-text-soft)}
 .datelabel .dl-chev{width:14px;height:14px}
 /* custom date popup */
 .dp-anchor{position:relative;display:inline-flex}
-.datepop{position:absolute;top:calc(100% + 10px);left:0;z-index:50;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:14px;width:296px}
+.weekstrip .dp-anchor{margin-left:auto}
+.datepop{position:absolute;top:calc(100% + 10px);right:0;left:auto;z-index:50;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:14px;width:296px}
 .datepop[hidden]{display:none}
 .dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .dp-my{font-size:14px;font-weight:700;color:var(--color-text)}
@@ -111,7 +116,7 @@ body.nav-collapsed .profile .pname{display:none}
 .weeknav{width:28px;height:40px;border:0;background:none;color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;border-radius:var(--r-md)}
 .weeknav:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .weeknav svg{width:18px;height:18px}
-.days{display:flex;gap:6px;margin:0 10px 0 66px}
+.days{display:flex;gap:6px;margin:0 10px 0 18px}
 .day{width:60px;padding:6px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:var(--r-md);position:relative;background:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
 .day .dow{font-size:11px;font-weight:500;color:var(--color-text-soft)}
 .day .dnum{font-size:16px;font-weight:600;color:var(--color-text);font-variant-numeric:tabular-nums}
@@ -122,10 +127,6 @@ body.nav-collapsed .profile .pname{display:none}
 .day.future .dnum{color:var(--color-text-disabled)}
 .todaybtn{font-size:13px;font-weight:600;border:0;background:none;color:var(--color-text-muted);border-radius:var(--r-md);padding:7px 10px;cursor:pointer;white-space:nowrap;margin-left:2px}
 .todaybtn:hover{background:var(--color-surface-subtle)}
-.sesspicker{display:inline-flex;gap:3px;margin-left:auto;background:var(--color-surface-muted);border-radius:var(--r-md);padding:3px;box-shadow:inset 0 0 0 1px var(--color-border-subtle)}
-.sesspill{font-size:12.5px;font-weight:600;border-radius:7px;padding:6px 15px;white-space:nowrap;cursor:pointer;border:0;background:none;color:var(--color-text-soft)}
-.sesspill:hover{color:var(--color-text)}
-.sesspill.active{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-card)}
 
 /* ---------- content ---------- */
 .wrap{max-width:1420px;margin:0 auto;padding:22px 28px 0}
@@ -135,6 +136,27 @@ body.nav-collapsed .profile .pname{display:none}
 .phead .pt{flex:1;min-width:0}
 .titleline{display:flex;align-items:center;gap:12px}
 h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
+.sessnav{width:38px;height:38px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-md);color:var(--color-text);display:grid;place-items:center;cursor:pointer;flex:none}
+.sessnav:hover{background:var(--color-surface-subtle)}
+.sessnav:disabled{color:var(--color-text-disabled);cursor:default;background:var(--color-surface)}
+.sessnav:disabled:hover{background:var(--color-surface)}
+.sessnav svg{width:20px;height:20px}
+.sesstitle-wrap{position:relative;display:inline-flex}
+.sesstitle-btn{display:inline-flex;align-items:center;gap:7px;border:0;background:none;cursor:pointer;padding:0;font-family:inherit}
+.sesstitle-btn .st-chev{width:22px;height:22px;color:var(--color-text-soft);flex:none}
+.sesscount{font-size:14px;color:var(--color-text-soft);font-weight:500}
+.sesspop{position:absolute;top:calc(100% + 10px);left:0;z-index:50;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:6px;min-width:300px}
+.sesspop[hidden]{display:none}
+.sessrow{display:flex;align-items:center;gap:16px;width:100%;border:0;background:none;cursor:pointer;padding:11px 14px;border-radius:var(--r-md);font-family:inherit;text-align:left}
+.sessrow:hover{background:var(--color-surface-subtle)}
+.sessrow.active{background:var(--color-primary-tint)}
+.sr-time{font-size:14px;color:var(--color-text-soft);width:48px;flex:none}
+.sessrow.active .sr-time{color:var(--color-primary-ink)}
+.sr-name{font-size:15px;font-weight:600;color:var(--color-text)}
+.sessrow.active .sr-name{color:var(--color-primary-ink)}
+.sr-check{margin-left:auto;color:var(--color-primary);display:none;place-items:center}
+.sessrow.active .sr-check{display:inline-grid}
+.sr-check svg{width:18px;height:18px}
 .donepill{display:inline-flex;align-items:center;gap:5px;background:var(--c-plan-soft);color:var(--c-plan);font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:5px 11px}
 .donepill svg{width:14px;height:14px}
 .sublinerow{display:flex;align-items:center;gap:16px;margin-top:7px}
@@ -311,6 +333,10 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 <!-- week strip -->
 <div class="weekstrip">
+  <button class="todaybtn" id="todayBtn">Today</button>
+  <button class="weeknav" id="prevWk" aria-label="Previous week"><i data-lucide="chevron-left"></i></button>
+  <button class="weeknav" id="nextWk" aria-label="Next week"><i data-lucide="chevron-right"></i></button>
+  <div class="days" id="days"></div>
   <div class="dp-anchor">
     <button class="datelabel" id="dateLabel"><i data-lucide="calendar"></i><span id="dateLabelTxt"></span><i data-lucide="chevron-down" class="dl-chev"></i></button>
     <div class="datepop" id="datePop" hidden>
@@ -320,20 +346,20 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
       <div class="dp-foot"><button class="dp-today" id="dpToday">Today</button></div>
     </div>
   </div>
-  <button class="weeknav" id="prevWk" aria-label="Previous week"><i data-lucide="chevron-left"></i></button>
-  <button class="weeknav" id="nextWk" aria-label="Next week"><i data-lucide="chevron-right"></i></button>
-  <button class="todaybtn" id="todayBtn">Today</button>
-  <div class="days" id="days"></div>
-  <div class="sesspicker" id="sesspicker">
-    <button class="sesspill" data-sess="AM Gym 1">AM Gym 1</button>
-    <button class="sesspill active" data-sess="PM Gym 1">PM Gym 1</button>
-  </div>
 </div>
 
 <div class="wrap">
   <div class="phead">
     <div class="pt">
-      <div class="titleline"><h1 id="sessTitle">PM Gym 1</h1></div>
+      <div class="titleline">
+        <button class="sessnav" id="sessPrev" aria-label="Previous session"><i data-lucide="chevron-left"></i></button>
+        <div class="sesstitle-wrap">
+          <button class="sesstitle-btn" id="sessTitleBtn"><h1 id="sessTitle">Upper body</h1><i data-lucide="chevron-down" class="st-chev"></i></button>
+          <div class="sesspop" id="sessPop" hidden></div>
+        </div>
+        <button class="sessnav" id="sessNext" aria-label="Next session"><i data-lucide="chevron-right"></i></button>
+        <span class="sesscount num" id="sessCount">3 of 3</span>
+      </div>
       <div class="sublinerow">
         <div class="subline" id="subline">Tue 08 Sep · 15:00–16:05 · 4 ceiling cameras</div>
         <div class="gymloc"><i data-lucide="map-pin"></i>Bodymoor Heath Training Ground</div>
@@ -686,7 +712,14 @@ const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
 const SESSION_DAYS={'2026-09-08':true,'2026-09-09':true,'2026-09-10':true};
 const TODAY=new Date(2026,8,10); TODAY.setHours(0,0,0,0);
-let selected=new Date(2026,8,8), currentSess='PM Gym 1';
+let selected=new Date(2026,8,8);
+/* sessions for the day — supports any count (2, 3, 4…) */
+const SESSIONS=[
+  {name:'Strength',start:'09:00',end:'10:05',cams:4},
+  {name:'Rehab',start:'12:30',end:'13:20',cams:4},
+  {name:'Upper body',start:'15:00',end:'16:05',cams:4},
+];
+let sessIdx=2;
 function weekStartSun(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x;} /* Monday-first */
 let viewStart=weekStartSun(selected);
 function isoDay(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -703,10 +736,26 @@ function renderWeek(){
   document.getElementById('days').innerHTML=html;
   document.getElementById('dateLabelTxt').textContent=fmtLabel(selected);
 }
-function updateTitle(){
-  document.getElementById('sessTitle').textContent=currentSess;
-  document.getElementById('subline').textContent=fmtLong(selected)+' · 15:00–16:05 · 4 ceiling cameras';
+function renderSessPop(){
+  document.getElementById('sessPop').innerHTML=SESSIONS.map((s,i)=>
+    `<button class="sessrow${i===sessIdx?' active':''}" data-i="${i}"><span class="sr-time num">${s.start}</span><span class="sr-name">${s.name}</span><span class="sr-check"><i data-lucide="check"></i></span></button>`).join('');
+  icons();
 }
+function updateTitle(){
+  const s=SESSIONS[sessIdx];
+  document.getElementById('sessTitle').textContent=s.name;
+  document.getElementById('subline').textContent=fmtLong(selected)+' · '+s.start+'–'+s.end+' · '+s.cams+' ceiling cameras';
+  document.getElementById('sessCount').textContent=(sessIdx+1)+' of '+SESSIONS.length;
+  document.getElementById('sessPrev').disabled=sessIdx===0;
+  document.getElementById('sessNext').disabled=sessIdx===SESSIONS.length-1;
+  renderSessPop();
+}
+function closeSessPop(){ document.getElementById('sessPop').hidden=true; }
+document.getElementById('sessTitleBtn').onclick=function(e){ e.stopPropagation(); const p=document.getElementById('sessPop'); if(p.hidden) p.hidden=false; else p.hidden=true; };
+document.getElementById('sessPrev').onclick=function(){ if(sessIdx>0){ sessIdx--; closeSessPop(); updateTitle(); icons(); } };
+document.getElementById('sessNext').onclick=function(){ if(sessIdx<SESSIONS.length-1){ sessIdx++; closeSessPop(); updateTitle(); icons(); } };
+document.getElementById('sessPop').addEventListener('click',function(e){ const r=e.target.closest('.sessrow'); if(!r)return; sessIdx=+r.dataset.i; closeSessPop(); updateTitle(); icons(); });
+document.addEventListener('click',function(e){ const p=document.getElementById('sessPop'); if(p && !p.hidden && !e.target.closest('.sesstitle-wrap')) closeSessPop(); });
 document.getElementById('prevWk').onclick=function(){viewStart.setDate(viewStart.getDate()-7);renderWeek();icons();};
 document.getElementById('nextWk').onclick=function(){viewStart.setDate(viewStart.getDate()+7);renderWeek();icons();};
 document.getElementById('todayBtn').onclick=function(){selected=new Date(TODAY);viewStart=weekStartSun(selected);renderWeek();updateTitle();icons();};
@@ -737,7 +786,6 @@ document.getElementById('dpToday').onclick=function(e){ e.stopPropagation(); pic
 document.getElementById('dpGrid').addEventListener('click',function(e){ var c=e.target.closest('.dp-cell'); if(!c||c.classList.contains('disabled'))return; var p=c.dataset.iso.split('-'); pickDate(new Date(+p[0],+p[1]-1,+p[2])); });
 document.addEventListener('click',function(e){ var pop=document.getElementById('datePop'); if(pop && !pop.hidden && !e.target.closest('.dp-anchor')) closeDatePop(); });
 document.getElementById('days').addEventListener('click',function(e){const el=e.target.closest('.day');if(!el||el.classList.contains('future'))return;const d=new Date(viewStart);d.setDate(viewStart.getDate()+(+el.dataset.i));selected=d;renderWeek();updateTitle();icons();});
-document.getElementById('sesspicker').addEventListener('click',function(e){const b=e.target.closest('.sesspill');if(!b)return;currentSess=b.dataset.sess;this.querySelectorAll('.sesspill').forEach(x=>x.classList.toggle('active',x===b));updateTitle();});
 
 /* ============ TABLE/FILTER WIRING ============ */
 document.getElementById('ptabs').addEventListener('click',e=>{const b=e.target.closest('.ptab');if(!b)return;tab=b.dataset.tab;page=1;renderTabs();renderTable();});
@@ -784,7 +832,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     o=o||{}; var club=o.club||'Northbank FC', active=o.active||'', badge=(o.badge==null?'':o.badge);
     var actions=o.actions||[], topActs=actions.filter(a=>!a.primary), primary=actions.filter(a=>a.primary)[0];
     var acts=topActs.map(a=>'<button class="btn">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>').join('');
-    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN<span class="club">'+esc(club)+'</span></div><span class="sp"></span>'+acts+'</header>';
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN</div><span class="sp"></span><span class="topclub">'+esc(club)+'</span>'+acts+'</header>';
     var items='';
     NAV.forEach(function(n){
       if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
