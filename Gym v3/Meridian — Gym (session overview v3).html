@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meridian — Gym Session Overview</title>
+<title>Meridian · Gym Session Overview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --color-primary:#0F766E; --color-primary-hover:#115E59; --color-primary-active:#134E4A;
-  --color-primary-soft:#CCFBF1; --color-primary-tint:#F0FDFA; --color-primary-border:#99F6E4; --color-primary-ink:#134E4A;
+  --color-primary:#2B7FFF; --color-primary-text:#027BFC; --color-primary-hover:#1C6EF0; --color-primary-active:#1559CC;
+  --color-primary-soft:#EBF3FF; --color-primary-tint:#EBF3FF; --color-primary-border:#B4D1FF; --color-primary-ink:#027BFC;
   --color-page:#F6F8FA; --color-surface:#FFFFFF; --color-surface-subtle:#F9FAFB; --color-surface-muted:#F1F5F9;
   --color-border:#E5E7EB; --color-border-subtle:#EEF2F6; --color-separator:#E6EAF0;
   --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF; --color-text-inverse:#FFFFFF;
@@ -22,7 +22,7 @@
   --c-review:#EA580C; --c-review-soft:#FFEDD5;
   --c-notobs:#9CA3AF; --c-notobs-soft:#EEF1F4;
   --c-dot:#16A34A; /* calendar session dot (green, per reference) */
-  --sb-steel:#8CA0AE; --sb-steel2:#9FB1BD; --sb-grey:#C9CFD5; --sb-green:#9CB98C; --sb-gold:#CDB87E; --sb-clay:#C68D64;
+  --sb-steel:#A3C9FF; --sb-steel2:#A3C9FF; --sb-grey:#AFAFBB; --sb-green:#9CDE68; --sb-gold:#FFB54D; --sb-clay:#FF8680;
   --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
   --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 16px 40px rgba(15,23,42,.18);
   --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -30,7 +30,9 @@
   /* right inset that matches .wrap's content right edge (max-width 1420, 28px pad), at any width */
   --rail-inset:max(28px, calc((100vw - var(--side) - 1420px)/2 + 28px));
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;corner-shape:squircle}
+/* keep true circles circular, not squircle */
+.avatar,.pnum,.brand .mark,.exc,.thumb .play,.sd{corner-shape:round}
 body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
 .num{font-variant-numeric:tabular-nums}
 .eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
@@ -40,24 +42,26 @@ button{font-family:var(--ff)}
 /* ---------- app shell ---------- */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 var(--rail-inset) 0 20px;z-index:40}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
-.brand .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--color-primary);display:grid;place-items:center}
-.brand .mark::after{content:"";width:2px;height:10px;background:var(--color-primary);transform:rotate(25deg)}
+.brand .mark{display:inline-grid;place-items:center;color:var(--color-text)}
+.brand .mark svg{height:22px;width:auto;display:block}
+.brandlogo{height:22px;width:auto;display:block;color:var(--color-text)}
 .brand .club{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-left:12px;border-left:1px solid var(--color-separator)}
 .topclub{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-right:14px;margin-right:2px;border-right:1px solid var(--color-separator)}
 .topbar .sp{flex:1}
-.btn{font-size:13px;font-weight:600;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.btn{font-size:13px;font-weight:600;border-radius:var(--r-lg);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
 .btn:hover{background:var(--color-surface-subtle)}
 .btn.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
 .btn.primary:hover{background:var(--color-primary-hover)}
 .btn svg{width:16px;height:16px}
-.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .side{position:fixed;top:var(--top);bottom:0;left:0;width:var(--side);background:var(--color-surface);border-right:1px solid var(--color-separator);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto;z-index:30;transition:width .2s ease}
 .side .grp{margin:14px 8px 6px}
-.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);color:var(--color-text-muted);font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);border:1px solid transparent;color:var(--color-text-soft);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
 .nav svg{width:18px;height:18px;color:var(--color-text-soft)}
 .nav:hover{background:var(--color-surface-subtle)}
-.nav.active{background:var(--color-primary-tint);color:var(--color-primary-ink);font-weight:600}
-.nav.active svg{color:var(--color-primary)}
+.nav.active{background:var(--color-surface-muted);border-color:rgba(31,43,39,.03);color:var(--color-text);font-weight:600}
+.nav.active svg{color:var(--color-text)}
 .nav .badge{margin-left:auto;background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
 .navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
 .navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
@@ -111,7 +115,7 @@ body.nav-collapsed .profile .pname{display:none}
 .dp-cell.sel:hover{background:var(--color-primary-hover)}
 .dp-cell.sel.today::after{background:#fff}
 .dp-foot{display:flex;justify-content:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid var(--color-separator)}
-.dp-today{border:0;background:none;color:var(--color-primary);font-size:13px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:var(--r-md);font-family:inherit}
+.dp-today{border:0;background:none;color:var(--color-primary-text);font-size:13px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:var(--r-md);font-family:inherit}
 .dp-today:hover{background:var(--color-primary-tint)}
 .weeknav{width:28px;height:40px;border:0;background:none;color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;border-radius:var(--r-md)}
 .weeknav:hover{background:var(--color-surface-subtle);color:var(--color-text)}
@@ -120,12 +124,13 @@ body.nav-collapsed .profile .pname{display:none}
 .day{width:60px;padding:6px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:var(--r-md);position:relative;background:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
 .day .dow{font-size:11px;font-weight:500;color:var(--color-text-soft)}
 .day .dnum{font-size:16px;font-weight:600;color:var(--color-text);font-variant-numeric:tabular-nums}
-.day.sel{background:var(--color-primary-tint);border-color:var(--color-primary-border)}
+.day.sel{background:var(--color-primary-tint)}
 .day.sel .dow{color:var(--color-text)}
-.day.sel .dnum{color:var(--color-primary);font-weight:700}
+.day.sel .dnum{color:var(--color-primary-text);font-weight:700}
 .day.future{opacity:.55;cursor:default;pointer-events:none}
 .day.future .dnum{color:var(--color-text-disabled)}
-.todaybtn{font-size:13px;font-weight:600;border:0;background:none;color:var(--color-text-muted);border-radius:var(--r-md);padding:7px 10px;cursor:pointer;white-space:nowrap;margin-left:2px}
+.todaybtn{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;border:0;background:none;color:var(--color-primary-text);border-radius:var(--r-md);padding:7px 10px;cursor:pointer;white-space:nowrap;margin-left:2px}
+.todaybtn svg{width:15px;height:15px}
 .todaybtn:hover{background:var(--color-surface-subtle)}
 
 /* ---------- content ---------- */
@@ -154,14 +159,14 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .sessrow.active .sr-time{color:var(--color-primary-ink)}
 .sr-name{font-size:15px;font-weight:600;color:var(--color-text)}
 .sessrow.active .sr-name{color:var(--color-primary-ink)}
-.sr-check{margin-left:auto;color:var(--color-primary);display:none;place-items:center}
+.sr-check{margin-left:auto;color:var(--color-primary-text);display:none;place-items:center}
 .sessrow.active .sr-check{display:inline-grid}
 .sr-check svg{width:18px;height:18px}
 .donepill{display:inline-flex;align-items:center;gap:5px;background:var(--c-plan-soft);color:var(--c-plan);font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:5px 11px}
 .donepill svg{width:14px;height:14px}
 .sublinerow{display:flex;align-items:center;gap:16px;margin-top:7px}
 .subline{font-size:13px;color:var(--color-text-soft)}
-.gymloc{margin-left:auto;margin-right:23px;display:flex;align-items:center;gap:5px;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
+.gymloc{margin-left:auto;margin-right:42px;display:flex;align-items:center;gap:5px;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
 .gymloc svg{width:14px;height:14px}
 .headacts{display:flex;gap:10px;align-self:flex-start;padding-top:4px}
 .headacts .btn{height:40px}
@@ -169,21 +174,20 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .cols{display:flex;gap:20px;align-items:flex-start;margin-top:20px}
 .col-main{flex:1;min-width:0}
 .col-rail{width:320px;flex:none}
-.panel{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-card)}
+.panel{background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card)}
 
 /* attendance + completion */
-.statspanel{padding:20px 22px;margin-bottom:20px}
+.statspanel{padding:20px;margin-bottom:20px}
 .statgroups{display:flex}
-.statgroup{flex:1;padding:2px 30px}
-.statgroup:first-child{padding-left:2px}
-.sg-sep{width:1px;background:var(--color-separator);margin:2px 0}
+.statgroup{flex:1;padding:2px 0;min-width:0}
+.sg-sep{width:1px;background:var(--color-separator);margin:2px 32px}
 .sg-title{font-size:14px;font-weight:700;color:var(--color-text);margin-bottom:15px}
 .sg-rows{display:flex;flex-direction:column;gap:13px}
 .sgrow{display:flex;align-items:center;gap:14px}
 .sg-lab{width:106px;flex:none;font-size:13px;color:var(--color-text-muted)}
-.sg-track{flex:1;height:10px;border-radius:var(--r-pill);background:var(--color-surface-muted);overflow:hidden}
-.sg-track>i{display:block;height:100%;border-radius:var(--r-pill)}
-.sg-val{width:26px;flex:none;text-align:right;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-text)}
+.sg-track{flex:1;height:10px;border-radius:4px;background:var(--color-surface-muted);overflow:hidden}
+.sg-track>i{display:block;height:100%;border-radius:4px}
+.sg-val{width:26px;flex:none;text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-text)}
 .sg-foot{font-size:11.5px;color:var(--color-text-disabled);margin-top:15px}
 @media(max-width:640px){.statgroups{flex-direction:column;gap:18px}.sg-sep{display:none}.statgroup{padding:0}}
 
@@ -201,10 +205,10 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .selectwrap select{appearance:none;border:1px solid var(--color-border);border-radius:var(--r-md);height:36px;padding:0 32px 0 12px;font-family:inherit;font-size:13px;font-weight:500;color:var(--color-text);background:var(--color-surface);cursor:pointer}
 .selectwrap svg{width:15px;height:15px;color:var(--color-text-soft);position:absolute;right:10px;pointer-events:none}
 .ptabs{display:flex;gap:4px;border-bottom:1px solid var(--color-border);margin-bottom:4px}
-.ptab{border:0;background:none;font-size:13px;font-weight:600;color:var(--color-text-soft);padding:8px 12px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px}
-.ptab span{font-size:11px;background:var(--color-surface-muted);color:var(--color-text-soft);border-radius:var(--r-pill);padding:1px 7px;font-weight:700}
-.ptab.active{color:var(--color-primary);border-bottom-color:var(--color-primary)}
-.ptab.active span{background:var(--color-primary-soft);color:var(--color-primary-ink)}
+.ptab{border:0;background:none;font-size:13px;font-weight:500;color:var(--color-text-soft);padding:8px 12px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px}
+.ptab span{color:var(--color-text-soft);font-weight:500;font-size:12px}
+.ptab.active{color:var(--color-text);border-bottom-color:var(--color-primary-text);font-weight:600}
+.ptab.active span{color:var(--color-text);font-weight:600}
 
 .ptable{width:100%;border-collapse:collapse}
 .ptable th{text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;padding:12px 12px 10px;border-bottom:1px solid var(--color-border);white-space:nowrap}
@@ -214,7 +218,9 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .prow{cursor:pointer}
 .prow:hover td{background:var(--color-surface-subtle)}
 .pcell{display:flex;align-items:center;gap:10px}
-.pnum{width:30px;height:30px;border-radius:50%;background:var(--color-primary-tint);color:var(--color-primary-ink);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.pnum{width:30px;height:30px;border-radius:50%;background:var(--color-primary-tint);color:var(--color-primary-ink);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;overflow:hidden}
+.pnum.pphoto{background:var(--color-surface-muted)}
+.pnum img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .pname{font-weight:600}
 .exrow{display:flex;gap:6px}
 .ptable th.exc-col,.ptable td.exc-col{text-align:center}
@@ -235,7 +241,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .minibar{width:90px;height:7px;border-radius:var(--r-pill);background:var(--color-surface-muted);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
 .minibar>i{display:block;height:100%;background:var(--c-plan);border-radius:var(--r-pill)}
 
-/* exercises view — per-player breakdown */
+/* exercises view: per-player breakdown */
 .exlegend{margin-left:auto;display:flex;align-items:center;gap:16px;padding-bottom:6px}
 .exlegend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
 .exlegend .lgi{width:18px;height:18px;display:inline-grid;place-items:center}
@@ -288,7 +294,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .cc-title{font-size:14px;font-weight:600}
 .cc-note{font-size:12.5px;color:var(--color-text-muted);margin-top:2px}
 .cc-pend{font-size:11.5px;color:var(--color-text-soft);margin-top:4px}
-.cc-cta{display:inline-block;margin-top:10px;color:var(--color-primary);font-size:13px;font-weight:600;cursor:pointer}
+.cc-cta{display:inline-block;margin-top:10px;color:var(--color-primary-text);font-size:13px;font-weight:600;cursor:pointer}
 .cov{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-muted);margin-bottom:6px}
 .cov svg{width:18px;height:18px;color:var(--color-text-soft)}
 .cov b{color:var(--color-text);font-weight:700}
@@ -310,7 +316,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .verdicts{display:flex;gap:8px}
 .vbtn{flex:1;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-md);padding:10px;font-size:13px;font-weight:600;color:var(--color-text-muted);cursor:pointer}
 .vbtn:hover{background:var(--color-surface-subtle)}
-.vbtn.confirm{color:var(--color-primary);background:var(--color-primary-tint);border-color:var(--color-primary-border)}
+.vbtn.confirm{color:var(--color-primary-text);background:var(--color-primary-tint);border-color:var(--color-primary-border)}
 .dw-note{font-size:12px;color:var(--color-text-soft);text-align:center}
 /* session plan drawer */
 .dw-plan-name{font-size:18px;font-weight:700;color:var(--color-text);margin-top:3px}
@@ -354,7 +360,26 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 /* toast */
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--color-text);color:#fff;font-size:13px;font-weight:500;border-radius:var(--r-md);padding:10px 16px;display:flex;align-items:center;gap:12px;opacity:0;pointer-events:none;transition:all .2s;z-index:70}
 .toast.show{opacity:1;transform:translateX(-50%)}
-.toast a{color:#9DECE3;font-weight:700;cursor:pointer}
+.toast a{color:#9EC5FF;font-weight:700;cursor:pointer}
+
+/* plan-a-session method picker modal */
+.modal-scrim{position:fixed;inset:0;background:rgba(17,24,39,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:62}
+.modal-scrim.open{opacity:1;pointer-events:auto}
+.planmodal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:560px;max-width:94vw;max-height:90vh;overflow:auto;background:var(--color-surface);border-radius:var(--r-xl);box-shadow:var(--shadow-pop);z-index:63;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.planmodal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.pm-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 0}
+.pm-title{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.pm-sub{font-size:13px;color:var(--color-text-soft);margin-top:3px}
+.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 24px 24px}
+.pm-card{display:flex;gap:13px;align-items:flex-start;text-align:left;border:1px solid var(--color-border);border-radius:var(--r-lg);padding:15px;background:var(--color-surface);cursor:pointer;font-family:inherit}
+.pm-card:hover{border-color:var(--color-primary-border);background:var(--color-primary-tint)}
+.pm-ic{width:38px;height:38px;border-radius:var(--r-md);background:var(--color-primary-tint);color:var(--color-primary-text);display:grid;place-items:center;flex:none}
+.pm-card:hover .pm-ic{background:var(--color-surface)}
+.pm-ic svg{width:19px;height:19px}
+.pm-ct{display:flex;flex-direction:column;min-width:0}
+.pm-cl{font-size:14px;font-weight:600;color:var(--color-text)}
+.pm-cd{font-size:12.5px;color:var(--color-text-soft);margin-top:3px;line-height:1.4}
+@media(max-width:560px){.pm-grid{grid-template-columns:1fr}}
 
 @media(max-width:1180px){.col-rail{width:280px}}
 @media(max-width:1020px){.cols{flex-direction:column}.col-rail{width:100%}}
@@ -371,7 +396,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 <!-- week strip -->
 <div class="weekstrip">
-  <button class="todaybtn" id="todayBtn">Today</button>
+  <button class="todaybtn" id="todayBtn">Today <i data-lucide="chevrons-right"></i></button>
   <button class="weeknav" id="prevWk" aria-label="Previous week"><i data-lucide="chevron-left"></i></button>
   <button class="weeknav" id="nextWk" aria-label="Next week"><i data-lucide="chevron-right"></i></button>
   <div class="days" id="days"></div>
@@ -405,7 +430,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
     </div>
     <div class="headacts">
       <button class="btn" id="planBtn"><i data-lucide="list"></i>Session plan</button>
-      <button class="btn primary" id="reviewBtn"><i data-lucide="alert-circle"></i>Review <span id="revBtnN">2</span> players</button>
+      <button class="btn primary" id="reviewBtn"><i data-lucide="alert-circle"></i>Review players</button>
     </div>
   </div>
 
@@ -459,6 +484,15 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 <aside class="drawer" id="drawer"></aside>
 <div class="toast" id="toast"></div>
 
+<div class="modal-scrim" id="planScrim"></div>
+<div class="planmodal" id="planModal" role="dialog" aria-modal="true" aria-label="Plan a session">
+  <div class="pm-head">
+    <div><div class="pm-title">Plan a session</div><div class="pm-sub">Choose how you'd like to build the plan</div></div>
+    <button class="dw-close" id="planClose" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="pm-grid" id="pmGrid"></div>
+</div>
+
 <script>
 /* ============ DATA ============ */
 const PLAYERS=[
@@ -484,7 +518,7 @@ const PLAYERS=[
  {n:'19',prog:'Posterior chain',st:'notobs',ex:['n','n','n','n'],det:'No activity observed'},
  {n:'21',prog:'Posterior chain',st:'notobs',ex:['n','n','n','n'],det:'No activity observed'},
 ];
-/* per-player assigned exercises — ex:[name, prescribed sets, done sets] */
+/* per-player assigned exercises; ex:[name, prescribed sets, done sets] */
 const EXPLAYERS=[
  {n:'01',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Rear-foot split squat',3,2],['Hamstring curl',3,3]]},
  {n:'02',prog:'Lower body',ex:[['Goblet squat',3,3],['Step-up',3,3]]},
@@ -509,7 +543,7 @@ const EXPLAYERS=[
  {n:'21',prog:'Posterior chain',ex:[['Nordic curl',3,0],['Copenhagen hold',3,0],['Hip thrust',3,0]]},
 ];
 /* ---- session plan (what the S&C coach prescribed for the session) ---- */
-const PLAN_FOCUS="Primary emphasis on upper-body pushing strength with posterior-chain resilience. Keep main-lift RPE at or below 8 — cut a set if bar speed drops. Rehab-block players work to their individual return-to-play loads.";
+const PLAN_FOCUS="Primary emphasis on upper-body pushing strength with posterior-chain resilience. Keep main-lift RPE at or below 8. Cut a set if bar speed drops. Rehab-block players work to their individual return-to-play loads.";
 const PLAN_BLOCKS=[
   {label:'Arrival & screening',mins:10,note:'Wellness check-in · load readiness'},
   {label:'Movement prep',mins:10,note:'Activation + mobility flow'},
@@ -550,6 +584,7 @@ let tab='all', search='', prog='all', view='players', sortKey='default', sortDir
 const PER=10, PER_EX=6;
 const exCollapsed=new Set();
 function icons(){ if(window.lucide) lucide.createIcons(); }
+function pAvatar(n){ return `<span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+n}.jpg" alt="" loading="lazy"></span>`; }
 function counts(){ const c={expected:PLAYERS.length,plan:0,partial:0,review:0,notobs:0}; PLAYERS.forEach(p=>c[p.st]++); c.observed=c.plan+c.partial+c.review; return c; }
 
 /* ============ STATS + COMPOSITION ============ */
@@ -561,7 +596,6 @@ function renderStats(){
   const row=r=>`<div class="sgrow"><span class="sg-lab">${r[0]}</span><div class="sg-track"><i style="width:${Math.round(r[1]/max*100)}%;background:${r[2]}"></i></div><span class="sg-val num">${r[1]}</span></div>`;
   document.getElementById('attRows').innerHTML=att.map(row).join('');
   document.getElementById('compRows').innerHTML=comp.map(row).join('');
-  document.getElementById('revBtnN').textContent=c.review;
   renderTabs();
 }
 function renderTabs(){
@@ -571,14 +605,14 @@ function renderTabs(){
     const nr=EXPLAYERS.filter(p=>p.flag).length;
     const t=[['all','All players',EXPLAYERS.length],['incomplete','Incomplete',inc],['needsreview','Needs review',nr]];
     host.innerHTML=t.map(x=>
-      `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span></button>`).join('')+exLegend();
+      `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>(${x[2]})</span></button>`).join('')+exLegend();
     icons();
     return;
   }
   const c=counts();
   const t=[['all','All',c.expected],['review','Needs review',c.review],['partial','Partial',c.partial],['notobs','Not observed',c.notobs]];
   host.innerHTML=t.map(x=>
-    `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span></button>`).join('');
+    `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>(${x[2]})</span></button>`).join('');
 }
 function exLegend(){
   return '<div class="exlegend">'
@@ -622,7 +656,7 @@ function renderTable(){
   if(!rows.length) h+=`<tr><td colspan="5" style="text-align:center;color:var(--color-text-soft);padding:30px">No players match.</td></tr>`;
   rows.forEach(p=>{
     h+=`<tr class="prow" data-n="${p.n}">
-      <td><div class="pcell"><span class="pnum num">${p.n}</span><span class="pname">Player ${p.n}</span></div></td>
+      <td><div class="pcell"><span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+p.n}.jpg" alt="" loading="lazy"></span><span class="pname">Player ${p.n}</span></div></td>
       <td>${p.prog}</td>
       <td class="exc-col">${exOne(p.st)}</td>
       <td><span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span></td>
@@ -668,7 +702,7 @@ function renderExercises(host,foot){
   if(!rows.length) h+=`<tr><td colspan="4" style="text-align:center;color:var(--color-text-soft);padding:30px">No players match.</td></tr>`;
   rows.forEach(p=>{
     const col=exCollapsed.has(p.n);
-    h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i><span class="pnum num">${p.n}</span><span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${exComplete(p)} of ${p.ex.length} exercises</span></div></td></tr>`;
+    h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${exComplete(p)} of ${p.ex.length} exercises</span></div></td></tr>`;
     p.ex.forEach(e=>{
       h+=`<tr class="exitem" data-gi="${p.n}"${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(e[2])}</td><td class="ex-c">${stIcon(exStatus(e))}</td></tr>`;
     });
@@ -684,15 +718,15 @@ function renderRail(){
   const clips=PLAYERS.filter(p=>p.st==='review');
   let cc=clips.map(p=>`
     <div class="clipcard">
-      <div class="cc-top"><span class="pnum num">${p.n}</span><div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div><span class="cc-flag"><i data-lucide="alert-circle"></i>Requires review</span></div>
+      <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div><span class="cc-flag"><i data-lucide="alert-circle"></i>Requires review</span></div>
       <div class="thumb" data-clip="${p.n}"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt="" loading="lazy"><span class="play"><i data-lucide="play"></i></span><span class="dur">00:12</span></div>
-      <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div><div class="cc-pend">Coach review pending</div>
-      <a class="cc-cta" data-clip="${p.n}">${p.clip.cta} →</a>
+      <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
+      <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
     </div>`).join('');
   document.getElementById('rail').innerHTML=`
     <div class="panel railcard">
       <div class="rc-head">Needs attention <span>${clips.length} player${clips.length===1?'':'s'}</span></div>
-      ${cc||'<div style="font-size:13px;color:var(--color-text-soft)">Nothing waiting — every player has a staff decision.</div>'}
+      ${cc||'<div style="font-size:13px;color:var(--color-text-soft)">Nothing waiting. Every player has a staff decision.</div>'}
     </div>
     <div class="panel railcard">
       <div class="rc-head">Capture coverage <span>4 cameras</span></div>
@@ -702,7 +736,7 @@ function renderRail(){
     </div>
     <div class="railfoot">Illustrative data</div>`;
   document.querySelectorAll('[data-clip]').forEach(el=>el.onclick=()=>openClip(el.dataset.clip));
-  const cap=document.getElementById('capLog'); if(cap) cap.onclick=()=>toast('Capture log — illustrative');
+  const cap=document.getElementById('capLog'); if(cap) cap.onclick=()=>toast('Capture log · illustrative');
   icons();
 }
 
@@ -713,7 +747,7 @@ function exerciseSection(n,notObserved){
   if(notObserved){
     const rows=ep.ex.map(e=>`
       <div class="dw-exrow"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} set${e[1]===1?'':'s'} · not observed</div></div>${stIcon('notstarted')}</div>`).join('');
-    const note=`<div class="dw-exleg"><span><span class="lgi">${stIcon('notstarted')}</span>Not observed — no capture recorded for this exercise</span></div>`;
+    const note=`<div class="dw-exleg"><span><span class="lgi">${stIcon('notstarted')}</span>Not observed: no capture recorded for this exercise</span></div>`;
     return `<div class="dw-sec"><div class="l dw-exc-head">Prescribed exercises <span class="dw-exc-count">${ep.ex.length} assigned</span></div><div class="dw-exlist">${rows}</div>${note}</div>`;
   }
   const done=ep.ex.filter(e=>exStatus(e)==='complete').length;
@@ -732,13 +766,13 @@ function openClip(n){
             : 'All prescribed exercises were recorded in full.';
   let tail;
   if(isRev){
-    tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>Confirm this was recorded as prescribed before it counts toward the session totals — or correct what was actually done.</p></div>
+    tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>Confirm this was recorded as prescribed before it counts toward the session totals, or correct what was actually done.</p></div>
       <div class="dw-sec"><div class="l">Your verdict</div>
         <div class="verdicts"><button class="vbtn confirm" data-v="Confirmed">Confirm</button><button class="vbtn" data-v="Corrected">Correct</button><button class="vbtn" data-v="Dismissed">Dismiss</button></div>
         <p class="dw-note" style="margin-top:10px">Confirm → counts as prescribed · Correct → staff enter actuals · Dismiss → stays unverified.<br>Meridian never decides.</p>
       </div>`+exerciseSection(p.n);
   } else if(isNot){
-    tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>No capture isn't proof of absence — it can be a camera gap or a blind spot the cameras missed. If this player trained, log it so the session record is accurate.</p></div>
+    tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>No capture isn't proof of absence. It can be a camera gap or a blind spot the cameras missed. If this player trained, log it so the session record is accurate.</p></div>
       <div class="dw-sec"><div class="l">Did this player train?</div>
         <div class="verdicts"><button class="vbtn confirm" data-pres="present">Player was present</button><button class="vbtn" data-pres="absent">Confirm absent</button></div>
         <p class="dw-note" style="margin-top:10px">Present → logged by staff and added to the session · Absent → stays not observed, marked confirmed.<br>Meridian never decides.</p>
@@ -748,7 +782,7 @@ function openClip(n){
     tail=`<div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`+exSec;
   }
   dw.innerHTML=`
-    <div class="dw-head"><span class="pnum num">${p.n}</span><div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
+    <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
       ${isRev?`<div class="thumb"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt=""><span class="play"><i data-lucide="play"></i></span><span class="dur">00:12</span></div>
       <div class="dw-sec"><div class="l">Clip</div><p><b>${p.clip.title}</b></p></div>`:''}
@@ -792,7 +826,7 @@ function openSessionPlan(){
       <div class="dw-sec forcoach"><div class="l">Session focus</div><p>${PLAN_FOCUS}</p></div>
       <div class="dw-sec"><div class="l">Session structure</div><div class="timeline">${tl}</div></div>
       <div class="dw-sec"><div class="l">Prescribed work</div>${progs}</div>
-      <div class="plan-foot">Illustrative plan. Meridian records what the cameras capture against this plan — it never changes the prescription.</div>
+      <div class="plan-foot">Illustrative plan. Meridian records what the cameras capture against this plan. It never changes the prescription.</div>
     </div>`;
   document.getElementById('scrim').classList.add('open');
   dw.classList.add('open');
@@ -804,15 +838,15 @@ function decide(n,action){
   p.st = action==='Confirmed'?'plan' : action==='Corrected'?'partial' : 'notobs';
   if(action==='Confirmed'){ p.ex=p.ex.map(()=>'o'); p.det='All prescribed exercises'; }
   else if(action==='Corrected'){ p.ex=p.ex.map((e,i)=>i===0?'o':(e==='n'?'p':e)); p.det='Actuals entered by staff'; }
-  else { p.det='Dismissed — stays unverified'; }
+  else { p.det='Dismissed · stays unverified'; }
   closeDrawer();
   renderStats(); renderTable(); renderRail();
-  toast(`Logged · ${action} — Player ${n}`, ()=>{ /* undo */ });
+  toast(`Logged · ${action} · Player ${n}`, ()=>{ /* undo */ });
 }
 
 function markPresence(n,present){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
-  if(present){ p.st='partial'; p.ex=p.ex.map((e,i)=>i===0?'p':'n'); p.det='Present — logged by staff · camera gap'; }
+  if(present){ p.st='partial'; p.ex=p.ex.map((e,i)=>i===0?'p':'n'); p.det='Present · logged by staff · camera gap'; }
   else { p.det='Confirmed absent by staff'; }
   closeDrawer(); renderStats(); renderTable(); renderRail();
   toast(present?`Logged · Player ${n} marked present`:`Confirmed · Player ${n} not present`);
@@ -835,7 +869,7 @@ const DOW1=['S','M','T','W','T','F','S'];
 const SESSION_DAYS={'2026-09-08':true,'2026-09-09':true,'2026-09-10':true};
 const TODAY=new Date(2026,8,10); TODAY.setHours(0,0,0,0);
 let selected=new Date(2026,8,8);
-/* sessions for the day — supports any count (2, 3, 4…) */
+/* sessions for the day; supports any count (2, 3, 4…) */
 const SESSIONS=[
   {name:'Strength',start:'09:00',end:'10:05',cams:4},
   {name:'Rehab',start:'12:30',end:'13:20',cams:4},
@@ -927,6 +961,29 @@ document.getElementById('reviewBtn').onclick=function(){ tab='review'; page=1; r
 document.getElementById('planBtn').onclick=openSessionPlan;
 document.getElementById('scrim').onclick=closeDrawer;
 
+/* ============ PLAN-A-SESSION METHOD PICKER ============ */
+const PLAN_METHODS=[
+  {icon:'mic',label:'Voice record',desc:'Talk through the session. We transcribe and structure it.'},
+  {icon:'keyboard',label:'Type it out',desc:'Build the plan by hand with exercises, sets and reps.'},
+  {icon:'link',label:'Connect your AMS',desc:'Pull the plan from your athlete management system.'},
+  {icon:'upload',label:'Upload a plan',desc:'Import a file: PDF, spreadsheet or document.'},
+  {icon:'camera',label:'Take a photo',desc:'Snap a handwritten plan and we digitise it.'},
+  {icon:'layout-template',label:'Start from a template',desc:'Begin from a saved preset or an existing programme.'},
+];
+function renderPlanModal(){
+  document.getElementById('pmGrid').innerHTML=PLAN_METHODS.map((m,i)=>
+    `<button class="pm-card" data-i="${i}"><span class="pm-ic"><i data-lucide="${m.icon}"></i></span><span class="pm-ct"><span class="pm-cl">${m.label}</span><span class="pm-cd">${m.desc}</span></span></button>`).join('');
+  icons();
+}
+function openPlanModal(){ document.getElementById('planScrim').classList.add('open'); document.getElementById('planModal').classList.add('open'); }
+function closePlanModal(){ document.getElementById('planScrim').classList.remove('open'); document.getElementById('planModal').classList.remove('open'); }
+document.getElementById('planScrim').onclick=closePlanModal;
+document.getElementById('planClose').onclick=closePlanModal;
+document.getElementById('pmGrid').addEventListener('click',function(e){ const c=e.target.closest('.pm-card'); if(!c)return; const m=PLAN_METHODS[+c.dataset.i]; closePlanModal(); toast(m.label+' · coming soon'); });
+document.addEventListener('click',function(e){ if(e.target.closest('.sidecta')) openPlanModal(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePlanModal(); });
+renderPlanModal();
+
 /* ============ INIT ============ */
 renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
 
@@ -944,7 +1001,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     {k:'setpieces',label:'Set pieces',icon:'target'},
     {k:'shape',label:'Team shape',icon:'layout-grid'},
     {group:'Physical'},
-    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM,svg:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1.3" y="8.5" width="3" height="7" rx="1.2"/><rect x="4.8" y="6" width="3.3" height="12" rx="1.3"/><rect x="7.7" y="10.6" width="8.6" height="2.8" rx="1"/><rect x="15.9" y="6" width="3.3" height="12" rx="1.3"/><rect x="19.7" y="8.5" width="3" height="7" rx="1.2"/></svg>'},
     {group:'People'},
     {k:'players',label:'Players',icon:'user',href:PLAYERS_HREF},
     {k:'squad',label:'Squad trends',icon:'trending-up'}
@@ -954,15 +1011,15 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     o=o||{}; var club=o.club||'Northbank FC', active=o.active||'', badge=(o.badge==null?'':o.badge);
     var actions=o.actions||[], topActs=actions.filter(a=>!a.primary), primary=actions.filter(a=>a.primary)[0];
     var acts=topActs.map(a=>'<button class="btn">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>').join('');
-    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><span class="mark"></span>MERIDIAN</div><span class="sp"></span><span class="topclub">'+esc(club)+'</span>'+acts+'</header>';
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand"><svg class="brandlogo" viewBox="0 0 745 158" fill="currentColor"><path d="M12 97 L93 24 C102 15 110 12 117 12 C132 12 141 22 141 36 L141 89 Q141 95 145 91 L173 64 C181 56 187 54 194 54 C207 54 215 63 219 77 C222 87 223 98 223 113 L223 146 L211 146 C198 146 191 141 191 129 L191 98 Q191 92 187 94 L153 128 C144 138 134 143 123 143 C106 143 96 133 96 116 L96 65 Q96 59 92 63 L42 111 C35 118 27 124 16 124 Q12 124 12 119 Z"></path><g transform="translate(7,0) translate(259,125) scale(1.18) translate(-259,-125)"><path d="M259 125 V72 Q264 70 271 71 V77 C275 72 281 70 288 70 C295 70 301 73 304 79 C309 73 315 70 322 70 C332 70 337 78 337 93 V125 H324 V93 C324 85 321 82 315 82 C308 82 304 87 304 95 V125 H291 V93 C291 85 287 82 281 82 C274 82 271 87 271 95 V125 Z"></path><path fill-rule="evenodd" d="M370 70 C354 70 343 81 343 98 C343 115 354 126 371 126 C382 126 390 121 395 113 L385 107 C382 112 377 115 371 115 C363 115 357 110 356 102 H397 V98 C397 81 387 70 370 70 Z M356 92 H384 C382 84 378 81 370 81 C363 81 358 85 356 92 Z"></path><path d="M403 125 V73 Q407 70 415 71 V79 C419 72 426 69 434 71 V83 C422 82 416 88 416 98 V125 Z"></path><path d="M440 71 H453 V125 H440 Z"></path><circle cx="446.5" cy="54" r="8.4"></circle><path fill-rule="evenodd" d="M503 47 H515 V125 H503 V118 C499 123 492 126 485 126 C469 126 458 114 458 98 C458 82 469 70 485 70 C492 70 499 73 503 78 Z M487 82 C477 82 471 88 471 98 C471 108 477 114 487 114 C496 114 503 108 503 98 C503 88 496 82 487 82 Z"></path><path d="M525 71 H538 V125 H525 Z"></path><circle cx="531.5" cy="54" r="8.4"></circle><path fill-rule="evenodd" d="M547 83 C551 74 559 70 570 70 C586 70 594 78 594 92 V113 C594 118 594.5 122 595 125 H583 L581 120 C577 124 571 126 564 126 C552 126 545 120 545 110 C545 99 554 95 567 93 L581 91 C580 84 576 81 569 81 C563 81 559 83 557 87 Z M581 101 L569 103 C561 104 557 107 557 111 C557 115 560 117 566 117 C575 117 581 112 581 104 Z"></path><path d="M603 125 V73 Q608 70 615 71 V78 C619 73 625 70 632 70 C646 70 653 79 653 93 V125 H640 V94 C640 86 636 82 630 82 C621 82 616 87 616 96 V125 Z"></path></g></svg></div><span class="sp"></span><span class="topclub">'+esc(club)+'</span>'+acts+'</header>';
     var items='';
     NAV.forEach(function(n){
       if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
       var isA=(n.k===active), href=n.href||'', bh=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
-      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'><i data-lucide="'+n.icon+'"></i><span class="lbl">'+n.label+'</span>'+bh+'</a>';
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+(n.svg||'<i data-lucide="'+n.icon+'"></i>')+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
     });
     var cta=primary?'<button class="btn primary sidecta"><i data-lucide="'+(primary.icon||'mic')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
-    var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar">YO</div><span class="pname lbl">Yohahn</span></div></div>';
+    var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Yohahn</span></div></div>';
     var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
     var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML='<aside class="side">'+items+foot+'</aside>';
     try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
@@ -970,7 +1027,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     icons();
   };
 })();
-MeridianShell({active:'gym',badge:7,club:'Northbank FC',actions:[{label:'Export',icon:'download'},{label:'Plan a session',icon:'mic',primary:true}]});
+MeridianShell({active:'gym',badge:7,club:'Northbank FC',actions:[{label:'Export',icon:'download'},{label:'Plan a session',icon:'plus',primary:true}]});
 </script>
 </body>
 </html>
