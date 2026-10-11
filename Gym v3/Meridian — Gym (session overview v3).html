@@ -67,7 +67,8 @@ button{font-family:var(--ff)}
 .navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .navtoggle svg{width:18px;height:18px}
 .side-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-separator);display:flex;flex-direction:column;gap:10px}
-.sidecta{width:100%;justify-content:center}
+.sidecta{width:100%;justify-content:center;background:#BDD8FF;border-color:transparent}
+.sidecta:hover{background:#A9CBFF}
 .profile{display:flex;align-items:center;gap:10px;padding:2px}
 .profile .pname{font-size:13px;font-weight:600;color:var(--color-text)}
 body.nav-collapsed{--side:64px}
@@ -164,9 +165,9 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .sr-check svg{width:18px;height:18px}
 .donepill{display:inline-flex;align-items:center;gap:5px;background:var(--c-plan-soft);color:var(--c-plan);font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:5px 11px}
 .donepill svg{width:14px;height:14px}
-.sublinerow{display:flex;align-items:center;gap:16px;margin-top:7px}
+.sublinerow{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:11px}
 .subline{font-size:13px;color:var(--color-text-soft)}
-.gymloc{margin-left:auto;margin-right:42px;display:flex;align-items:center;gap:5px;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
+.gymloc{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
 .gymloc svg{width:14px;height:14px}
 .headacts{display:flex;gap:10px;align-self:flex-start;padding-top:4px}
 .headacts .btn{height:40px}
@@ -1018,7 +1019,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
       var isA=(n.k===active), href=n.href||'', bh=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
       items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+(n.svg||'<i data-lucide="'+n.icon+'"></i>')+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
     });
-    var cta=primary?'<button class="btn primary sidecta"><i data-lucide="'+(primary.icon||'mic')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
+    var cta=primary?'<button class="btn sidecta"><i data-lucide="'+(primary.icon||'mic')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
     var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Yohahn</span></div></div>';
     var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
     var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML='<aside class="side">'+items+foot+'</aside>';
