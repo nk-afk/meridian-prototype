@@ -32,7 +32,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;corner-shape:squircle}
 /* keep true circles circular, not squircle */
-.avatar,.pnum,.brand .mark,.exc,.thumb .play,.sd{corner-shape:round}
+.avatar,.pnum,.brand .mark,.exc,.thumb .play,.sd,.dw-ex-thumb .pl span,.exlb-pbig span,.hl-play span{corner-shape:round}
 body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
 .num{font-variant-numeric:tabular-nums}
 .eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
@@ -179,6 +179,22 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 /* attendance + completion */
 .statspanel{padding:20px;margin-bottom:20px}
+/* session highlights banner */
+.highlightbox{display:flex;align-items:center;gap:18px;padding:14px 16px;margin-bottom:20px;cursor:pointer}
+.highlightbox:hover{background:var(--color-surface-subtle)}
+.hl-thumb{position:relative;width:128px;height:72px;border-radius:var(--r-md);overflow:hidden;flex:none;background:var(--color-surface-muted)}
+.hl-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hl-play{position:absolute;inset:0;display:grid;place-items:center}
+.hl-play span{width:34px;height:34px;border-radius:50%;background:rgba(17,24,39,.55);display:grid;place-items:center;color:#fff}
+.hl-play span svg{width:16px;height:16px;margin-left:2px}
+.hl-play span svg path{stroke:currentColor;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.hl-dur{position:absolute;right:5px;bottom:5px;background:rgba(17,24,39,.78);color:#fff;font-size:10px;font-weight:600;border-radius:4px;padding:1px 5px}
+.hl-text{flex:1;min-width:0}
+.hl-title{font-size:15px;font-weight:700;color:var(--color-text)}
+.hl-sub{font-size:12.5px;color:var(--color-text-soft);margin-top:2px}
+.hl-cta{flex:none;background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700}
+.hl-cta svg{width:15px;height:15px}
+@media(max-width:560px){.highlightbox{flex-wrap:wrap}.hl-cta{width:100%;justify-content:center}}
 .statgroups{display:flex}
 .statgroup{flex:1;padding:2px 0;min-width:0}
 .sg-sep{width:1px;background:var(--color-separator);margin:2px 32px}
@@ -266,6 +282,8 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .exg-count{margin-left:auto;font-size:13px;color:var(--color-text-soft);white-space:nowrap}
 .exitem>td{padding:11px 12px;border-bottom:1px solid var(--color-border-subtle);font-size:13.5px}
 .exitem .ex-name{padding-left:34px;color:var(--color-text)}
+.exitem.playable{cursor:pointer}
+.exitem.playable:hover>td{background:var(--color-surface-subtle)}
 .sti{display:inline-grid;place-items:center;width:20px;height:20px;vertical-align:middle}
 .sti svg{width:20px;height:20px}
 
@@ -295,7 +313,8 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .thumb{position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:16/9;background:var(--color-surface-muted);margin-bottom:10px}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .thumb .play{position:absolute;inset:0;margin:auto;width:44px;height:44px;border-radius:50%;background:rgba(17,24,39,.55);color:#fff;display:grid;place-items:center}
-.thumb .play svg{width:20px;height:20px;margin-left:2px}
+.thumb .play svg{width:26px;height:26px;margin-left:3px}
+.thumb .play svg path,.dw-ex-thumb .pl span svg path,.exlb-pbig span svg path{stroke:currentColor;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
 .thumb .dur{position:absolute;right:7px;bottom:7px;background:rgba(17,24,39,.75);color:#fff;font-size:11px;font-weight:600;border-radius:5px;padding:2px 6px}
 .cc-title{font-size:14px;font-weight:600}
 .cc-note{font-size:12.5px;color:var(--color-text-muted);margin-top:2px}
@@ -312,7 +331,9 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:94vw;background:var(--color-surface);box-shadow:var(--shadow-pop);transform:translateX(100%);transition:transform .22s ease;z-index:61;display:flex;flex-direction:column;overflow:auto}
 .drawer.open{transform:none}
 .dw-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--color-separator)}
-.dw-head .pnum{width:34px;height:34px}
+.dw-head .pnum{width:40px;height:40px}
+.dw-head .cc-name{font-size:16px}
+.dw-head .cc-prog{font-size:14px}
 .dw-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--color-border);background:none;border-radius:var(--r-md);cursor:pointer;display:grid;place-items:center;color:var(--color-text-soft)}
 .dw-close svg{width:16px;height:16px}
 .dw-body{padding:18px 20px;display:flex;flex-direction:column;gap:28px}
@@ -362,6 +383,29 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .dw-exleg span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
 .dw-exleg .lgi{width:18px;height:18px;display:inline-grid;place-items:center;flex:none}
 .dw-exleg .lgi svg{width:18px;height:18px}
+/* per-exercise video thumbnail (YouTube-style) */
+.dw-ex-thumb{position:relative;width:76px;height:46px;border-radius:7px;overflow:hidden;flex:none;background:var(--color-surface-muted);cursor:pointer}
+.dw-ex-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.dw-ex-thumb .pl{position:absolute;inset:0;display:grid;place-items:center}
+.dw-ex-thumb .pl span{width:24px;height:24px;border-radius:50%;background:rgba(17,24,39,.6);display:grid;place-items:center;color:#fff}
+.dw-ex-thumb .pl span svg{width:13px;height:13px;margin-left:1px}
+.dw-ex-thumb:hover .pl span{background:var(--color-primary)}
+.dw-ex-thumb .dur{position:absolute;right:3px;bottom:3px;background:rgba(0,0,0,.78);color:#fff;font-size:9px;font-weight:600;border-radius:3px;padding:0 3px;font-variant-numeric:tabular-nums}
+.dw-ex-thumb.nofoot{cursor:default;display:grid;place-items:center;border:1px dashed var(--color-border)}
+.dw-ex-thumb.nofoot svg{width:18px;height:18px;color:var(--color-text-disabled)}
+/* exercise clip lightbox */
+.exlb{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(17,24,39,.55);padding:24px}
+.exlb.open{display:flex}
+.exlb-card{background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);width:min(560px,94vw);overflow:hidden;position:relative}
+.exlb-x{position:absolute;top:10px;right:10px;z-index:2;width:30px;height:30px;border-radius:var(--r-md);border:0;background:rgba(17,24,39,.5);color:#fff;cursor:pointer;display:grid;place-items:center}
+.exlb-x svg{width:16px;height:16px}
+.exlb-video{position:relative;aspect-ratio:16/9;background:#000}
+.exlb-video img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.exlb-pbig{position:absolute;inset:0;display:grid;place-items:center}
+.exlb-pbig span{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#111827}
+.exlb-pbig span svg{width:26px;height:26px;margin-left:3px}
+.exlb-cap{padding:14px 16px 3px;font-size:15px;font-weight:700}
+.exlb-note{padding:0 16px 16px;font-size:12px;color:var(--color-text-soft)}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--color-text);color:#fff;font-size:13px;font-weight:500;border-radius:var(--r-md);padding:10px 16px;display:flex;align-items:center;gap:12px;opacity:0;pointer-events:none;transition:all .2s;z-index:70}
@@ -423,7 +467,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
       <div class="titleline">
         <button class="sessnav" id="sessPrev" aria-label="Previous session"><i data-lucide="chevron-left"></i></button>
         <div class="sesstitle-wrap">
-          <button class="sesstitle-btn" id="sessTitleBtn"><h1 id="sessTitle">Upper body</h1><i data-lucide="chevron-down" class="st-chev"></i></button>
+          <button class="sesstitle-btn" id="sessTitleBtn"><h1 id="sessTitle">Mobility</h1><i data-lucide="chevron-down" class="st-chev"></i></button>
           <div class="sesspop" id="sessPop" hidden></div>
         </div>
         <button class="sessnav" id="sessNext" aria-label="Next session"><i data-lucide="chevron-right"></i></button>
@@ -453,6 +497,16 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
             <div class="sg-title">Completion</div>
             <div class="sg-rows" id="compRows"></div>          </div>
         </div>
+      </div>
+
+      <!-- session highlights -->
+      <div class="panel highlightbox" id="highlightBox">
+        <div class="hl-thumb"><img src="https://picsum.photos/seed/sessionhl/320/180" alt="" loading="lazy"><span class="hl-play"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span><span class="hl-dur">1:28</span></div>
+        <div class="hl-text">
+          <div class="hl-title">Session highlights</div>
+          <div class="hl-sub">A short recap of the key moments from this session</div>
+        </div>
+        <button class="btn hl-cta" id="hlCta"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>View session highlight</button>
       </div>
 
       <!-- player completion -->
@@ -489,6 +543,14 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer"></aside>
 <div class="toast" id="toast"></div>
+<div class="exlb" id="exLightbox">
+  <div class="exlb-card">
+    <button class="exlb-x" id="exlbClose" aria-label="Close"><i data-lucide="x"></i></button>
+    <div class="exlb-video"><img id="exlbImg" src="" alt=""><span class="exlb-pbig"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></span></div>
+    <div class="exlb-cap" id="exlbCap"></div>
+    <div class="exlb-note">Clip playback is illustrative in this prototype.</div>
+  </div>
+</div>
 
 <div class="modal-scrim" id="planScrim"></div>
 <div class="planmodal" id="planModal" role="dialog" aria-modal="true" aria-label="Plan a session">
@@ -547,6 +609,7 @@ const EXPLAYERS=[
  {n:'19',prog:'Posterior chain',ex:[['Copenhagen hold',3,3],['Nordic curl',3,1]]},
  {n:'20',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Romanian deadlift',4,3],['Nordic curl',3,3]]},
  {n:'21',prog:'Posterior chain',ex:[['Nordic curl',3,0],['Copenhagen hold',3,0],['Hip thrust',3,0]]},
+ {n:'22',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,2]]},
 ];
 /* ---- session plan (what the S&C coach prescribed for the session) ---- */
 const PLAN_FOCUS="Primary emphasis on upper-body pushing strength with posterior-chain resilience. Keep main-lift RPE at or below 8. Cut a set if bar speed drops. Rehab-block players work to their individual return-to-play loads.";
@@ -712,8 +775,10 @@ function renderExercises(host,foot){
   rows.forEach(p=>{
     const col=exCollapsed.has(p.n);
     h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${exComplete(p)} of ${p.ex.length} exercises</span></div></td></tr>`;
-    p.ex.forEach(e=>{
-      h+=`<tr class="exitem" data-gi="${p.n}"${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(e[2])}</td><td class="ex-c">${stIcon(exStatus(e))}</td></tr>`;
+    p.ex.forEach((e,i)=>{
+      const playable = exStatus(e)!=='notstarted';
+      const attr = playable ? ` data-exp="${p.n}" data-exi="${i}" data-exn="${e[0]}" title="Play clip"` : '';
+      h+=`<tr class="exitem${playable?' playable':''}" data-gi="${p.n}"${attr}${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(e[2])}</td><td class="ex-c">${stIcon(exStatus(e))}</td></tr>`;
     });
   });
   h+='</tbody></table>';
@@ -728,7 +793,7 @@ function renderRail(){
   let cc=clips.map(p=>`
     <div class="clipcard">
       <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
-      <div class="thumb" data-clip="${p.n}"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt="" loading="lazy"><span class="play"><i data-lucide="play"></i></span><span class="dur">00:12</span></div>
+      <div class="thumb" data-clip="${p.n}"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>
       <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
       <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
     </div>`).join('');
@@ -750,18 +815,29 @@ function renderRail(){
 }
 
 /* ============ DRAWER ============ */
+const PLAY_TRI='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+const VIDEO_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h8A1.5 1.5 0 0 1 15 6.5v11A1.5 1.5 0 0 1 13.5 19h-8A1.5 1.5 0 0 1 4 17.5zM16.5 9.6l3.3-2.2a.8.8 0 0 1 1.2.7v7.8a.8.8 0 0 1-1.2.7l-3.3-2.2z"/></svg>';
+const VIDEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="M10 6h4a2 2 0 0 1 2 2v2"/><path d="m22 8-5 4 5 4V8z"/><path d="M2 2l20 20"/></svg>';
+function exThumbNo(){ return '<div class="dw-ex-thumb nofoot" title="No footage captured">'+VIDEOFF_SVG+'</div>'; }
+function exThumb(n,i,name,status){
+  if(status==='notstarted') return exThumbNo();
+  const dur='0:'+String(10+i*4).padStart(2,'0');
+  return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exi="'+i+'" data-exn="'+name+'">'
+    +'<img src="https://picsum.photos/seed/gymex'+n+'-'+i+'/200/120" alt="" loading="lazy">'
+    +'<span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+dur+'</span></div>';
+}
 function exerciseSection(n,notObserved){
   const ep=EXPLAYERS.find(x=>x.n===n);
   if(!ep) return '';
   if(notObserved){
-    const rows=ep.ex.map(e=>`
-      <div class="dw-exrow"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} set${e[1]===1?'':'s'} · not observed</div></div>${stIcon('notstarted')}</div>`).join('');
+    const rows=ep.ex.map((e,i)=>`
+      <div class="dw-exrow">${exThumbNo()}<div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} set${e[1]===1?'':'s'} · not observed</div></div>${stIcon('notstarted')}</div>`).join('');
     const note=`<div class="dw-exleg"><span><span class="lgi">${stIcon('notstarted')}</span>Not observed: no capture recorded for this exercise</span></div>`;
     return `<div class="dw-sec"><div class="l dw-exc-head">Prescribed exercises <span class="dw-exc-count">${ep.ex.length} assigned</span></div><div class="dw-exlist">${rows}</div>${note}</div>`;
   }
   const done=ep.ex.filter(e=>exStatus(e)==='complete').length;
-  const rows=ep.ex.map(e=>`
-    <div class="dw-exrow"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} · Done ${e[2]} set${e[2]===1?'':'s'}</div></div>${stIcon(exStatus(e))}</div>`).join('');
+  const rows=ep.ex.map((e,i)=>`
+    <div class="dw-exrow">${exThumb(n,i,e[0],exStatus(e))}<div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} · Done ${e[2]} set${e[2]===1?'':'s'}</div></div>${stIcon(exStatus(e))}</div>`).join('');
   const legend=`<div class="dw-exleg"><span><span class="lgi">${legIcon()}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span><span><span class="lgi">${stIcon('notstarted')}</span>Not started</span></div>`;
   return `<div class="dw-sec"><div class="l dw-exc-head">Assigned exercises <span class="dw-exc-count num">${done} of ${ep.ex.length} completed</span></div><div class="dw-exlist">${rows}</div>${legend}</div>`;
 }
@@ -777,14 +853,14 @@ function openClip(n){
   if(isRev){
     tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>Confirm this was recorded as prescribed before it counts toward the session totals, or correct what was actually done.</p></div>
       <div class="dw-sec"><div class="l">Your verdict</div>
-        <div class="verdicts"><button class="vbtn confirm" data-v="Confirmed">Confirm</button><button class="vbtn" data-v="Corrected">Correct</button><button class="vbtn" data-v="Dismissed">Dismiss</button></div>
-        <p class="dw-note" style="margin-top:10px">Confirm → counts as prescribed · Correct → staff enter actuals · Dismiss → stays unverified.<br>Meridian never decides.</p>
+        <div class="verdicts"><button class="vbtn" data-v="Confirmed">Confirm</button><button class="vbtn" data-v="Corrected">Correct</button><button class="vbtn" data-v="Dismissed">Dismiss</button></div>
+        <p class="dw-note" style="margin-top:10px">Confirm → counts as prescribed · Correct → staff enter actuals · Dismiss → stays unverified.</p>
       </div>`+exerciseSection(p.n);
   } else if(isNot){
     tail=`<div class="dw-sec forcoach"><div class="l">For the coach</div><p>No capture isn't proof of absence. It can be a camera gap or a blind spot the cameras missed. If this player trained, log it so the session record is accurate.</p></div>
       <div class="dw-sec"><div class="l">Did this player train?</div>
-        <div class="verdicts"><button class="vbtn confirm" data-pres="present">Player was present</button><button class="vbtn" data-pres="absent">Confirm absent</button></div>
-        <p class="dw-note" style="margin-top:10px">Present → logged by staff and added to the session · Absent → stays not observed, marked confirmed.<br>Meridian never decides.</p>
+        <div class="verdicts"><button class="vbtn" data-pres="present">Player was present</button><button class="vbtn" data-pres="absent">Confirm absent</button></div>
+        <p class="dw-note" style="margin-top:10px">Present → logged by staff and added to the session · Absent → stays not observed, marked confirmed.</p>
       </div>`+exerciseSection(p.n,true);
   } else {
     const exSec=exerciseSection(p.n) || `<div class="dw-sec"><div class="l">Exercise checks</div>${exDots(p.ex)}</div>`;
@@ -793,8 +869,7 @@ function openClip(n){
   dw.innerHTML=`
     <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
-      ${isRev?`<div class="thumb"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt=""><span class="play"><i data-lucide="play"></i></span><span class="dur">00:12</span></div>
-      <div class="dw-sec"><div class="l">Clip</div><p><b>${p.clip.title}</b></p></div>`:''}
+      ${isRev?`<div class="thumb"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
       <div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>
       ${tail}
     </div>`;
@@ -882,7 +957,7 @@ let selected=new Date(2026,8,8);
 const SESSIONS=[
   {name:'Strength',start:'09:00',end:'10:05',cams:4},
   {name:'Rehab',start:'12:30',end:'13:20',cams:4},
-  {name:'Upper body',start:'15:00',end:'16:05',cams:4},
+  {name:'Mobility',start:'15:00',end:'16:05',cams:4},
 ];
 let sessIdx=2;
 function weekStartSun(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x;} /* Monday-first */
@@ -993,6 +1068,26 @@ document.addEventListener('click',function(e){ if(e.target.closest('.sidecta')) 
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePlanModal(); });
 renderPlanModal();
 
+/* ---- per-exercise clip lightbox ---- */
+function openExClip(p,i,name){
+  document.getElementById('exlbImg').src='https://picsum.photos/seed/gymex'+p+'-'+i+'/640/360';
+  document.getElementById('exlbCap').textContent='Player '+p+' · '+name;
+  document.getElementById('exLightbox').classList.add('open');
+  icons();
+}
+function closeExClip(){ document.getElementById('exLightbox').classList.remove('open'); }
+function openHighlight(){
+  document.getElementById('exlbImg').src='https://picsum.photos/seed/sessionhl/640/360';
+  document.getElementById('exlbCap').textContent='Session highlights · '+SESSIONS[sessIdx].name;
+  document.getElementById('exLightbox').classList.add('open');
+  icons();
+}
+document.getElementById('highlightBox').addEventListener('click',openHighlight);
+document.getElementById('exlbClose').onclick=closeExClip;
+document.getElementById('exLightbox').addEventListener('click',function(e){ if(e.target.id==='exLightbox') closeExClip(); });
+document.addEventListener('click',function(e){ const t=e.target.closest('[data-exp]'); if(t){ e.stopPropagation(); openExClip(t.dataset.exp,t.dataset.exi,t.dataset.exn); } });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeExClip(); });
+
 /* ============ INIT ============ */
 renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
 
@@ -1002,16 +1097,16 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
   var PLAYERS_HREF="../Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
   var GYM="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
   var NAV=[
-    {k:'home',label:'Home',icon:'home',href:HOME,badge:true},
+    {k:'home',label:'Home',icon:'home',href:HOME,badge:true,solid:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.33 2.56a1 1 0 0 1 1.34 0l8 7.17a1 1 0 0 1 .33.74V20a1.5 1.5 0 0 1-1.5 1.5H15V15.5a1.5 1.5 0 0 0-1.5-1.5h-3A1.5 1.5 0 0 0 9 15.5V21.5H4.5A1.5 1.5 0 0 1 3 20v-9.53a1 1 0 0 1 .33-.74z"/></svg>'},
     {group:'Tactical intelligence'},
     {k:'pressing',label:'Pressing',icon:'gauge'},
     {k:'scanning',label:'Scanning',icon:'eye'},
     {k:'setpieces',label:'Set pieces',icon:'target'},
     {k:'shape',label:'Team shape',icon:'layout-grid'},
     {group:'Physical'},
-    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM,svg:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1.3" y="8.5" width="3" height="7" rx="1.2"/><rect x="4.8" y="6" width="3.3" height="12" rx="1.3"/><rect x="7.7" y="10.6" width="8.6" height="2.8" rx="1"/><rect x="15.9" y="6" width="3.3" height="12" rx="1.3"/><rect x="19.7" y="8.5" width="3" height="7" rx="1.2"/></svg>'},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM,line:'<svg viewBox="0 0 256 256" fill="currentColor"><path d="M248,120h-8V88a16,16,0,0,0-16-16H208V64a16,16,0,0,0-16-16H168a16,16,0,0,0-16,16v56H104V64A16,16,0,0,0,88,48H64A16,16,0,0,0,48,64v8H32A16,16,0,0,0,16,88v32H8a8,8,0,0,0,0,16h8v32a16,16,0,0,0,16,16H48v8a16,16,0,0,0,16,16H88a16,16,0,0,0,16-16V136h48v56a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16v-8h16a16,16,0,0,0,16-16V136h8a8,8,0,0,0,0-16ZM32,168V88H48v80Zm56,24H64V64H88V192Zm104,0H168V64h24V175.82c0,.06,0,.12,0,.18s0,.12,0,.18V192Zm32-24H208V88h16Z"/></svg>',solid:'<svg viewBox="0 0 256 256" fill="currentColor"><path d="M200,64V192a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V136H104v56a16,16,0,0,1-16,16H72a16,16,0,0,1-16-16V64A16,16,0,0,1,72,48H88a16,16,0,0,1,16,16v56h48V64a16,16,0,0,1,16-16h16A16,16,0,0,1,200,64ZM36,72H32A16,16,0,0,0,16,88v32H8.27A8.18,8.18,0,0,0,0,127.47,8,8,0,0,0,8,136h8v32a16,16,0,0,0,16,16h4a4,4,0,0,0,4-4V76A4,4,0,0,0,36,72Zm220,55.47a8.18,8.18,0,0,0-8.25-7.47H240V88a16,16,0,0,0-16-16h-4a4,4,0,0,0-4,4V180a4,4,0,0,0,4,4h4a16,16,0,0,0,16-16V136h8A8,8,0,0,0,256,127.47Z"/></svg>'},
     {group:'People'},
-    {k:'players',label:'Players',icon:'user',href:PLAYERS_HREF},
+    {k:'players',label:'Players',icon:'user',href:PLAYERS_HREF,solid:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0 1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/></svg>'},
     {k:'squad',label:'Squad trends',icon:'trending-up'}
   ];
   function esc(s){return (s==null?'':String(s));}
@@ -1024,10 +1119,11 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     NAV.forEach(function(n){
       if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
       var isA=(n.k===active), href=n.href||'', bh=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
-      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+(n.svg||'<i data-lucide="'+n.icon+'"></i>')+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
+      var lin=n.line||'<i data-lucide="'+n.icon+'"></i>', ic=isA?(n.solid||lin):lin;
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+ic+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
     });
     var cta=primary?'<button class="btn sidecta"><i data-lucide="'+(primary.icon||'mic')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
-    var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Yohahn</span></div></div>';
+    var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Aman</span></div></div>';
     var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
     var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML='<aside class="side">'+items+foot+'</aside>';
     try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
