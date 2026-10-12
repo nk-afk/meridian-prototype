@@ -998,12 +998,11 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){
-  var HOME="../Meridian%20%E2%80%94%20Today%20(home)%20v1.html";
+  var HOME="Meridian%20%E2%80%94%20Home%20(week)%20v1.html";
   var PLAYERS_HREF="../Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
   var GYM="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
   var NAV=[
-    {k:'today',label:'Today',icon:'sun',href:HOME},
-    {k:'review',label:'Review queue',icon:'clipboard-list',href:HOME+'#queue',badge:true},
+    {k:'home',label:'Home',icon:'home',href:HOME,badge:true},
     {group:'Tactical intelligence'},
     {k:'pressing',label:'Pressing',icon:'gauge'},
     {k:'scanning',label:'Scanning',icon:'eye'},
