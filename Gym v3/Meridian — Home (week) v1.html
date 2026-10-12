@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian · Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --color-primary:#2B7FFF; --color-primary-text:#027BFC; --color-primary-hover:#1C6EF0;
+  --color-primary-soft:#EBF3FF; --color-primary-tint:#EBF3FF; --color-primary-border:#B4D1FF; --color-primary-ink:#027BFC;
+  --color-page:#F6F8FA; --color-surface:#FFFFFF; --color-surface-subtle:#F9FAFB; --color-surface-muted:#F1F5F9;
+  --color-border:#E5E7EB; --color-border-subtle:#EEF2F6; --color-separator:#E6EAF0;
+  --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF;
+  --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 16px 40px rgba(15,23,42,.18);
+  --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --side:240px; --top:52px;
+  --rail-inset:max(28px, calc((100vw - var(--side) - 1384px)/2 + 28px));
+  /* status palette */
+  --c-plan:#5CA423; --c-plan-soft:#EFFAE6;
+  --c-partial:#E58600; --c-partial-soft:#FFEED6;
+  --c-notobs:#9CA3AF; --c-notobs-soft:#EEF1F4;
+}
+*{margin:0;padding:0;box-sizing:border-box;corner-shape:squircle}
+.avatar,.pnum,.brand .mark,.cal-date.today{corner-shape:round}
+body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);-webkit-font-smoothing:antialiased}
+.eyebrow{font-size:11px;line-height:14px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--ff)}
+
+/* ---------- app shell ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--color-surface);border-bottom:1px solid var(--color-separator);display:flex;align-items:center;gap:14px;padding:0 var(--rail-inset) 0 20px;z-index:40}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.02em}
+.brandlogo{height:21px;width:auto;display:block;color:var(--color-text)}
+.topbar .sp{flex:1}
+.topclub{color:var(--color-text-soft);font-weight:600;font-size:13px;padding-right:14px;margin-right:2px;border-right:1px solid var(--color-separator)}
+.btn{font-size:13px;font-weight:600;border-radius:var(--r-lg);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.btn:hover{background:var(--color-surface-subtle)}
+.btn svg{width:16px;height:16px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
+.navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.navtoggle svg{width:18px;height:18px}
+.side{position:fixed;top:var(--top);bottom:0;left:0;width:var(--side);background:var(--color-surface);border-right:1px solid var(--color-separator);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto;z-index:30;transition:width .2s ease}
+.side .grp{margin:14px 8px 6px}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);border:1px solid transparent;color:var(--color-text-soft);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav svg{width:18px;height:18px;color:var(--color-text-soft)}
+.nav:hover{background:var(--color-surface-subtle)}
+.nav.active{background:var(--color-surface-muted);border-color:rgba(31,43,39,.03);color:var(--color-text);font-weight:600}
+.nav.active svg{color:var(--color-text)}
+.nav .badge{margin-left:auto;background:#FEF3C7;color:#92400E;font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
+.side-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-separator);display:flex;flex-direction:column;gap:10px}
+.sidecta{width:100%;justify-content:center;background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700}
+.sidecta:hover{background:#DCEAFF}
+.profile{display:flex;align-items:center;gap:10px;padding:2px}
+.profile .pname{font-size:13px;font-weight:600;color:var(--color-text)}
+body.nav-collapsed{--side:64px}
+body.nav-collapsed .side{padding:16px 8px}
+body.nav-collapsed .side .grp{display:none}
+body.nav-collapsed .nav{justify-content:center;padding:9px 0;gap:0}
+body.nav-collapsed .nav .lbl{display:none}
+body.nav-collapsed .nav .badge{position:absolute;top:1px;right:9px;margin:0}
+body.nav-collapsed .side-foot{align-items:center}
+body.nav-collapsed .sidecta{width:36px;padding:0}
+body.nav-collapsed .sidecta .lbl{display:none}
+body.nav-collapsed .profile .pname{display:none}
+.main{margin-left:var(--side);margin-top:var(--top);transition:margin-left .2s ease;padding-bottom:70px}
+
+/* ---------- calendar ---------- */
+.cal-wrap{max-width:1440px;margin:0 auto;padding:26px var(--rail-inset) 40px 28px}
+.cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.cal-eyebrow{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft);margin-bottom:8px}
+.cal-title{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em;color:var(--color-text)}
+.filters{display:inline-flex;background:var(--color-surface-muted);border-radius:var(--r-md);padding:3px}
+.fbtn{border:0;background:none;font-size:12.5px;font-weight:600;color:var(--color-text-soft);padding:6px 14px;border-radius:7px;cursor:pointer;font-family:inherit}
+.fbtn:hover{color:var(--color-text)}
+.fbtn.active{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-card)}
+
+.weekgrid{display:grid;grid-template-columns:repeat(7,1fr);background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden;min-height:600px}
+.daycol{padding:18px 14px;border-left:1px solid var(--color-separator);display:flex;flex-direction:column;gap:12px}
+.daycol:first-child{border-left:0}
+.cal-dayhead{display:flex;align-items:center;gap:10px;min-height:30px}
+.cal-dow{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600}
+.cal-date{font-size:18px;font-weight:700;color:var(--color-text);line-height:1;font-variant-numeric:tabular-nums}
+.cal-date.today{color:var(--color-primary-text);width:30px;height:30px;border:2px solid var(--color-primary-text);border-radius:50%;display:grid;place-items:center;font-size:14px}
+.cal-nosess{font-size:13px;color:var(--color-text-disabled);margin-top:2px}
+.cal-card{background:var(--color-surface-subtle);border:1px solid var(--color-border-subtle);border-radius:var(--r-md);padding:12px 13px;display:flex;flex-direction:column;gap:7px}
+a.cal-card{cursor:pointer}
+a.cal-card:hover{border-color:var(--color-border);background:var(--color-surface-muted)}
+.cal-time{font-size:12px;color:var(--color-text-soft);font-variant-numeric:tabular-nums}
+.cal-ctitle{font-size:15px;font-weight:600;color:var(--color-text);line-height:1.15}
+.cal-pill{font-size:11px;font-weight:600;border-radius:var(--r-pill);padding:2px 9px;align-self:flex-start}
+.cal-pill.ready{background:var(--c-plan-soft);color:var(--c-plan)}
+.cal-pill.checking{background:var(--c-partial-soft);color:var(--c-partial)}
+.cal-pill.planned,.cal-pill.notfilmed{background:var(--c-notobs-soft);color:var(--color-text-soft)}
+.cal-pill.planin{background:var(--color-primary-tint);color:var(--color-primary-text)}
+.cal-meta{font-size:11.5px;color:var(--color-text-soft);line-height:1.5}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:22px}
+.leg-item{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--color-text-muted);max-width:440px}
+.leg-item .cal-pill{flex:none}
+
+@media(max-width:1180px){.cal-title{font-size:26px}}
+@media(max-width:980px){.weekgrid{grid-template-columns:repeat(2,1fr)}.daycol{border-top:1px dashed var(--dot)}.daycol:nth-child(odd){border-left:0}}
+@media(max-width:920px){:root{--side:0px}.side{display:none}.cal-wrap{padding:32px 20px}}
+@media(max-width:640px){.weekgrid{grid-template-columns:1fr}.daycol{border-left:0}}
+</style>
+</head>
+<body>
+
+<div id="shell-top"></div>
+<div id="shell-side"></div>
+
+<main class="main">
+  <div class="cal-wrap">
+    <div class="cal-head">
+      <div>
+        <div class="cal-eyebrow" id="calEyebrow">Sessions · Week 37</div>
+        <h1 class="cal-title" id="calTitle">07–13 September 2026</h1>
+      </div>
+      <div class="filters" id="filters">
+        <button class="fbtn active" data-f="all">All</button>
+        <button class="fbtn" data-f="pitch">Pitch</button>
+        <button class="fbtn" data-f="gym">Gym</button>
+        <button class="fbtn" data-f="match">Match</button>
+      </div>
+    </div>
+    <div class="weekgrid" id="weekgrid"></div>
+    <div class="legend" id="legend"></div>
+  </div>
+</main>
+
+<script>
+/* ============ DATA ============ */
+const GYM_HREF="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
+const WEEK=[
+  {dow:'Mon',date:7,sessions:[{time:'10:00',title:'Recovery',status:'notfilmed',type:'other'}]},
+  {dow:'Tue',date:8,sessions:[{time:'10:30',title:'AM Pitch',status:'ready',type:'pitch',meta:'Set pieces'},{time:'15:00',title:'PM Gym 1',status:'ready',type:'gym'}]},
+  {dow:'Wed',date:9,sessions:[{time:'10:30',title:'AM Pitch',status:'ready',type:'pitch',meta:'Scanning · Pressing · Team shape'},{time:'15:00',title:'PM Gym 2',status:'checking',type:'gym'}]},
+  {dow:'Thu',date:10,today:true,sessions:[{time:'10:30',title:'AM Pitch',status:'planned',type:'pitch'},{time:'15:00',title:'PM Gym 3',status:'planned',type:'gym'}]},
+  {dow:'Fri',date:11,sessions:[{time:'10:30',title:'AM Pitch',status:'planned',type:'pitch'}]},
+  {dow:'Sat',date:12,sessions:[]},
+  {dow:'Sun',date:13,sessions:[{time:'15:00',title:'Match',status:'planned',type:'match'}]},
+];
+const STATUS={
+  ready:{label:'Ready', desc:'Filmed and processed. Reports are in.'},
+  checking:{label:'Checking', desc:'Filmed. Coverage is being checked before reports go out.'},
+  planin:{label:'Plan in', desc:'Coach plan entered. Each block will be filmed.'},
+  planned:{label:'Planned', desc:'On the calendar with no plan yet.'},
+  notfilmed:{label:'Not filmed', desc:'Recovery or off-site.'},
+};
+let filter='all';
+function icons(){ if(window.lucide) lucide.createIcons(); }
+
+/* ============ RENDER ============ */
+function renderWeek(){
+  const grid=document.getElementById('weekgrid');
+  grid.innerHTML=WEEK.map(d=>{
+    const shown=d.sessions.filter(s=>filter==='all'||s.type===filter);
+    const head=`<div class="cal-dayhead"><span class="cal-dow">${d.dow}</span><span class="cal-date${d.today?' today':''}">${String(d.date).padStart(2,'0')}</span></div>`;
+    let body;
+    if(!shown.length){
+      body=`<div class="cal-nosess">No session</div>`;
+    }else{
+      body=shown.map(s=>{
+        const tag=s.type==='gym'?'a':'div';
+        const href=s.type==='gym'?` href="${GYM_HREF}"`:'';
+        return `<${tag} class="cal-card"${href}>
+          <span class="cal-time">${s.time}</span>
+          <span class="cal-ctitle">${s.title}</span>
+          <span class="cal-pill ${s.status}">${STATUS[s.status].label}</span>
+          ${s.meta?`<span class="cal-meta">${s.meta}</span>`:''}
+        </${tag}>`;
+      }).join('');
+    }
+    return `<div class="daycol">${head}${body}</div>`;
+  }).join('');
+}
+function renderLegend(){
+  const order=['ready','checking','planin','planned','notfilmed'];
+  document.getElementById('legend').innerHTML=order.map(k=>
+    `<div class="leg-item"><span class="cal-pill ${k}">${STATUS[k].label}</span><span>${STATUS[k].desc}</span></div>`).join('');
+}
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn'); if(!b)return;
+  filter=b.dataset.f;
+  document.querySelectorAll('#filters .fbtn').forEach(x=>x.classList.toggle('active',x===b));
+  renderWeek();
+});
+renderWeek(); renderLegend();
+
+/* ============ MERIDIAN SHELL ============ */
+(function(){
+  var HOME="Meridian%20%E2%80%94%20Home%20(week)%20v1.html";
+  var PLAYERS_HREF="../Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
+  var GYM="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
+  var NAV=[
+    {k:'home',label:'Home',icon:'home',href:HOME,badge:true},
+    {group:'Tactical intelligence'},
+    {k:'pressing',label:'Pressing',icon:'gauge'},
+    {k:'scanning',label:'Scanning',icon:'eye'},
+    {k:'setpieces',label:'Set pieces',icon:'target'},
+    {k:'shape',label:'Team shape',icon:'layout-grid'},
+    {group:'Physical'},
+    {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM,svg:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="1.3" y="8.5" width="3" height="7" rx="1.2"/><rect x="4.8" y="6" width="3.3" height="12" rx="1.3"/><rect x="7.7" y="10.6" width="8.6" height="2.8" rx="1"/><rect x="15.9" y="6" width="3.3" height="12" rx="1.3"/><rect x="19.7" y="8.5" width="3" height="7" rx="1.2"/></svg>'},
+    {group:'People'},
+    {k:'players',label:'Players',icon:'user',href:PLAYERS_HREF},
+    {k:'squad',label:'Squad trends',icon:'trending-up'}
+  ];
+  function esc(s){return (s==null?'':String(s));}
+  window.MeridianShell=function(o){
+    o=o||{}; var club=o.club||'Northbank FC', active=o.active||'', badge=(o.badge==null?'':o.badge);
+    var actions=o.actions||[], topActs=actions.filter(a=>!a.primary), primary=actions.filter(a=>a.primary)[0];
+    var acts=topActs.map(a=>'<button class="btn">'+(a.icon?'<i data-lucide="'+a.icon+'"></i>':'')+esc(a.label)+'</button>').join('');
+    var logo='<svg class="brandlogo" viewBox="0 0 745 158" fill="currentColor"><path d="M12 97 L93 24 C102 15 110 12 117 12 C132 12 141 22 141 36 L141 89 Q141 95 145 91 L173 64 C181 56 187 54 194 54 C207 54 215 63 219 77 C222 87 223 98 223 113 L223 146 L211 146 C198 146 191 141 191 129 L191 98 Q191 92 187 94 L153 128 C144 138 134 143 123 143 C106 143 96 133 96 116 L96 65 Q96 59 92 63 L42 111 C35 118 27 124 16 124 Q12 124 12 119 Z"></path><g transform="translate(7,0) translate(259,125) scale(1.18) translate(-259,-125)"><path d="M259 125 V72 Q264 70 271 71 V77 C275 72 281 70 288 70 C295 70 301 73 304 79 C309 73 315 70 322 70 C332 70 337 78 337 93 V125 H324 V93 C324 85 321 82 315 82 C308 82 304 87 304 95 V125 H291 V93 C291 85 287 82 281 82 C274 82 271 87 271 95 V125 Z"></path><path fill-rule="evenodd" d="M370 70 C354 70 343 81 343 98 C343 115 354 126 371 126 C382 126 390 121 395 113 L385 107 C382 112 377 115 371 115 C363 115 357 110 356 102 H397 V98 C397 81 387 70 370 70 Z M356 92 H384 C382 84 378 81 370 81 C363 81 358 85 356 92 Z"></path><path d="M403 125 V73 Q407 70 415 71 V79 C419 72 426 69 434 71 V83 C422 82 416 88 416 98 V125 Z"></path><path d="M440 71 H453 V125 H440 Z"></path><circle cx="446.5" cy="54" r="8.4"></circle><path fill-rule="evenodd" d="M503 47 H515 V125 H503 V118 C499 123 492 126 485 126 C469 126 458 114 458 98 C458 82 469 70 485 70 C492 70 499 73 503 78 Z M487 82 C477 82 471 88 471 98 C471 108 477 114 487 114 C496 114 503 108 503 98 C503 88 496 82 487 82 Z"></path><path d="M525 71 H538 V125 H525 Z"></path><circle cx="531.5" cy="54" r="8.4"></circle><path fill-rule="evenodd" d="M547 83 C551 74 559 70 570 70 C586 70 594 78 594 92 V113 C594 118 594.5 122 595 125 H583 L581 120 C577 124 571 126 564 126 C552 126 545 120 545 110 C545 99 554 95 567 93 L581 91 C580 84 576 81 569 81 C563 81 559 83 557 87 Z M581 101 L569 103 C561 104 557 107 557 111 C557 115 560 117 566 117 C575 117 581 112 581 104 Z"></path><path d="M603 125 V73 Q608 70 615 71 V78 C619 73 625 70 632 70 C646 70 653 79 653 93 V125 H640 V94 C640 86 636 82 630 82 C621 82 616 87 616 96 V125 Z"></path></g></svg>';
+    var top='<header class="topbar"><button class="navtoggle" id="navToggle" aria-label="Collapse navigation"><i data-lucide="panel-left"></i></button><div class="brand">'+logo+'</div><span class="sp"></span><span class="topclub">'+esc(club)+'</span>'+acts+'</header>';
+    var items='';
+    NAV.forEach(function(n){
+      if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
+      var isA=(n.k===active), href=n.href||'', bh=n.badge?'<span class="badge">'+esc(badge)+'</span>':'';
+      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+(n.svg||'<i data-lucide="'+n.icon+'"></i>')+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
+    });
+    var cta=primary?'<button class="btn sidecta"><i data-lucide="'+(primary.icon||'plus')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
+    var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Yohahn</span></div></div>';
+    var th=document.getElementById('shell-top'); if(th) th.outerHTML=top;
+    var sh=document.getElementById('shell-side'); if(sh) sh.outerHTML='<aside class="side">'+items+foot+'</aside>';
+    try{ if(localStorage.getItem('meridian-nav-collapsed')==='1') document.body.classList.add('nav-collapsed'); }catch(e){}
+    var tg=document.getElementById('navToggle'); if(tg) tg.onclick=function(){ var cc=document.body.classList.toggle('nav-collapsed'); try{localStorage.setItem('meridian-nav-collapsed',cc?'1':'0');}catch(e){} };
+    icons();
+  };
+})();
+MeridianShell({active:'home',badge:7,club:'Northbank FC',actions:[{label:'Export',icon:'download'},{label:'Plan a session',icon:'plus',primary:true}]});
+</script>
+</body>
+</html>
