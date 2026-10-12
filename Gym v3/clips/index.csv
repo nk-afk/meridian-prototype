@@ -1,0 +1,8 @@
+file,player,exercise,set,start_s,end_s,reps
+player01_seated_row_set1_023.1s-042.1s_12reps.mp4,1,seated_row,1,23.1,42.1,12
+player01_seated_row_set2_098.7s-116.8s_9reps.mp4,1,seated_row,2,98.7,116.8,9
+player03_squat_set1_000.0s-028.3s_6reps.mp4,3,squat,1,0.0,28.3,6
+player03_squat_set2_160.5s-181.3s_5reps.mp4,3,squat,2,160.5,181.3,5
+player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4,8,triceps_pushdown,1,175.9,183.9,7
+player13_chest_fly_set1_108.0s-130.0s_14reps.mp4,13,chest_fly,1,108.0,130.0,14
+player20_leg_curl_set1_164.7s-167.9s_3reps.mp4,20,leg_curl,1,164.7,167.9,3
