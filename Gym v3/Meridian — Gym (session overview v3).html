@@ -17,16 +17,16 @@
   --color-text:#111827; --color-text-muted:#4B5563; --color-text-soft:#6B7280; --color-text-disabled:#9CA3AF; --color-text-inverse:#FFFFFF;
   --color-warning:#D97706; --color-warning-soft:#FEF3C7; --color-warning-ink:#92400E;
   /* status palette */
-  --c-plan:#16A34A; --c-plan-soft:#DCFCE7;
-  --c-partial:#EAB308; --c-partial-ink:#CA8A04; --c-partial-soft:#FEF9C3;
-  --c-review:#EA580C; --c-review-soft:#FFEDD5;
+  --c-plan:#5CA423; --c-plan-soft:#EFFAE6;
+  --c-partial:#E58600; --c-partial-ink:#E58600; --c-partial-soft:#FFEED6;
+  --c-review:#E50C00; --c-review-soft:#FFE7E5;
   --c-notobs:#9CA3AF; --c-notobs-soft:#EEF1F4;
   --c-dot:#16A34A; /* calendar session dot (green, per reference) */
   --sb-steel:#A3C9FF; --sb-steel2:#A3C9FF; --sb-grey:#AFAFBB; --sb-green:#9CDE68; --sb-gold:#FFB54D; --sb-clay:#FF8680;
   --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
   --shadow-card:0 1px 2px rgba(15,23,42,.04); --shadow-pop:0 16px 40px rgba(15,23,42,.18);
   --ff:"Inter Display","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --side:248px; --top:52px;
+  --side:240px; --top:52px;
   /* right inset that matches .wrap's content right edge (max-width 1420, 28px pad), at any width */
   --rail-inset:max(28px, calc((100vw - var(--side) - 1420px)/2 + 28px));
 }
@@ -67,8 +67,8 @@ button{font-family:var(--ff)}
 .navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .navtoggle svg{width:18px;height:18px}
 .side-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-separator);display:flex;flex-direction:column;gap:10px}
-.sidecta{width:100%;justify-content:center;background:#BDD8FF;border-color:transparent}
-.sidecta:hover{background:#A9CBFF}
+.sidecta{width:100%;justify-content:center;background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700}
+.sidecta:hover{background:#DCEAFF}
 .profile{display:flex;align-items:center;gap:10px;padding:2px}
 .profile .pname{font-size:13px;font-weight:600;color:var(--color-text)}
 body.nav-collapsed{--side:64px}
@@ -174,7 +174,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 .cols{display:flex;gap:20px;align-items:flex-start;margin-top:20px}
 .col-main{flex:1;min-width:0}
-.col-rail{width:320px;flex:none}
+.col-rail{width:328px;flex:none}
 .panel{background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card)}
 
 /* attendance + completion */
@@ -208,6 +208,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .ptabs{display:flex;gap:4px;border-bottom:1px solid var(--color-border);margin-bottom:4px}
 .ptab{border:0;background:none;font-size:13px;font-weight:500;color:var(--color-text-soft);padding:8px 12px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px}
 .ptab span{color:var(--color-text-soft);font-weight:500;font-size:12px}
+.ptab-dot{width:7px;height:7px;border-radius:50%;corner-shape:round;flex:none;display:inline-block}
 .ptab.active{color:var(--color-text);border-bottom-color:var(--color-primary-text);font-weight:600}
 .ptab.active span{color:var(--color-text);font-weight:600}
 
@@ -228,13 +229,14 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .exc-col .exrow{justify-content:center}
 .exc{width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;flex:none}
 .exc svg{width:12px;height:12px;stroke-width:3}
+.exc.p svg{stroke-width:4}
 .exc.o{background:var(--c-plan-soft);color:var(--c-plan)}
 .exc.p{background:var(--c-partial-soft);color:var(--c-partial-ink)}
 .exc.f{background:var(--c-review-soft);color:var(--c-review);font-size:12px;font-weight:800}
 .exc.n{background:var(--color-surface-muted)}
 .exc.n::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--color-text-disabled)}
 .stag{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600}
-.stag .sd{width:8px;height:8px;border-radius:50%;flex:none}
+.stag .sd{width:6px;height:6px;border-radius:50%;flex:none}
 .stag.plan{color:var(--c-plan)} .stag.partial{color:var(--c-partial-ink)} .stag.review{color:var(--c-review)} .stag.notobs{color:var(--color-text-soft)}
 .tdet{color:var(--color-text-muted)}
 .chev{color:var(--color-text-disabled)}
@@ -277,15 +279,18 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 /* right rail */
 .railcard{padding:16px 18px;margin-bottom:16px}
-.rc-head{display:flex;align-items:baseline;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:12px}
-.rc-head span{font-size:12px;color:var(--color-text-soft);font-weight:500}
+.rc-head{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:12px}
+.rc-count{font-size:12px;color:var(--color-text-soft);font-weight:500}
+.rc-title{display:inline-flex;align-items:center;gap:8px}
+.rc-ic{width:22px;height:22px;border-radius:50%;background:var(--c-review-soft);color:var(--c-review);display:inline-grid;place-items:center;flex:none;font-size:14px;font-weight:800;line-height:1}
+.rc-ic svg{width:14px;height:14px}
 .clipcard{border:1px solid var(--color-border);border-radius:var(--r-md);padding:12px;margin-bottom:12px}
 .clipcard:last-child{margin-bottom:0}
 .cc-top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
-.cc-top .pnum{width:26px;height:26px;font-size:11px}
-.cc-name{font-size:13.5px;font-weight:600}
-.cc-prog{font-size:11.5px;color:var(--color-text-soft)}
-.cc-flag{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--c-review)}
+.cc-top .pnum{width:32px;height:32px;font-size:11px}
+.cc-name{font-size:14px;font-weight:600}
+.cc-prog{font-size:12px;color:var(--color-text-soft);margin-top:2px}
+.cc-flag{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--c-review);background:var(--c-review-soft);padding:3px 9px;border-radius:var(--r-pill)}
 .cc-flag svg{width:13px;height:13px}
 .thumb{position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:16/9;background:var(--color-surface-muted);margin-bottom:10px}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -612,8 +617,11 @@ function renderTabs(){
   }
   const c=counts();
   const t=[['all','All',c.expected],['review','Needs review',c.review],['partial','Partial',c.partial],['notobs','Not observed',c.notobs]];
-  host.innerHTML=t.map(x=>
-    `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>(${x[2]})</span></button>`).join('');
+  const DOTC={review:'var(--c-review)',partial:'var(--c-partial)',notobs:'var(--c-notobs)'};
+  host.innerHTML=t.map(x=>{
+    const dot=DOTC[x[0]]?`<span class="ptab-dot" style="background:${DOTC[x[0]]}"></span>`:'';
+    return `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${dot}${x[1]} <span>(${x[2]})</span></button>`;
+  }).join('');
 }
 function exLegend(){
   return '<div class="exlegend">'
@@ -660,7 +668,7 @@ function renderTable(){
       <td><div class="pcell"><span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+p.n}.jpg" alt="" loading="lazy"></span><span class="pname">Player ${p.n}</span></div></td>
       <td>${p.prog}</td>
       <td class="exc-col">${exOne(p.st)}</td>
-      <td><span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span></td>
+      <td>${p.st==='plan'?'':`<span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span>`}</td>
       <td class="chev"><i data-lucide="chevron-right"></i></td></tr>`;
   });
   h+='</tbody></table>';
@@ -671,11 +679,11 @@ function renderTable(){
 function exStatus(e){ const pr=e[1], dn=e[2]; return dn>=pr?'complete':(dn>0?'partial':'notstarted'); }
 function exComplete(p){ return p.ex.map(exStatus).filter(s=>s==='complete').length; }
 function stIcon(s){
-  if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-  if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#EAB308" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#EAB308"/></svg></span>';
+  if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#5CA423" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#E58600" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#E58600"/></svg></span>';
   return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#CBD2D9" stroke-width="2"/></svg></span>';
 }
-function legIcon(){ return '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#16A34A"/><path d="M5.8 10.4l2.6 2.6 5.8-5.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+function legIcon(){ return '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#5CA423"/><path d="M5.8 10.4l2.6 2.6 5.8-5.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
 function filteredEx(){
   let rows=EXPLAYERS.slice();
   if(tab==='incomplete') rows=rows.filter(p=>exComplete(p)<p.ex.length);
@@ -719,18 +727,18 @@ function renderRail(){
   const clips=PLAYERS.filter(p=>p.st==='review');
   let cc=clips.map(p=>`
     <div class="clipcard">
-      <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div><span class="cc-flag"><i data-lucide="alert-circle"></i>Requires review</span></div>
+      <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
       <div class="thumb" data-clip="${p.n}"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt="" loading="lazy"><span class="play"><i data-lucide="play"></i></span><span class="dur">00:12</span></div>
       <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
       <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
     </div>`).join('');
   document.getElementById('rail').innerHTML=`
     <div class="panel railcard">
-      <div class="rc-head">Needs attention <span>${clips.length} player${clips.length===1?'':'s'}</span></div>
+      <div class="rc-head"><span class="rc-title"><span class="rc-ic">!</span>Needs attention</span><span class="rc-count" style="color:var(--color-text)">${clips.length}</span></div>
       ${cc||'<div style="font-size:13px;color:var(--color-text-soft)">Nothing waiting. Every player has a staff decision.</div>'}
     </div>
     <div class="panel railcard">
-      <div class="rc-head">Capture coverage <span>4 cameras</span></div>
+      <div class="rc-head">Capture coverage <span class="rc-count">4 cameras</span></div>
       <div class="cov"><i data-lucide="video"></i><span><b>${c.observed}</b> players observed</span></div>
       <div class="cov"><i data-lucide="video-off"></i><span><b>${c.notobs}</b> not observed</span></div>
       <a class="cc-cta" id="capLog">View capture log →</a>
@@ -881,14 +889,14 @@ function weekStartSun(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.get
 let viewStart=weekStartSun(selected);
 function isoDay(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
-function fmtLong(d){return DOW[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+' '+MONTHS[d.getMonth()];}
-function fmtLabel(d){return String(d.getDate()).padStart(2,'0')+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
+function fmtLong(d){return DOW[d.getDay()]+' '+d.getDate()+' '+MONTHS[d.getMonth()];}
+function fmtLabel(d){return d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
 function renderWeek(){
   let html='';
   for(let i=0;i<7;i++){
     const d=new Date(viewStart); d.setDate(viewStart.getDate()+i);
     const sel=sameDay(d,selected), future=d.getTime()>TODAY.getTime();
-    html+=`<button class="day${sel?' sel':''}${future?' future':''}" data-i="${i}"><span class="dow">${DOW[d.getDay()]}</span><span class="dnum num">${String(d.getDate()).padStart(2,'0')}</span></button>`;
+    html+=`<button class="day${sel?' sel':''}${future?' future':''}" data-i="${i}"><span class="dow">${DOW[d.getDay()]}</span><span class="dnum num">${d.getDate()}</span></button>`;
   }
   document.getElementById('days').innerHTML=html;
   document.getElementById('dateLabelTxt').textContent=fmtLabel(selected);
