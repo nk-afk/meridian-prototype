@@ -90,7 +90,7 @@ body.nav-collapsed .profile .pname{display:none}
 .sec-aux{font-size:13px;color:var(--color-text-soft)}
 
 /* today cards */
-.today-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.today-grid{display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:16px}
 .tc-viewport{overflow:hidden;border-radius:var(--r-lg)}
 .tc-track{display:flex;align-items:stretch;transition:transform .32s ease}
 .tc-track .acard{flex:0 0 100%;min-width:0}
@@ -450,15 +450,8 @@ function renderToday(){
     </a>`;
   }).join('');
   const wrap=document.getElementById('todayGrid');
-  if(info.length>=3){
-    wrap.innerHTML=`<div class="today-carousel"><div class="tc-viewport"><div class="tc-track" id="todayTrack">${cards}</div></div>`
-      +`<div class="tc-nav"><button class="tc-arrow" id="tcPrev" aria-label="Previous event"><i data-lucide="chevron-left"></i></button>`
-      +`<div class="tc-dots" id="tcDots">${info.map((_,i)=>`<button class="tc-dot${i===0?' active':''}" data-i="${i}" aria-label="Event ${i+1}"></button>`).join('')}</div>`
-      +`<button class="tc-arrow" id="tcNext" aria-label="Next event"><i data-lucide="chevron-right"></i></button></div></div>`;
-    tcIndex=0; tcInit();
-  }else{
-    wrap.innerHTML=`<div class="today-grid"${info.length===1?' style="grid-template-columns:1fr"':''}>${cards}</div>`;
-  }
+  // Show all cards at once (grid sized to the number of sessions). Carousel to come later.
+  wrap.innerHTML=`<div class="today-grid" style="--cols:${Math.max(info.length,1)}">${cards}</div>`;
 }
 function tcInit(){
   const track=document.getElementById('todayTrack'); if(!track) return;
