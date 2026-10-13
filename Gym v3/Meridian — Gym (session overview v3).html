@@ -323,6 +323,12 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .cov{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-muted);margin-bottom:6px}
 .cov svg{width:18px;height:18px;color:var(--color-text-soft)}
 .cov b{color:var(--color-text);font-weight:700}
+.camgrid{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.camrow{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--color-text)}
+.camrow .camdot{width:7px;height:7px;border-radius:50%;background:var(--c-plan);flex:none}
+.camrow b{font-weight:700}
+.camrow .camzone{color:var(--color-text-soft)}
+.camnote{font-size:12px;color:var(--color-text-soft);line-height:1.55;margin-top:12px;padding-top:11px;border-top:1px solid var(--color-border-subtle)}
 .railfoot{font-size:11px;color:var(--color-text-disabled);text-align:center;padding:4px}
 
 /* drawer */
@@ -807,9 +813,14 @@ function renderRail(){
       ${cc||'<div style="font-size:13px;color:var(--color-text-soft)">Nothing waiting. Every player has a staff decision.</div>'}
     </div>
     <div class="panel railcard">
-      <div class="rc-head">Capture coverage <span class="rc-count">4 cameras</span></div>
-      <div class="cov"><i data-lucide="video"></i><span><b>${c.observed}</b> players observed</span></div>
-      <div class="cov"><i data-lucide="video-off"></i><span><b>${c.notobs}</b> not observed</span></div>
+      <div class="rc-head">Capture coverage <span class="rc-count">4 ceiling cameras</span></div>
+      <div class="camgrid">
+        <div class="camrow"><span class="camdot"></span><b>Cam 1</b><span class="camzone">Squat racks & platforms</span></div>
+        <div class="camrow"><span class="camdot"></span><b>Cam 2</b><span class="camzone">Benches & free weights</span></div>
+        <div class="camrow"><span class="camdot"></span><b>Cam 3</b><span class="camzone">Cable & resistance machines</span></div>
+        <div class="camrow"><span class="camdot"></span><b>Cam 4</b><span class="camzone">Mobility & rehab area</span></div>
+      </div>
+      <div class="camnote">Ceiling-mounted, covering the main floor. A blind spot behind the cable stack can clip the last reps of a set — today's review flags are coverage gaps, not form calls.</div>
       <a class="cc-cta" id="capLog">View capture log →</a>
     </div>
     <div class="railfoot">Illustrative data</div>`;
