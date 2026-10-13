@@ -1074,11 +1074,11 @@ renderPlanModal();
 /* ---- per-exercise clip lightbox ---- */
 /* real captured clips (hosted in the repo at Gym v3/clips/), keyed by player|exercise */
 const CLIPS={
-  '01|Seated row':{src:'clips/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',note:'Set 1 · 12 reps · 00:23–00:42',poster:'clips/poster_01_seated_row.jpg'},
-  '03|Squat':{src:'clips/player03_squat_set1_000.0s-028.3s_6reps.mp4',note:'Set 1 · 6 reps · 00:00–00:28',poster:'clips/poster_03_squat.jpg'},
-  '08|Triceps pushdown':{src:'clips/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',note:'Set 1 · 7 reps · 02:56–03:04',poster:'clips/poster_08_triceps_pushdown.jpg'},
-  '13|Chest fly':{src:'clips/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',note:'Set 1 · 14 reps · 01:48–02:10',poster:'clips/poster_13_chest_fly.jpg'},
-  '20|Leg curl':{src:'clips/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',note:'Set 1 · 3 reps · 02:44–02:48',poster:'clips/poster_20_leg_curl.jpg'},
+  '01|Seated row':{src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',note:'Set 1 · 12 reps · 00:23–00:42',poster:'clips_zoomed/poster_01_seated_row.jpg'},
+  '03|Squat':{src:'clips_zoomed/player03_squat_set1_000.0s-028.3s_6reps.mp4',note:'Set 1 · 6 reps · 00:00–00:28',poster:'clips_zoomed/poster_03_squat.jpg'},
+  '08|Triceps pushdown':{src:'clips_zoomed/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',note:'Set 1 · 7 reps · 02:56–03:04',poster:'clips_zoomed/poster_08_triceps_pushdown.jpg'},
+  '13|Chest fly':{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',note:'Set 1 · 14 reps · 01:48–02:10',poster:'clips_zoomed/poster_13_chest_fly.jpg'},
+  '20|Leg curl':{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',note:'Set 1 · 3 reps · 02:44–02:48',poster:'clips_zoomed/poster_20_leg_curl.jpg'},
 };
 const FULL_SESSION_SRC='clips/Full%20session%20video.mp4';
 function lbEls(){ return {v:document.getElementById('exlbVideo'),img:document.getElementById('exlbImg'),play:document.getElementById('exlbPlay'),note:document.getElementById('exlbNote'),cap:document.getElementById('exlbCap')}; }
