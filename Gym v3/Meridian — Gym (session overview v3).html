@@ -569,12 +569,12 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 <script>
 /* ============ DATA ============ */
 const PLAYERS=[
- {n:'07',prog:'Upper push',st:'review',ex:['f','n','n'],det:'Bench press flagged',clip:{title:'Bench press',note:'Outside usual range · 92.5 kg top set',seed:'bench07',cta:'Review clip'}},
- {n:'14',prog:'Lower body',st:'review',ex:['f','n','n'],det:'Clip needs review',clip:{title:'Lower body',note:'Clip needs review · partial occlusion',seed:'lower14',cta:'Open evidence'}},
+ {n:'07',prog:'Upper push',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
+ {n:'14',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
  {n:'05',prog:'Rehab block',st:'partial',ex:['o','o','p'],det:'2 of 3 exercises observed'},
- {n:'09',prog:'Posterior chain',st:'partial',ex:['o','o','o','p'],det:'3 of 4 exercises observed'},
- {n:'17',prog:'Lower body',st:'partial',ex:['o','o','p'],det:'2 of 3 exercises observed'},
- {n:'22',prog:'Upper push',st:'partial',ex:['o','o','p'],det:'2 of 3 exercises observed'},
+ {n:'09',prog:'Posterior chain',st:'plan',ex:['o','o','o','o'],det:'All prescribed exercises'},
+ {n:'17',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
+ {n:'22',prog:'Upper push',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
  {n:'01',prog:'Upper push',st:'review',ex:['f'],det:'Seated row flagged for review',clip:{title:'Seated row',note:'Recorded in full. Needs a coach review before it counts.',seed:'seated01',exn:'Seated row',poster:'clips_zoomed/poster_01_seated_row.jpg'}},
  {n:'03',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
  {n:'04',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
@@ -597,20 +597,20 @@ const EXPLAYERS=[
  {n:'04',prog:'Lower body',ex:[['Goblet squat',3,2],['Rear-foot split squat',3,0]]},
  {n:'05',prog:'Rehab block',ex:[['Spanish squat',3,3],['Calf isometric',4,4],['Band walk',3,2]]},
  {n:'06',prog:'Upper push',ex:[['Bench press',3,3],['Cable row',3,3]]},
- {n:'07',prog:'Upper push',flag:true,ex:[['Bench press',3,3],['Overhead press',3,1],['Incline dumbbell press',3,0]]},
+ {n:'07',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Incline dumbbell press',3,3]]},
  {n:'08',prog:'Upper push',ex:[['Triceps pushdown',1,1]]},
- {n:'09',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Nordic curl',3,2],['Copenhagen hold',3,3]]},
+ {n:'09',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Nordic curl',3,3],['Copenhagen hold',3,3]]},
  {n:'10',prog:'Posterior chain',ex:[['Romanian deadlift',4,4],['Hip thrust',3,3]]},
  {n:'11',prog:'Posterior chain',ex:[['Nordic curl',3,3],['Copenhagen hold',3,3],['Hip thrust',3,3]]}, {n:'13',prog:'Upper push',ex:[['Chest fly',1,1]]},
- {n:'14',prog:'Lower body',flag:true,ex:[['Rear-foot split squat',3,0],['Hamstring curl',3,3],['Step-up',3,2]]},
+ {n:'14',prog:'Lower body',ex:[['Rear-foot split squat',3,3],['Hamstring curl',3,3],['Step-up',3,3]]},
  {n:'15',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Hamstring curl',3,2]]},
  {n:'16',prog:'Upper push',ex:[['Bench press',3,0],['Overhead press',3,0]]},
- {n:'17',prog:'Upper push',ex:[['Cable row',3,3],['Incline dumbbell press',3,2]]},
+ {n:'17',prog:'Upper push',ex:[['Cable row',3,3],['Incline dumbbell press',3,3]]},
  {n:'18',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,3]]},
  {n:'19',prog:'Posterior chain',ex:[['Copenhagen hold',3,3],['Nordic curl',3,1]]},
  {n:'20',prog:'Posterior chain',ex:[['Leg curl',1,1]]},
  {n:'21',prog:'Posterior chain',ex:[['Nordic curl',3,0],['Copenhagen hold',3,0],['Hip thrust',3,0]]},
- {n:'22',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,2]]},
+ {n:'22',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,3]]},
 ];
 /* ---- session plan (what the S&C coach prescribed for the session) ---- */
 const PLAN_FOCUS="Primary emphasis on upper-body pushing strength with posterior-chain resilience. Keep main-lift RPE at or below 8. Cut a set if bar speed drops. Rehab-block players work to their individual return-to-play loads.";
