@@ -392,7 +392,8 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 /* per-exercise video thumbnail (YouTube-style) */
 .dw-ex-thumbs{display:flex;gap:6px;flex:none}
 .dw-ex-thumb{position:relative;width:76px;height:46px;border-radius:7px;overflow:hidden;flex:none;background:var(--color-surface-muted);cursor:pointer}
-.dw-ex-thumb.blank{cursor:default;background:var(--color-surface-muted)}
+.dw-ex-thumb.blank{cursor:default;background:var(--color-surface-muted) center/cover no-repeat url('clips/placeholder_thumb.jpg')}
+.thumb.blank{background:var(--color-surface-muted) center/cover no-repeat url('clips/placeholder_thumb.jpg')}
 .dw-ex-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .dw-ex-thumb .pl{position:absolute;inset:0;display:grid;place-items:center}
 .dw-ex-thumb .pl span{width:24px;height:24px;border-radius:50%;background:rgba(17,24,39,.6);display:grid;place-items:center;color:#fff}
