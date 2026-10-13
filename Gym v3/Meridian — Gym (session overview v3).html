@@ -746,6 +746,7 @@ function exComplete(p){ return p.ex.map(exStatus).filter(s=>s==='complete').leng
 function stIcon(s){
   if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#5CA423" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#E58600" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#E58600"/></svg></span>';
+  if(s==='review') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#E50C00"/><rect x="9" y="4.8" width="2" height="7" rx="1" fill="#fff"/><circle cx="10" cy="14.6" r="1.2" fill="#fff"/></svg></span>';
   return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#CBD2D9" stroke-width="2"/></svg></span>';
 }
 function legIcon(){ return '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#5CA423"/><path d="M5.8 10.4l2.6 2.6 5.8-5.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
@@ -843,11 +844,25 @@ function exerciseSection(n,notObserved){
     const note=`<div class="dw-exleg"><span><span class="lgi">${stIcon('notstarted')}</span>Not observed: no capture recorded for this exercise</span></div>`;
     return `<div class="dw-sec"><div class="l dw-exc-head">Prescribed exercises <span class="dw-exc-count">${ep.ex.length} assigned</span></div><div class="dw-exlist">${rows}</div>${note}</div>`;
   }
-  const done=ep.ex.filter(e=>exStatus(e)==='complete').length;
-  const rows=ep.ex.map((e,i)=>`
-    <div class="dw-exrow">${exThumb(n,i,e[0],exStatus(e))}<div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} · Done ${e[2]} set${e[2]===1?'':'s'}</div></div>${stIcon(exStatus(e))}</div>`).join('');
-  const legend=`<div class="dw-exleg"><span><span class="lgi">${legIcon()}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span><span><span class="lgi">${stIcon('notstarted')}</span>Not started</span></div>`;
-  return `<div class="dw-sec"><div class="l dw-exc-head">Assigned exercises <span class="dw-exc-count num">${done} of ${ep.ex.length} completed</span></div><div class="dw-exlist">${rows}</div>${legend}</div>`;
+  // build a flat row list: exercises with multiple captured sets become one row per set
+  const items=[];
+  ep.ex.forEach((e,i)=>{
+    const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+e[0]]:null;
+    if(arr && arr.length>1){
+      arr.forEach((c,si)=>{
+        items.push({name:e[0],meta:(c.label||('Set '+(si+1)))+(c.reps!=null?' · '+c.reps+' reps':''),status:c.status||'complete',
+          thumb:'<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+e[0]+'" data-set="'+si+'"><img src="'+c.poster+'" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+(c.label||('Set '+(si+1)))+'</span></div>'});
+      });
+    }else{
+      items.push({name:e[0],meta:'Prescribed '+e[1]+' · Done '+e[2]+' set'+(e[2]===1?'':'s'),status:exStatus(e),thumb:exThumb(n,i,e[0],exStatus(e))});
+    }
+  });
+  const done=items.filter(r=>r.status==='complete').length;
+  const rows=items.map(r=>`<div class="dw-exrow">${r.thumb}<div class="dw-ex-main"><div class="dw-ex-name">${r.name}</div><div class="dw-ex-meta num">${r.meta}</div></div>${stIcon(r.status)}</div>`).join('');
+  let leg=`<span><span class="lgi">${legIcon()}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span>`;
+  if(items.some(r=>r.status==='review')) leg+=`<span><span class="lgi">${stIcon('review')}</span>Needs review</span>`;
+  leg+=`<span><span class="lgi">${stIcon('notstarted')}</span>Not started</span>`;
+  return `<div class="dw-sec"><div class="l dw-exc-head">Assigned exercises <span class="dw-exc-count num">${done} of ${items.length} completed</span></div><div class="dw-exlist">${rows}</div><div class="dw-exleg">${leg}</div></div>`;
 }
 function openClip(n){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
@@ -1080,16 +1095,16 @@ renderPlanModal();
 /* real captured clips (hosted in the repo at Gym v3/clips/), keyed by player|exercise */
 const CLIPS={
   '01|Seated row':[
-    {src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',poster:'clips_zoomed/poster_01_seated_row.jpg',note:'Set 1 · 12 reps · 00:23–00:42',label:'Set 1'},
-    {src:'clips_zoomed/player01_seated_row_set2_098.7s-116.8s_9reps.mp4',poster:'clips_zoomed/poster_01_seated_row_set2.jpg',note:'Set 2 · 9 reps · 01:38–01:57',label:'Set 2'},
+    {src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',poster:'clips_zoomed/poster_01_seated_row.jpg',note:'Set 1 · 12 reps · 00:23–00:42',label:'Set 1',reps:12,status:'complete'},
+    {src:'clips_zoomed/player01_seated_row_set2_098.7s-116.8s_9reps.mp4',poster:'clips_zoomed/poster_01_seated_row_set2.jpg',note:'Set 2 · 9 reps · 01:38–01:57',label:'Set 2',reps:9,status:'review'},
   ],
   '03|Squat':[
-    {src:'clips_zoomed/player03_squat_set1_000.0s-028.3s_6reps.mp4',poster:'clips_zoomed/poster_03_squat.jpg',note:'Set 1 · 6 reps · 00:00–00:28',label:'Set 1'},
-    {src:'clips_zoomed/player03_squat_set2_160.5s-181.3s_5reps.mp4',poster:'clips_zoomed/poster_03_squat_set2.jpg',note:'Set 2 · 5 reps · 02:40–03:01',label:'Set 2'},
+    {src:'clips_zoomed/player03_squat_set1_000.0s-028.3s_6reps.mp4',poster:'clips_zoomed/poster_03_squat.jpg',note:'Set 1 · 6 reps · 00:00–00:28',label:'Set 1',reps:6,status:'complete'},
+    {src:'clips_zoomed/player03_squat_set2_160.5s-181.3s_5reps.mp4',poster:'clips_zoomed/poster_03_squat_set2.jpg',note:'Set 2 · 5 reps · 02:40–03:01',label:'Set 2',reps:5,status:'complete'},
   ],
-  '08|Triceps pushdown':[{src:'clips_zoomed/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',poster:'clips_zoomed/poster_08_triceps_pushdown.jpg',note:'Set 1 · 7 reps · 02:56–03:04',label:'Set 1'}],
-  '13|Chest fly':[{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',poster:'clips_zoomed/poster_13_chest_fly.jpg',note:'Set 1 · 14 reps · 01:48–02:10',label:'Set 1'}],
-  '20|Leg curl':[{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',poster:'clips_zoomed/poster_20_leg_curl.jpg',note:'Set 1 · 3 reps · 02:44–02:48',label:'Set 1'}],
+  '08|Triceps pushdown':[{src:'clips_zoomed/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',poster:'clips_zoomed/poster_08_triceps_pushdown.jpg',note:'Set 1 · 7 reps · 02:56–03:04',label:'Set 1',reps:7,status:'complete'}],
+  '13|Chest fly':[{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',poster:'clips_zoomed/poster_13_chest_fly.jpg',note:'Set 1 · 14 reps · 01:48–02:10',label:'Set 1',reps:14,status:'complete'}],
+  '20|Leg curl':[{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',poster:'clips_zoomed/poster_20_leg_curl.jpg',note:'Set 1 · 3 reps · 02:44–02:48',label:'Set 1',reps:3,status:'complete'}],
 };
 const FULL_SESSION_SRC='clips/Full%20session%20video.mp4';
 function lbEls(){ return {v:document.getElementById('exlbVideo'),img:document.getElementById('exlbImg'),play:document.getElementById('exlbPlay'),note:document.getElementById('exlbNote'),cap:document.getElementById('exlbCap')}; }
