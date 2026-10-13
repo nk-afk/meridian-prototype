@@ -60,6 +60,7 @@ button{font-family:var(--ff)}
 .nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);border:1px solid transparent;color:var(--color-text-soft);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
 .nav svg{width:18px;height:18px;color:var(--color-text-soft)}
 .nav:hover{background:var(--color-surface-subtle)}
+.nav.disabled{cursor:default;pointer-events:none}
 .nav.active{background:var(--color-surface-muted);border-color:rgba(31,43,39,.03);color:var(--color-text);font-weight:600}
 .nav.active svg{color:var(--color-text)}
 .nav .badge{margin-left:auto;background:var(--color-warning-soft);color:var(--color-warning-ink);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 8px}
@@ -1161,7 +1162,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
     {group:'Physical'},
     {k:'gym',label:'Gym sessions',icon:'dumbbell',href:GYM,line:'<svg viewBox="0 0 256 256" fill="currentColor"><path d="M248,120h-8V88a16,16,0,0,0-16-16H208V64a16,16,0,0,0-16-16H168a16,16,0,0,0-16,16v56H104V64A16,16,0,0,0,88,48H64A16,16,0,0,0,48,64v8H32A16,16,0,0,0,16,88v32H8a8,8,0,0,0,0,16h8v32a16,16,0,0,0,16,16H48v8a16,16,0,0,0,16,16H88a16,16,0,0,0,16-16V136h48v56a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16v-8h16a16,16,0,0,0,16-16V136h8a8,8,0,0,0,0-16ZM32,168V88H48v80Zm56,24H64V64H88V192Zm104,0H168V64h24V175.82c0,.06,0,.12,0,.18s0,.12,0,.18V192Zm32-24H208V88h16Z"/></svg>',solid:'<svg viewBox="0 0 256 256" fill="currentColor"><path d="M200,64V192a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V136H104v56a16,16,0,0,1-16,16H72a16,16,0,0,1-16-16V64A16,16,0,0,1,72,48H88a16,16,0,0,1,16,16v56h48V64a16,16,0,0,1,16-16h16A16,16,0,0,1,200,64ZM36,72H32A16,16,0,0,0,16,88v32H8.27A8.18,8.18,0,0,0,0,127.47,8,8,0,0,0,8,136h8v32a16,16,0,0,0,16,16h4a4,4,0,0,0,4-4V76A4,4,0,0,0,36,72Zm220,55.47a8.18,8.18,0,0,0-8.25-7.47H240V88a16,16,0,0,0-16-16h-4a4,4,0,0,0-4,4V180a4,4,0,0,0,4,4h4a16,16,0,0,0,16-16V136h8A8,8,0,0,0,256,127.47Z"/></svg>'},
     {group:'People'},
-    {k:'players',label:'Players',icon:'user',href:PLAYERS_HREF,solid:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0 1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/></svg>'},
+    {k:'players',label:'Players',icon:'user',solid:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0 1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/></svg>'},
     {k:'squad',label:'Squad trends',icon:'trending-up'}
   ];
   function esc(s){return (s==null?'':String(s));}
@@ -1175,7 +1176,7 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
       if(n.group){items+='<div class="grp eyebrow">'+n.group+'</div>';return;}
       var isA=(n.k===active), href=n.href||'', bh=n.badge?'<span class="badge" id="navBadge">'+esc(badge)+'</span>':'';
       var lin=n.line||'<i data-lucide="'+n.icon+'"></i>', ic=isA?(n.solid||lin):lin;
-      items+='<a class="nav'+(isA?' active':'')+'"'+(href?' href="'+href+'"':'')+'>'+ic+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
+      items+='<a class="nav'+(isA?' active':'')+(href?'':' disabled')+'"'+(href?' href="'+href+'"':' aria-disabled="true"')+'>'+ic+'<span class="lbl">'+n.label+'</span>'+bh+'</a>';
     });
     var cta=primary?'<button class="btn sidecta"><i data-lucide="'+(primary.icon||'mic')+'"></i><span class="lbl">'+esc(primary.label)+'</span></button>':'';
     var foot='<div class="side-foot">'+cta+'<div class="profile"><div class="avatar"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div><span class="pname lbl">Aman</span></div></div>';
