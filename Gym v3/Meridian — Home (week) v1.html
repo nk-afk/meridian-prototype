@@ -557,7 +557,7 @@ function closePop(){document.getElementById('datePop').classList.remove('open');
 function metaRows(m){return m.map(x=>`<div class="rv-row"><span class="k">${x[0]}</span><span class="v">${x[1]}</span></div>`).join('');}
 function frameFig(num,f,idx){
   return `<figure class="rv-fig">
-    <div class="rv-img"><img src="https://picsum.photos/seed/mfr${num}${idx}/360/230" alt=""></div>
+    <div class="rv-img"><img src="clips/placeholder_thumb.jpg" alt=""></div>
     <figcaption class="rv-cap"><b>${f[0]}</b><span>Frame at ${f[1]} · clip window ${f[2]}</span></figcaption>
   </figure>`;
 }
