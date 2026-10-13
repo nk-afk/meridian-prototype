@@ -384,6 +384,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .dw-exleg .lgi{width:18px;height:18px;display:inline-grid;place-items:center;flex:none}
 .dw-exleg .lgi svg{width:18px;height:18px}
 /* per-exercise video thumbnail (YouTube-style) */
+.dw-ex-thumbs{display:flex;gap:6px;flex:none}
 .dw-ex-thumb{position:relative;width:76px;height:46px;border-radius:7px;overflow:hidden;flex:none;background:var(--color-surface-muted);cursor:pointer}
 .dw-ex-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .dw-ex-thumb .pl{position:absolute;inset:0;display:grid;place-items:center}
@@ -822,12 +823,16 @@ const VIDEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 function exThumbNo(){ return '<div class="dw-ex-thumb nofoot" title="No footage captured">'+VIDEOFF_SVG+'</div>'; }
 function exThumb(n,i,name,status){
   if(status==='notstarted') return exThumbNo();
-  const c=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+name]:null;
-  const img=(c&&c.poster)?c.poster:'https://picsum.photos/seed/gymex'+n+'-'+i+'/200/120';
+  const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+name]:null;
+  if(arr && arr.length){
+    return '<div class="dw-ex-thumbs">'+arr.map(function(c,si){
+      return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+name+'" data-set="'+si+'">'
+        +'<img src="'+c.poster+'" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span>'
+        +'<span class="dur">'+(c.label||('Set '+(si+1)))+'</span></div>';
+    }).join('')+'</div>';
+  }
   const dur='0:'+String(10+i*4).padStart(2,'0');
-  return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exi="'+i+'" data-exn="'+name+'">'
-    +'<img src="'+img+'" alt="" loading="lazy">'
-    +'<span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+dur+'</span></div>';
+  return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+name+'" data-set="0"><img src="https://picsum.photos/seed/gymex'+n+'-'+i+'/200/120" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+dur+'</span></div>';
 }
 function exerciseSection(n,notObserved){
   const ep=EXPLAYERS.find(x=>x.n===n);
@@ -1074,20 +1079,27 @@ renderPlanModal();
 /* ---- per-exercise clip lightbox ---- */
 /* real captured clips (hosted in the repo at Gym v3/clips/), keyed by player|exercise */
 const CLIPS={
-  '01|Seated row':{src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',note:'Set 1 · 12 reps · 00:23–00:42',poster:'clips_zoomed/poster_01_seated_row.jpg'},
-  '03|Squat':{src:'clips_zoomed/player03_squat_set1_000.0s-028.3s_6reps.mp4',note:'Set 1 · 6 reps · 00:00–00:28',poster:'clips_zoomed/poster_03_squat.jpg'},
-  '08|Triceps pushdown':{src:'clips_zoomed/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',note:'Set 1 · 7 reps · 02:56–03:04',poster:'clips_zoomed/poster_08_triceps_pushdown.jpg'},
-  '13|Chest fly':{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',note:'Set 1 · 14 reps · 01:48–02:10',poster:'clips_zoomed/poster_13_chest_fly.jpg'},
-  '20|Leg curl':{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',note:'Set 1 · 3 reps · 02:44–02:48',poster:'clips_zoomed/poster_20_leg_curl.jpg'},
+  '01|Seated row':[
+    {src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',poster:'clips_zoomed/poster_01_seated_row.jpg',note:'Set 1 · 12 reps · 00:23–00:42',label:'Set 1'},
+    {src:'clips_zoomed/player01_seated_row_set2_098.7s-116.8s_9reps.mp4',poster:'clips_zoomed/poster_01_seated_row_set2.jpg',note:'Set 2 · 9 reps · 01:38–01:57',label:'Set 2'},
+  ],
+  '03|Squat':[
+    {src:'clips_zoomed/player03_squat_set1_000.0s-028.3s_6reps.mp4',poster:'clips_zoomed/poster_03_squat.jpg',note:'Set 1 · 6 reps · 00:00–00:28',label:'Set 1'},
+    {src:'clips_zoomed/player03_squat_set2_160.5s-181.3s_5reps.mp4',poster:'clips_zoomed/poster_03_squat_set2.jpg',note:'Set 2 · 5 reps · 02:40–03:01',label:'Set 2'},
+  ],
+  '08|Triceps pushdown':[{src:'clips_zoomed/player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4',poster:'clips_zoomed/poster_08_triceps_pushdown.jpg',note:'Set 1 · 7 reps · 02:56–03:04',label:'Set 1'}],
+  '13|Chest fly':[{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',poster:'clips_zoomed/poster_13_chest_fly.jpg',note:'Set 1 · 14 reps · 01:48–02:10',label:'Set 1'}],
+  '20|Leg curl':[{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',poster:'clips_zoomed/poster_20_leg_curl.jpg',note:'Set 1 · 3 reps · 02:44–02:48',label:'Set 1'}],
 };
 const FULL_SESSION_SRC='clips/Full%20session%20video.mp4';
 function lbEls(){ return {v:document.getElementById('exlbVideo'),img:document.getElementById('exlbImg'),play:document.getElementById('exlbPlay'),note:document.getElementById('exlbNote'),cap:document.getElementById('exlbCap')}; }
 function lbPlayVideo(src,note){ const e=lbEls(); e.img.style.display='none'; e.play.style.display='none'; e.v.style.display='block'; e.v.src=src; try{e.v.currentTime=0;}catch(_){ } e.v.play().catch(()=>{}); e.note.textContent=note; }
 function lbShowStill(seed){ const e=lbEls(); e.v.pause(); e.v.removeAttribute('src'); e.v.load(); e.v.style.display='none'; e.img.style.display='block'; e.img.src='https://picsum.photos/seed/'+seed+'/640/360'; e.play.style.display='grid'; e.note.textContent='Clip playback is illustrative in this prototype.'; }
-function openExClip(p,i,name){
+function openExClip(p,name,setIdx){
+  setIdx=parseInt(setIdx,10)||0;
   lbEls().cap.textContent='Player '+p+' · '+name;
-  const c=CLIPS[p+'|'+name];
-  if(c) lbPlayVideo(c.src,c.note); else lbShowStill('gymex'+p+'-'+i);
+  const arr=CLIPS[p+'|'+name], c=arr&&arr[setIdx];
+  if(c) lbPlayVideo(c.src,c.note); else lbShowStill('gymex'+p+(name||'').replace(/\s+/g,''));
   document.getElementById('exLightbox').classList.add('open');
   icons();
 }
@@ -1101,7 +1113,7 @@ function openHighlight(){
 document.getElementById('highlightBox').addEventListener('click',openHighlight);
 document.getElementById('exlbClose').onclick=closeExClip;
 document.getElementById('exLightbox').addEventListener('click',function(e){ if(e.target.id==='exLightbox') closeExClip(); });
-document.addEventListener('click',function(e){ const t=e.target.closest('[data-exp]'); if(t){ e.stopPropagation(); openExClip(t.dataset.exp,t.dataset.exi,t.dataset.exn); } });
+document.addEventListener('click',function(e){ const t=e.target.closest('[data-exp]'); if(t){ e.stopPropagation(); openExClip(t.dataset.exp,t.dataset.exn,t.dataset.set); } });
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeExClip(); });
 
 /* ============ INIT ============ */
