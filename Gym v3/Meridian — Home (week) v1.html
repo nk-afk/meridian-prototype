@@ -106,7 +106,7 @@ body.nav-collapsed .profile .pname{display:none}
 .type-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--color-text-soft);font-weight:500}
 .type-tag .ti{display:inline-flex}
 .type-tag .ti svg{width:17px;height:17px}
-.acard{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:18px 20px;cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;min-height:164px;display:flex;flex-direction:column}
+.acard{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:18px 20px;cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;min-height:0;display:flex;flex-direction:column}
 .acard:hover{border-color:var(--color-primary-border);box-shadow:0 2px 10px rgba(15,23,42,.06)}
 .ac-top{display:flex;align-items:center;gap:10px;padding-right:28px}
 .ac-badge{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700}
@@ -122,11 +122,11 @@ body.nav-collapsed .profile .pname{display:none}
 .ac-title{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:12px;line-height:1.15;color:var(--color-text)}
 .ac-loc{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--color-text-soft);margin-top:9px}
 .ac-loc .ti svg{width:16px;height:16px;display:block}
-.ac-detail{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;margin-top:10px}
+.ac-detail{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600}
 .ac-detail svg{width:16px;height:16px}
 .ac-detail.vid{color:var(--color-primary-text)}
 .ac-detail.ready{color:var(--c-plan)}
-.ac-foot{margin-top:auto;padding-top:14px;display:flex;justify-content:flex-end}
+.ac-foot{margin-top:auto;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .ac-link{display:inline-flex;align-items:center;gap:6px;color:var(--color-primary-text);font-size:14px;font-weight:700}
 .ac-link svg{width:16px;height:16px}
 .status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
@@ -444,8 +444,7 @@ function renderToday(){
       ${big}
       <div class="ac-title">${s.title}</div>
       <div class="ac-loc"><span class="ti">${typeIcon(s.type)}</span>${s.loc}</div>
-      ${detail}
-      <div class="ac-foot"><span class="ac-link">${link} <i data-lucide="arrow-right"></i></span></div>
+      <div class="ac-foot">${detail||'<span></span>'}<span class="ac-link">${link} <i data-lucide="arrow-right"></i></span></div>
       <span class="ac-chev"><i data-lucide="chevron-right"></i></span>
     </a>`;
   }).join('');
