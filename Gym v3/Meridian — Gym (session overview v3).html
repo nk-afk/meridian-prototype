@@ -386,6 +386,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 /* per-exercise video thumbnail (YouTube-style) */
 .dw-ex-thumbs{display:flex;gap:6px;flex:none}
 .dw-ex-thumb{position:relative;width:76px;height:46px;border-radius:7px;overflow:hidden;flex:none;background:var(--color-surface-muted);cursor:pointer}
+.dw-ex-thumb.blank{cursor:default;background:var(--color-surface-muted)}
 .dw-ex-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .dw-ex-thumb .pl{position:absolute;inset:0;display:grid;place-items:center}
 .dw-ex-thumb .pl span{width:24px;height:24px;border-radius:50%;background:rgba(17,24,39,.6);display:grid;place-items:center;color:#fff}
@@ -779,8 +780,8 @@ function renderExercises(host,foot){
     const col=exCollapsed.has(p.n);
     h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${exComplete(p)} of ${p.ex.length} exercises</span></div></td></tr>`;
     p.ex.forEach((e,i)=>{
-      const playable = exStatus(e)!=='notstarted';
-      const attr = playable ? ` data-exp="${p.n}" data-exi="${i}" data-exn="${e[0]}" title="Play clip"` : '';
+      const playable = typeof CLIPS!=='undefined' && !!CLIPS[p.n+'|'+e[0]];
+      const attr = playable ? ` data-exp="${p.n}" data-exn="${e[0]}" title="Play clip"` : '';
       h+=`<tr class="exitem${playable?' playable':''}" data-gi="${p.n}"${attr}${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(e[2])}</td><td class="ex-c">${stIcon(exStatus(e))}</td></tr>`;
     });
   });
@@ -796,7 +797,7 @@ function renderRail(){
   let cc=clips.map(p=>`
     <div class="clipcard">
       <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
-      <div class="thumb" data-clip="${p.n}"><img src="${p.clip.poster||'https://picsum.photos/seed/'+p.clip.seed+'/480/270'}" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>
+      <div class="thumb${p.clip.poster?'':' blank'}" data-clip="${p.n}">${p.clip.poster?`<img src="${p.clip.poster}" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span>`:''}</div>
       <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
       <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
     </div>`).join('');
@@ -832,8 +833,7 @@ function exThumb(n,i,name,status){
         +'<span class="dur">'+(c.label||('Set '+(si+1)))+'</span></div>';
     }).join('')+'</div>';
   }
-  const dur='0:'+String(10+i*4).padStart(2,'0');
-  return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+name+'" data-set="0"><img src="https://picsum.photos/seed/gymex'+n+'-'+i+'/200/120" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+dur+'</span></div>';
+  return '<div class="dw-ex-thumb blank"></div>';
 }
 function exerciseSection(n,notObserved){
   const ep=EXPLAYERS.find(x=>x.n===n);
@@ -892,7 +892,7 @@ function openClip(n){
   dw.innerHTML=`
     <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
-      ${isRev&&p.clip?`<div class="thumb"${p.clip.exn?` data-exp="${p.n}" data-exi="0" data-exn="${p.clip.exn}" style="cursor:pointer"`:''}><img src="${p.clip.poster||'https://picsum.photos/seed/'+p.clip.seed+'/480/270'}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
+      ${isRev&&p.clip&&p.clip.poster?`<div class="thumb"${p.clip.exn?` data-exp="${p.n}" data-exn="${p.clip.exn}" style="cursor:pointer"`:''}><img src="${p.clip.poster}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
       <div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>
       ${tail}
     </div>`;
@@ -1109,7 +1109,7 @@ const CLIPS={
 const FULL_SESSION_SRC='clips/Full%20session%20video.mp4';
 function lbEls(){ return {v:document.getElementById('exlbVideo'),img:document.getElementById('exlbImg'),play:document.getElementById('exlbPlay'),note:document.getElementById('exlbNote'),cap:document.getElementById('exlbCap')}; }
 function lbPlayVideo(src,note){ const e=lbEls(); e.img.style.display='none'; e.play.style.display='none'; e.v.style.display='block'; e.v.src=src; try{e.v.currentTime=0;}catch(_){ } e.v.play().catch(()=>{}); e.note.textContent=note; }
-function lbShowStill(seed){ const e=lbEls(); e.v.pause(); e.v.removeAttribute('src'); e.v.load(); e.v.style.display='none'; e.img.style.display='block'; e.img.src='https://picsum.photos/seed/'+seed+'/640/360'; e.play.style.display='grid'; e.note.textContent='Clip playback is illustrative in this prototype.'; }
+function lbShowStill(seed){ const e=lbEls(); e.v.pause(); e.v.removeAttribute('src'); e.v.load(); e.v.style.display='none'; e.img.style.display='none'; e.img.removeAttribute('src'); e.play.style.display='none'; e.note.textContent='No clip available for this exercise.'; }
 function openExClip(p,name,setIdx){
   setIdx=parseInt(setIdx,10)||0;
   lbEls().cap.textContent='Player '+p+' · '+name;
