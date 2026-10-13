@@ -575,7 +575,7 @@ const PLAYERS=[
  {n:'09',prog:'Posterior chain',st:'partial',ex:['o','o','o','p'],det:'3 of 4 exercises observed'},
  {n:'17',prog:'Lower body',st:'partial',ex:['o','o','p'],det:'2 of 3 exercises observed'},
  {n:'22',prog:'Upper push',st:'partial',ex:['o','o','p'],det:'2 of 3 exercises observed'},
- {n:'01',prog:'Upper push',st:'plan',ex:['o'],det:'Seated row recorded in full'},
+ {n:'01',prog:'Upper push',st:'review',ex:['f'],det:'Seated row flagged for review',clip:{title:'Seated row',note:'Recorded in full. Needs a coach review before it counts.',seed:'seated01',exn:'Seated row',poster:'clips_zoomed/poster_01_seated_row.jpg'}},
  {n:'03',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
  {n:'04',prog:'Lower body',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
  {n:'06',prog:'Upper push',st:'plan',ex:['o','o','o'],det:'All prescribed exercises'},
@@ -794,7 +794,7 @@ function renderRail(){
   let cc=clips.map(p=>`
     <div class="clipcard">
       <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
-      <div class="thumb" data-clip="${p.n}"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>
+      <div class="thumb" data-clip="${p.n}"><img src="${p.clip.poster||'https://picsum.photos/seed/'+p.clip.seed+'/480/270'}" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>
       <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
       <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
     </div>`).join('');
@@ -872,7 +872,7 @@ function openClip(n){
   dw.innerHTML=`
     <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
-      ${isRev?`<div class="thumb"><img src="https://picsum.photos/seed/${p.clip.seed}/480/270" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
+      ${isRev&&p.clip?`<div class="thumb"${p.clip.exn?` data-exp="${p.n}" data-exi="0" data-exn="${p.clip.exn}" style="cursor:pointer"`:''}><img src="${p.clip.poster||'https://picsum.photos/seed/'+p.clip.seed+'/480/270'}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
       <div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>
       ${tail}
     </div>`;
