@@ -1,0 +1,86 @@
+[
+ {
+  "file": "player01_seated_row_set1_023.1s-042.1s_12reps.mp4",
+  "player": "player-0001",
+  "exercise": "seated_row",
+  "set": 1,
+  "start_s": 23.1,
+  "end_s": 42.1,
+  "reps": 12,
+  "size": "814x720",
+  "zoom": 1.53,
+  "frames_with_box": 1.0
+ },
+ {
+  "file": "player01_seated_row_set2_098.7s-116.8s_9reps.mp4",
+  "player": "player-0001",
+  "exercise": "seated_row",
+  "set": 2,
+  "start_s": 98.7,
+  "end_s": 116.8,
+  "reps": 9,
+  "size": "762x720",
+  "zoom": 1.25,
+  "frames_with_box": 1.0
+ },
+ {
+  "file": "player03_squat_set1_000.0s-028.3s_6reps.mp4",
+  "player": "player-0003",
+  "exercise": "squat",
+  "set": 1,
+  "start_s": 0.0,
+  "end_s": 28.3,
+  "reps": 6,
+  "size": "538x720",
+  "zoom": 1.85,
+  "frames_with_box": 1.0
+ },
+ {
+  "file": "player03_squat_set2_160.5s-181.3s_5reps.mp4",
+  "player": "player-0003",
+  "exercise": "squat",
+  "set": 2,
+  "start_s": 160.5,
+  "end_s": 181.3,
+  "reps": 5,
+  "size": "538x720",
+  "zoom": 1.82,
+  "frames_with_box": 1.0
+ },
+ {
+  "file": "player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4",
+  "player": "player-0008",
+  "exercise": "triceps_pushdown",
+  "set": 1,
+  "start_s": 175.9,
+  "end_s": 183.9,
+  "reps": 7,
+  "size": "908x720",
+  "zoom": 1.06,
+  "frames_with_box": 0.95
+ },
+ {
+  "file": "player13_chest_fly_set1_108.0s-130.0s_14reps.mp4",
+  "player": "player-0013",
+  "exercise": "chest_fly",
+  "set": 1,
+  "start_s": 108.0,
+  "end_s": 130.0,
+  "reps": 14,
+  "size": "1024x720",
+  "zoom": 0.81,
+  "frames_with_box": 1.0
+ },
+ {
+  "file": "player20_leg_curl_set1_164.7s-167.9s_3reps.mp4",
+  "player": "player-0020",
+  "exercise": "leg_curl",
+  "set": 1,
+  "start_s": 164.7,
+  "end_s": 167.9,
+  "reps": 3,
+  "size": "642x720",
+  "zoom": 2.43,
+  "frames_with_box": 1.0
+ }
+]
