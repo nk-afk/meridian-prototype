@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
+<!-- ===== LAST MATCH ===== -->
+<sc-if value="{{ isLM }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;margin-top:4px">
+    <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Last match · {{ lm.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ lm.resBg }};border-radius:6px;padding:2px 7px">{{ lm.res }}</div></div>
+      <div style="font-size:15px;font-weight:600">{{ lm.event }}</div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ lm.scoreRows }}" as="sr" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 30px 30px 30px;align-items:center;padding:9px 0;border-top:1px solid #F1F5F9">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;white-space:nowrap"><div style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ sr.dot }}"></div>{{ sr.name }}</div>
+            <sc-for list="{{ sr.sets }}" as="x" hint-placeholder-count="3"><div style="text-align:center;font-size:17px;font-weight:{{ x.w }};color:{{ x.c }}">{{ x.v }}</div></sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
+        <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#6B7280;white-space:nowrap">{{ m.label }}</div><div style="font-size:16px;font-weight:700;white-space:nowrap">{{ m.v }}</div></div></sc-for>
+      </div>
+      <button style="margin-top:auto;height:36px;border-radius:12px;border:1px solid #1C3FCA;background:#1C3FCA;color:#FFFFFF;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#1C6EF0" onClick="{{ lm.watchMatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch match</button>
+    </div>
+    <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
+    <sc-for list="{{ lm.shotCards }}" as="sc" hint-placeholder-count="2">
+      <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#027BFC;cursor:pointer;white-space:nowrap" style-hover="color:#1C6EF0" onClick="{{ sc.onWatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>{{ sc.watch }}</div></div>
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ sc.head }}</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
+          <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:118px minmax(0,1fr) 44px;align-items:center;gap:10px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}">
+              <div style="font-size:13px;color:#4B5563;font-weight:500;white-space:nowrap">{{ r.label }}</div>
+              <div style="display:flex;height:10px;gap:2px"><div style="border-radius:3px;background:#111827;width:{{ r.aw }}%"></div><div style="border-radius:3px;background:#027BFC;width:{{ r.bw }}%"></div></div>
+              <div style="font-size:12.5px;font-weight:600;text-align:right;white-space:nowrap">{{ r.a }} <span style="color:#027BFC">{{ r.b }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
+    <dc-import name="PairChart" c="{{ lm.ueChart }}" hint-size="100%,300px"></dc-import>
+    <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;min-height:22px;display:flex;align-items:center">Pressure points</div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.pressHead }}</div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ lm.press }}" as="p" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 44px 22px;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ p.open }}">
+            <div style="font-size:13px;color:#4B5563;font-weight:500">{{ p.label }}</div>
+            <div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ p.v }}</div>
+            <div style="font-size:12px;color:#6B7280;text-align:right">{{ p.p }}</div>
+            <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Coordination</div><div style="font-size:13px;color:#6B7280">Video tracking of both partners on every shot</div></div>
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+    <sc-for list="{{ lm.coK }}" as="k" hint-placeholder-count="5">
+      <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-left:{{ k.bl }};cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
+        <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;white-space:nowrap">{{ k.label }}</div><svg width="10" height="10" viewBox="0 0 10 10" style="color:#027BFC"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+        <div style="font-size:20px;font-weight:700;white-space:nowrap">{{ k.v }} <span style="font-size:13px;font-weight:500;color:#6B7280">{{ k.u }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:16px">
+    <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Where they stood</div>
+        <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ lm.phaseSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+      </div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.court.head }}</div>
+      <svg viewBox="0 0 520 540" style="width:100%;height:auto;display:block">
+        <rect x="4" y="14" width="512" height="512" fill="none" stroke="#E5E7EB" stroke-width="1.5"></rect>
+        <rect x="10" y="20" width="500" height="500" fill="#F1F5F9"></rect>
+        <line x1="10" y1="367.5" x2="510" y2="367.5" stroke="#FFFFFF" stroke-width="3"></line>
+        <line x1="260" y1="20" x2="260" y2="367.5" stroke="#FFFFFF" stroke-width="3"></line>
+        <rect x="10" y="20" width="500" height="500" fill="none" stroke="#FFFFFF" stroke-width="3"></rect>
+        <line x1="2" y1="20" x2="518" y2="20" stroke="#9CA3AF" stroke-width="4"></line>
+        <sc-for list="{{ lm.court.heat }}" as="h" hint-placeholder-count="0"><circle cx="{{ h.cx }}" cy="{{ h.cy }}" r="15" fill="{{ h.c }}" fill-opacity=".07"></circle></sc-for>
+        <line x1="{{ lm.court.a.cx }}" y1="{{ lm.court.a.cy }}" x2="{{ lm.court.b.cx }}" y2="{{ lm.court.b.cy }}" stroke="#111827" stroke-width="1.5" stroke-dasharray="5 4"></line>
+        <circle cx="{{ lm.court.a.cx }}" cy="{{ lm.court.a.cy }}" r="10" fill="#111827" stroke="#FFFFFF" stroke-width="2.5"></circle>
+        <circle cx="{{ lm.court.b.cx }}" cy="{{ lm.court.b.cy }}" r="10" fill="#027BFC" stroke="#FFFFFF" stroke-width="2.5"></circle>
+        <text x="{{ lm.court.a.cx }}" y="{{ lm.court.a.ty }}" text-anchor="middle" font-size="13" font-weight="600" fill="#111827" font-family="Inter, sans-serif">{{ lm.court.a.name }}</text>
+        <text x="{{ lm.court.b.cx }}" y="{{ lm.court.b.ty }}" text-anchor="middle" font-size="13" font-weight="600" fill="#027BFC" font-family="Inter, sans-serif">{{ lm.court.b.name }}</text>
+        <text x="260" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="#6B7280" font-family="Inter, sans-serif" letter-spacing="1">NET</text>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <dc-import name="PairChart" c="{{ lm.spChart }}" hint-size="100%,290px"></dc-import>
+      <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px;flex:1">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Moving up to the net together</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px">Video tracking</div></div>
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.netHead }}</div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
+        <sc-for list="{{ lm.net }}" as="r" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:12px;align-items:center;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}">
+            <div style="font-size:13px;color:#4B5563;font-weight:500">{{ r.label }}</div>
+            <div style="height:10px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ r.p }}%;background:{{ r.c }}"></div></div>
+            <div style="font-size:13px;font-weight:700;text-align:right;white-space:nowrap">{{ r.p }} % <span style="color:#6B7280;font-weight:500">· {{ r.w }}/{{ r.n }}</span></div>
+            <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px">
+    <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#027BFC;cursor:pointer" style-hover="color:#1C6EF0" onClick="{{ lm.mid.onWatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch {{ lm.mid.total }}</div></div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
+      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#027BFC;width:{{ lm.mid.pb }}%"></div><div style="background:#E5484D;flex:1"></div></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E5484D">Neither {{ lm.mid.tn }}</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
+        <sc-for list="{{ lm.mid.rows }}" as="c" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:5px;cursor:pointer" style-hover="opacity:.75" onClick="{{ c.open }}">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;white-space:nowrap"><div style="color:#4B5563;font-weight:500">{{ c.name }}</div><div style="font-weight:700">{{ c.v }} % <span style="color:#6B7280;font-weight:500">· {{ c.w }}/{{ c.n }}</span></div></div>
+            <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ c.v }}%;background:{{ c.c }}"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB">
+        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#027BFC;cursor:pointer" style-hover="color:#1C6EF0" onClick="{{ lm.onGaps }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch all</div></div>
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 80px 90px 36px;padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Set · games</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Phase</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right">Gap</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div></div></div>
+      <sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8">
+        <div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 80px 90px 36px;align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ r.open }}">
+          <div style="padding:9px 10px;font-size:13px;font-weight:600;white-space:nowrap">{{ r.set }}</div>
+          <div style="padding:9px 10px;font-size:13px;color:#4B5563">{{ r.pt }}</div>
+          <div style="padding:9px 10px;font-size:13px;color:#4B5563">{{ r.phase }}</div>
+          <div style="padding:9px 10px;font-size:13px;font-weight:700;text-align:right">{{ r.gap }} <span style="color:#6B7280;font-weight:500">m</span></div>
+          <div style="padding:9px 10px;font-size:13px;font-weight:600;color:{{ r.oc }}">{{ r.out }}</div>
+          <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.physT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,380px"></dc-import></sc-for>
+  </div>
+  <dc-import name="PairChart" c="{{ lm.hrChart }}" hint-size="100%,330px"></dc-import>
+  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
+    <dc-import name="PairChart" c="{{ lm.distChart }}" hint-size="100%,300px"></dc-import>
+    <dc-import name="PairTable" t="{{ lm.zones }}" hint-size="100%,300px"></dc-import>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.physT2 }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
+    <dc-import name="PairTable" t="{{ lm.shotT }}" hint-size="100%,420px"></dc-import>
+    <dc-import name="PairChart" c="{{ lm.chChart }}" hint-size="100%,420px"></dc-import>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.bioT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
+  </div>
+</sc-if>
+
+<!-- ===== SEASON TRENDS ===== -->
+<sc-if value="{{ st.oppOpen }}" hint-placeholder-val="{{ false }}"><div style="position:fixed;inset:0;z-index:44" onClick="{{ st.closeOpp }}"></div></sc-if>
+<sc-if value="{{ isST }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;position:relative;z-index:45">
+    <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ st.periodSegs }}" as="s" hint-placeholder-count="3"><button style="border:0;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+    <div style="position:relative">
+      <button style="height:36px;padding:0 10px 0 12px;border-radius:12px;border:1px solid #E5E7EB;background:#FFFFFF;color:#111827;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;cursor:pointer;white-space:nowrap" style-hover="background:#F9FAFB" onClick="{{ st.toggleOpp }}"><span style="color:#6B7280;font-weight:500">Opponent</span>{{ st.opp }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <sc-if value="{{ st.oppOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:42px;left:0;min-width:220px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:50">
+        <sc-for list="{{ st.oppItems }}" as="o" hint-placeholder-count="4"><div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}<span style="color:#6B7280;font-weight:500">{{ o.n }}</span></div></sc-for>
+      </div></sc-if>
+    </div>
+    <div style="margin-left:auto;font-size:13px;color:#6B7280;white-space:nowrap">{{ st.count }}</div>
+  </div>
+  <dc-import name="PairChart" c="{{ st.result }}" hint-size="100%,320px"></dc-import>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">What separates wins from losses</div><div style="font-size:13px;color:#6B7280">Average per match</div></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px">
+    <dc-import name="PairTable" t="{{ st.wl }}" hint-size="100%,440px"></dc-import>
+    <dc-import name="PairTable" t="{{ st.fade }}" hint-size="100%,440px"></dc-import>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Errors and winners</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ st.err }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Coordination</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ st.coord }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div>
+    <div style="margin-left:auto;display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ st.acwrSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+  </div>
+  <dc-import name="PairChart" c="{{ st.acwr }}" hint-size="100%,300px"></dc-import>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ st.phys }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ st.bio }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:28px;font-size:13.5px;color:#6B7280;margin-top:4px">No matches recorded in this competition.</div></sc-if>
+
+<!-- ===== TEAM · LAST TIE ===== -->
+<sc-if value="{{ isTL }}" hint-placeholder-val="{{ false }}">
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px;margin-top:4px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Last tie · {{ tl.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ tl.resBg }};border-radius:6px;padding:2px 7px">{{ tl.res }}</div></div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap"><div style="font-size:15px;font-weight:600">{{ tl.event }}</div><div style="display:flex;align-items:baseline;gap:10px;font-size:15px;font-weight:600;white-space:nowrap">{{ tl.home }}<span style="font-size:22px;font-weight:700">{{ tl.score }}</span>{{ tl.away }}</div></div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ tl.ms }}" as="m" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:120px 80px minmax(0,1fr) minmax(0,1fr) 120px 36px 110px;align-items:center;border-top:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ m.play }}">
+          <div style="padding:8px 12px"><div style="position:relative;width:96px;height:54px;border-radius:6px;overflow:hidden;background:#0B1322"><img src="{{ m.thumb }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><div style="position:absolute;left:5px;bottom:5px;width:20px;height:20px;border-radius:50%;corner-shape:round;background:rgba(11,19,34,.72);color:#FFFFFF;display:grid;place-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"></path></svg></div></div></div>
+          <div style="padding:10px 12px;font-size:13px;font-weight:600">{{ m.draw }}</div>
+          <div style="padding:10px 12px;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.us }}</div>
+          <div style="padding:10px 12px;font-size:13px;color:#4B5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">vs {{ m.them }}</div>
+          <div style="padding:10px 12px;font-size:13px;font-weight:600;white-space:nowrap">{{ m.score }}</div>
+          <div style="padding:10px 0;font-size:13px;font-weight:700;color:{{ m.rc }}">{{ m.res }}</div>
+          <div style="padding:10px 12px;font-size:12.5px;font-weight:600;color:#027BFC;text-align:right;white-space:nowrap">{{ m.n }} rallies</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Points by match</div></div>
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ tl.pbm.title }}</div><sc-if value="{{ tl.pbm.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.pbm.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.pbm.head }}</div></div>
+      <div style="display:grid;grid-template-columns:{{ tl.pbm.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.pbm.first }}</div><sc-for list="{{ tl.pbm.cols }}" as="h" hint-placeholder-count="3"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
+      <sc-for list="{{ tl.pbm.rows }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:{{ tl.pbm.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
+          <div style="padding:9px 10px;display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</div><sc-if value="{{ r.sub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</div></sc-if></div>
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3"><div style="padding:9px 10px;text-align:right;cursor:pointer;border-radius:6px;display:flex;flex-direction:column;gap:2px" style-hover="background:#F1F5F9" onClick="{{ c.open }}"><div style="font-size:13.5px;font-weight:700;white-space:nowrap">{{ c.v }}</div><sc-if value="{{ c.s }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap">{{ c.s }}</div></sc-if></div></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Momentum</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ tl.mom }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap</div></div>
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ tl.squad.title }}</div><sc-if value="{{ tl.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.squad.head }}</div></div>
+      <div style="display:grid;grid-template-columns:{{ tl.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.squad.first }}</div><sc-for list="{{ tl.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
+      <sc-for list="{{ tl.squad.rows }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:{{ tl.squad.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
+          <div style="padding:9px 10px;display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</div><sc-if value="{{ r.sub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</div></sc-if></div>
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5"><div style="padding:9px 10px;text-align:right;cursor:pointer;border-radius:6px;display:flex;flex-direction:column;gap:2px" style-hover="background:#F1F5F9" onClick="{{ c.open }}"><div style="font-size:13.5px;font-weight:700;white-space:nowrap">{{ c.v }}</div><sc-if value="{{ c.s }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap">{{ c.s }}</div></sc-if></div></sc-for>
+        </div>
+      </sc-for>
+    </div>
+</sc-if>
+
+<!-- ===== TEAM · SEASON ===== -->
+<sc-if value="{{ isTS }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;align-items:center;margin-top:4px"><div style="margin-left:auto;font-size:13px;color:#6B7280;white-space:nowrap">{{ ts.count }}</div></div>
+  <dc-import name="PairChart" c="{{ ts.result }}" hint-size="100%,300px"></dc-import>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Lineups</div></div>
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ ts.lineups.title }}</div><sc-if value="{{ ts.lineups.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.lineups.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.lineups.head }}</div></div>
+      <div style="display:grid;grid-template-columns:{{ ts.lineups.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.lineups.first }}</div><sc-for list="{{ ts.lineups.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
+      <sc-for list="{{ ts.lineups.rows }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:{{ ts.lineups.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
+          <div style="padding:9px 10px;display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</div><sc-if value="{{ r.sub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</div></sc-if></div>
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5"><div style="padding:9px 10px;text-align:right;cursor:pointer;border-radius:6px;display:flex;flex-direction:column;gap:2px" style-hover="background:#F1F5F9" onClick="{{ c.open }}"><div style="font-size:13.5px;font-weight:700;white-space:nowrap">{{ c.v }}</div><sc-if value="{{ c.s }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap">{{ c.s }}</div></sc-if></div></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  <dc-import name="PairChart" c="{{ ts.byDraw }}" hint-size="100%,300px"></dc-import>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:16px;font-weight:700;letter-spacing:-0.01em">Squad load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap · average per match</div></div>
+  <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ ts.squad.title }}</div><sc-if value="{{ ts.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.squad.head }}</div></div>
+      <div style="display:grid;grid-template-columns:{{ ts.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.squad.first }}</div><sc-for list="{{ ts.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
+      <sc-for list="{{ ts.squad.rows }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:{{ ts.squad.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
+          <div style="padding:9px 10px;display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</div><sc-if value="{{ r.sub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</div></sc-if></div>
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5"><div style="padding:9px 10px;text-align:right;cursor:pointer;border-radius:6px;display:flex;flex-direction:column;gap:2px" style-hover="background:#F1F5F9" onClick="{{ c.open }}"><div style="font-size:13.5px;font-weight:700;white-space:nowrap">{{ c.v }}</div><sc-if value="{{ c.s }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#6B7280;white-space:nowrap">{{ c.s }}</div></sc-if></div></sc-for>
+        </div>
+      </sc-for>
+    </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1144},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Last match&quot;,&quot;Season trends&quot;,&quot;Last tie&quot;],&quot;default&quot;:&quot;Last match&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pair&quot;,&quot;player&quot;,&quot;team&quot;],&quot;default&quot;:&quot;pair&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;sid&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AB&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ws&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;PP&quot;,&quot;PPL&quot;],&quot;default&quot;:&quot;PP&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;play&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(title: string, sub: string, items: object[]) => void&quot;}}">
+const CA = '#111827', CB = '#027BFC', CG = '#AFAFBB', CR = '#E5484D', BAND = '#EEF5FF', CM = '#8B5CF6';
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hs = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+const sum = a => a.reduce((s, x) => s + x, 0), avg = a => a.length ? sum(a) / a.length : 0;
+const med = a => { if (!a.length) return 0; const b = a.slice().sort((x, y) => x - y), n = b.length; return n % 2 ? b[(n - 1) / 2] : (b[n / 2 - 1] + b[n / 2]) / 2; };
+const r1 = v => Math.round(v * 10) / 10, r2 = v => Math.round(v * 100) / 100, fmt = v => Math.round(v).toLocaleString('en-US'), pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
+const lg = (label, c, kind) => ({label, c, lw: kind === 'line' ? 16 : 10, lh: kind === 'line' ? 3 : 10});
+const PTS = ['0', '15', '30', '40'];
+const OVER = ['Smash', 'Víbora', 'Bandeja'];
+const RS = {Serve: 92, Return: 68, Lob: 60, Chiquita: 52, Drive: 84, Volley: 74, Block: 50, Bandeja: 83, 'Víbora': 101, Smash: 122, Bajada: 99, Contrapared: 66};
+const DRAWC = {Men: CA, Women: CB, Mixed: CM};
+function nice(vals, step, pad) {
+  const v = vals.filter(x => x != null && isFinite(x)); if (!v.length) return {min: 0, max: step * 4, step};
+  let lo = Math.floor((Math.min(...v) - (pad || 0)) / step) * step, hi = Math.ceil((Math.max(...v) + (pad || 0)) / step) * step; if (hi === lo) hi = lo + step * 2;
+  while ((hi - lo) / step > 6) step *= 2; lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step; return {min: lo, max: hi, step};
+}
+function LC(o) {
+  const h = o.h || 170, n = Math.max(o.n, 1), lo = o.min, hi = o.max, bars = !!(o.stacks || o.groups), bw = 1000 / n;
+  const X = i => bars ? (i + .5) * bw : (n > 1 ? i / (n - 1) * 1000 : 500);
+  const Y = v => +(h - (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * h).toFixed(1);
+  const grid = []; for (let v = lo; v <= hi + 1e-9; v += o.step) grid.push({y: Y(v), label: (o.fmt || (x => String(x)))(r2(v))});
+  const series = (o.series || []).map(s => ({c: s.c, w: s.w || 2, dash: s.dash || 'none', pts: s.vals.map((v, i) => v == null ? null : X(i).toFixed(1) + ',' + Y(v)).filter(Boolean).join(' ')}));
+  const bands = (o.bands || []).map(b => ({y: Y(b.to), hh: +(Y(b.from) - Y(b.to)).toFixed(1), c: b.c}));
+  const refs = (o.refs || []).map(v => ({y: Y(v)}));
+  const vlines = (o.vlines || []).filter(i => i > 0).map(i => ({x: +(bars ? i * bw : X(i)).toFixed(1), y2: h}));
+  const rects = [];
+  if (o.stacks) for (let i = 0; i < n; i++) { let acc = lo; o.stacks.forEach(s => { const v = s.vals[i] || 0; if (!v) return; const y1 = Y(acc + v), y0 = Y(acc); rects.push({x: +(i * bw + bw * .2).toFixed(1), w: +(bw * .6).toFixed(1), y: y1, hh: +(y0 - y1).toFixed(1), c: s.c}); acc += v; }); }
+  if (o.groups) { const g = o.groups.length, inner = bw * .74 / g; for (let i = 0; i < n; i++) o.groups.forEach((s, k) => { const v = s.vals[i]; if (v == null) return; const y = Y(v); rects.push({x: +(i * bw + bw * .13 + k * inner).toFixed(1), w: +(inner * .84).toFixed(1), y, hh: +(h - y).toFixed(1), c: s.c}); }); }
+  const dots = (o.dots || []).filter(d => d.v != null).map(d => ({l: +(X(d.i) / 10).toFixed(2), y: Y(d.v), c: d.c, title: d.title || '', sz: d.sz || 10, open: d.open}));
+  const xl = (o.xl || []).map(x => ({l: +(X(x.i) / 10).toFixed(2), label: x.label}));
+  return {title: o.title, head: o.head, src: o.src || '', watch: o.watch || '', onWatch: o.onWatch, h, vb: '0 0 1000 ' + h, legend: o.legend || [], grid, series, bands, refs, vlines, rects, dots, xl};
+}
+
+// ---------- derived records (computed from rallies; physical and sensor values are generated per rally or shot) ----------
+const FC = new Map(), TR = {};
+const nm = pid => window.MI.PLAYERS[pid].short;
+const mlab = M => M.event + ' · ' + M.round + (M.ws === 'PPL' ? ' · ' + M.draw : '');
+const trait = pid => TR[pid] || (TR[pid] = (() => { const q = rng(hs('tr' + pid)), f = window.MI.PLAYERS[pid].g === 'F';
+  return {f, spd: (.93 + q() * .12) * (f ? .88 : 1), ch: 2.58 + q() * .16 - (f ? .17 : 0), hrMax: Math.round(188 + q() * 12), rest: Math.round(45 + q() * 8), rec: .27 + q() * .12, split: .76 + q() * .14, hrOff: q() * 8 - 4, kg: f ? 60 + q() * 8 : 74 + q() * 10, hrv: Math.round(55 + q() * 20), sleep: 7 + q() * .7}; })());
+function facts(M) {
+  let F = FC.get(M.id); if (F) return F;
+  const A = M.A.players, R = M.rallies;
+  F = {M, A, N: R.length, won: [], end: {}, oppW: [], oppE: [], games: [], diff: [], bpC: [], bpS: [], gold: [], srv: [], ret: [], att: [], def: [], trans: [], mid: [], gaps: [], heat: {Attack: {}, Defence: {}}, p: {}};
+  A.forEach(p => { F.end[p] = {W: [], E: []}; F.heat.Attack[p] = []; F.heat.Defence[p] = [];
+    F.p[p] = {dist: 0, hi: 0, sprint: [], moves: 0, jumps: [], top: [0, 0, 0], load: [0, 0, 0], dir: {Lateral: 0, Forward: 0, Backward: 0, Diagonal: 0}, hr: [], drop: [], zones: [0, 0, 0, 0, 0], kcal: 0, shots: {}, oh: [], split: [], step: [], gd: {}, h: null}; });
+  let d = 0, gk = null, g = null;
+  R.forEach((r, k) => {
+    const last = r.shots.length - 1, ls = r.shots[last], won = r.winner === 'A', o = i => ({M, r, i}), si = Math.min(2, r.set - 1);
+    const key = r.set + '|' + r.game; if (key !== gk) { gk = key; g = {set: r.set, before: r.gamesBefore.A + '–' + r.gamesBefore.B, srvPair: r.srvPair, rs: [], p0: k}; F.games.push(g); }
+    const gi = F.games.length - 1; g.rs.push(r);
+    if (won) F.won.push(o(0));
+    if (ls.pair === 'A' && F.end[ls.actor]) F.end[ls.actor][ls.outcome === 'error' ? 'E' : 'W'].push({...o(last), type: ls.type, set: r.set, gi});
+    else if (ls.pair === 'B') (ls.outcome === 'error' ? F.oppE : F.oppW).push(o(last));
+    d += won ? 1 : -1; F.diff.push(d);
+    if (r.breakPt && r.srvPair === 'B') F.bpC.push({...o(0), ok: won}); if (r.breakPt && r.srvPair === 'A') F.bpS.push({...o(0), ok: won});
+    if (r.golden) F.gold.push({...o(0), ok: won}); (r.srvPair === 'A' ? F.srv : F.ret).push({...o(0), ok: won});
+    if (r.tracked) { let gapDone = false, midDone = false;
+      r.shots.forEach((s, i) => {
+        if (s.pair === 'A' && i >= 1) { const sp = Math.abs(s.pos[A[0]][1] - s.pos[A[1]][1]), ph = s.st.A === 'net' ? 'Attack' : s.st.A === 'back' ? 'Defence' : null;
+          if (ph) { F[ph === 'Attack' ? 'att' : 'def'].push({...o(i), v: sp, gi}); A.forEach(p => { if (F.heat[ph][p].length < 400) F.heat[ph][p].push([s.pos[p][1], 10 - s.dep[p]]); }); }
+          if (!gapDone && sp > 4.5) { gapDone = true; F.gaps.push({...o(i), v: sp, ph: ph === 'Attack' ? 'Attack' : ph === 'Defence' ? 'Defence' : 'Transition', ok: won, gi}); } }
+        if (s.pair === 'B' && i >= 1) {
+          const m0 = s.mv[A[0]], m1 = s.mv[A[1]];
+          if (m0 && m1 && m0.to - m0.from > 1.5 && m1.to - m1.from > 1.5 && m0.to > 5 && m1.to > 5) F.trans.push({...o(i), v: Math.abs(m0.on - m1.on), ok: won});
+          if (!midDone && s.land && Math.abs(s.land[1] - 5) < 1) { midDone = true; const n = r.shots[i + 1]; F.mid.push({...o(i), who: n ? n.actor : null, ok: won}); }
+          A.forEach(p => { const q = rng(hs(s.id + p))(); F.p[p].split.push({...o(i), set: r.set, ok: q < trait(p).split - .04 * (r.set - 1) - (i > 8 ? .03 : 0)}); });
+          const n = r.shots[i + 1]; if (n && n.pair === 'A') A.forEach(p => { const mv = n.mv[p]; if (mv && mv.on != null && Math.abs(mv.to - mv.from) > .5) F.p[p].step.push({...o(i + 1), set: r.set, v: Math.round(mv.on * 1000)}); });
+        }
+      }); }
+    A.forEach(p => { const P = F.p[p], T = trait(p); let dist = 0, hi = 0;
+      for (let i = 1; i < r.shots.length; i++) { const s0 = r.shots[i - 1], s1 = r.shots[i], a0 = s0.pos[p], a1 = s1.pos[p]; if (!a0 || !a1) continue;
+        const dx = a1[0] - a0[0], dy = a1[1] - a0[1], dd = Math.hypot(dx, dy), dt = Math.max(.35, s1.t - s0.t - ((s1.mv[p] && s1.mv[p].on) || 0)), sp = Math.min(6.6, dd / dt);
+        dist += dd;
+        if (dd > .4) { const ax = Math.abs(dx), ay = Math.abs(dy); P.dir[ay > ax * 1.5 ? 'Lateral' : ax > ay * 1.5 ? (dx > 0 ? 'Forward' : 'Backward') : 'Diagonal']++; }
+        if (sp > 4.44 && dd >= 2) { P.sprint.push({...o(i), set: r.set}); hi += dd; } else if (sp > 3 && dd >= 1.5) hi += dd;
+        if (dd >= 1.5) P.moves++;
+        P.top[si] = Math.max(P.top[si], sp * 3.6); }
+      dist = dist * 2.6 + 6; P.dist += dist; P.hi += hi * 2.6; P.load[si] += dist / 10; P.gd[gi] = (P.gd[gi] || 0) + dist;
+      let mine = 0;
+      r.shots.forEach((s, i) => { if (s.actor !== p) return; mine++; const q = rng(hs(s.id + 'b'));
+        (P.shots[s.type] = P.shots[s.type] || []).push({...o(i), set: r.set, v: Math.round((RS[s.type] || 70) * T.spd * (1 - .015 * (r.set - 1)) * (1 + (q() - .5) * .08))});
+        if (OVER.includes(s.type)) { P.jumps.push({...o(i), set: r.set}); P.load[si] += 2; const mv = s.mv[p]; P.oh.push({...o(i), set: r.set, k, v: r2(T.ch - .03 * (r.set - 1) - (mv && mv.on > .35 ? .05 : 0) + (q() - .5) * .08)}); } });
+      const tgt = 128 + T.hrOff + Math.min(40, (dist + 6 * mine) * .35) + (r.set - 1) * 4 + (r.imp ? 4 : 0);
+      if (P.h == null) P.h = T.rest + 70; P.h += (tgt - P.h) * .45; P.h = Math.min(P.h, T.hrMax - 2); P.hr.push(r1(P.h));
+      const after = P.h - (P.h - (T.rest + 55)) * T.rec * (1 - .06 * (r.set - 1)); P.drop.push({...o(0), v: P.h - after});
+      const mins = (r.dur + 22) / 60, pc = P.h / T.hrMax; P.zones[pc < .6 ? 0 : pc < .7 ? 1 : pc < .8 ? 2 : pc < .9 ? 3 : 4] += mins;
+      P.kcal += mins * (T.f ? (-20.4022 + .4472 * P.h - .1263 * T.kg + .074 * 26) : (-55.0969 + .6309 * P.h + .1988 * T.kg + .2017 * 26)) / 4.184;
+      P.h = after; });
+  });
+  F.games.forEach(g => { const l = g.rs[g.rs.length - 1]; g.winner = l.winner; g.brk = g.winner === 'A' && g.srvPair === 'B'; g.lost = g.winner === 'B' && g.srvPair === 'A'; g.idx = g.p0 + g.rs.length - 1; });
+  A.forEach(p => { const P = F.p[p], q = rng(hs(M.id + p + 'w')), T = trait(p), z = (P.dist - 2600) / 900;
+    P.hrAvg = Math.round(avg(P.hr)); P.hrPeak = Math.round(Math.max(...P.hr)) + 4; P.dropAvg = r1(avg(P.drop.map(x => x.v)));
+    P.mq = {knee: Math.round(31 + q() * 9), trunk: Math.round(43 + q() * 12), land: Math.round(4 + q() * 4 + P.jumps.length / 25)};
+    P.am = {sleep: Math.max(5.6, T.sleep - .45 * z + (q() - .5) * .8), hrv: Math.round(T.hrv * (1 - .12 * z) + (q() - .5) * 8), rhr: Math.round(T.rest + 3 * z + (q() - .5) * 3)};
+    P.am.ready = Math.max(30, Math.min(95, Math.round(70 + (P.am.hrv - T.hrv) * 1.1 - (P.am.rhr - T.rest) * 2.5 + (P.am.sleep - 7) * 8))); });
+  FC.set(M.id, F); return F;
+}
+const hm = h => Math.floor(h) + ' h ' + String(Math.round((h % 1) * 60)).padStart(2, '0');
+const occOf = (F, list) => list;
+
+class Component extends DCLogic {
+  state = {phase: 'Attack', period: 'Season', opp: 'all', oppOpen: false, acwr: null};
+  seg(opts, cur, key) { return opts.map(l => ({label: l, bg: l === cur ? '#FFFFFF' : 'transparent', color: l === cur ? '#111827' : '#6B7280', shadow: l === cur ? '0 1px 2px rgba(15,23,42,.12)' : 'none', pick: () => this.setState({[key]: l})})); }
+  play(title, sub, occ) {
+    const seen = new Set(), items = []; (occ || []).forEach(o => { const k = o.r.id + '|' + (o.i || 0); if (seen.has(k)) return; seen.add(k); items.push({M: o.M, r: o.r, i: o.i || 0, exc: false}); });
+    if (items.length && this.props.play) this.props.play(title, sub, items);
+  }
+  op(title, sub, occ) { return () => this.play(title, sub, occ); }
+  all(M) { return M.rallies.map(r => ({M, r, i: 0})); }
+
+  subject() {
+    const MI = window.MI, P = this.props, kind = P.kind || 'pair', id = P.sid || 'AB', ws = P.ws || 'PP';
+    const ms = MI.MATCHES.filter(M => M.ws === ws && (kind === 'team' ? !!M.tie : kind === 'pair' ? M.A.id === id : M.A.players.includes(id)));
+    return {kind, id, ws, ms, name: kind === 'team' ? MI.TEAMS[id].name : kind === 'pair' ? MI.PAIRS[id].name : MI.PLAYERS[id].name};
+  }
+
+  // ---------- last match (pair / player) ----------
+  lastMatch(S) {
+    const M = S.ms[S.ms.length - 1], F = facts(M), N = F.N, pids = S.kind === 'player' ? [S.id, M.A.players.find(p => p !== S.id)] : M.A.players.slice(), [a, b] = pids, na = nm(a), nb = nm(b);
+    const prev = S.ms.slice(0, -1).map(facts), sv = (f, d) => prev.length ? 'Season ' + f(prev) : '';
+    const gs = F.games, sets = M.sets, nS = sets.length, setG = k => gs.map((g, i) => g.set === k + 1 ? i : -1).filter(i => i >= 0);
+    const gXL = [0, 1, 2].slice(0, nS).map(k => { const ix = setG(k); return {i: (ix[0] + ix[ix.length - 1]) / 2, label: 'Set ' + (k + 1)}; });
+    const gVL = [1, 2].slice(0, nS - 1).map(k => setG(k)[0]);
+    const pStart = [0, 1, 2].slice(0, nS).map(k => gs[setG(k)[0]].p0), pXL = pStart.map((p0, k) => ({i: (p0 + (pStart[k + 1] || N)) / 2, label: 'Set ' + (k + 1)}));
+    const sub = mlab(M) + ' · ' + M.date, W = this.op.bind(this);
+    // momentum
+    const mx = Math.max(6, Math.ceil((Math.max(...F.diff.map(Math.abs)) + 1) / 6) * 6), bg = gs.filter(g => g.brk || g.lost), occG = g => g.rs.map(r => ({M, r, i: 0}));
+    const brkFor = gs.filter(g => g.brk).length, brkAg = gs.filter(g => g.lost).length;
+    const mom = LC({n: N, h: 210, min: -mx, max: mx, step: mx / 2, fmt: v => v > 0 ? '+' + v : String(v), series: [{vals: F.diff, c: CA, w: 2}], refs: [0], vlines: pStart.slice(1).map(x => x - .5), xl: pXL,
+      dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? CA : CG, sz: 11, title: (g.brk ? 'Break for · ' : 'Break against · ') + 'Set ' + g.set + ' · ' + g.before, open: W((g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, sub, occG(g))})),
+      title: 'Point difference through the match', head: 'Broke ' + brkFor + (brkFor === 1 ? ' time' : ' times') + ', broken ' + brkAg + (brkAg === 1 ? ' time' : ' times'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W('Breaks', sub, [].concat(...bg.map(occG))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]});
+    // winners and errors
+    const E = F.end, wA = E[a].W, wB = E[b].W, eA = E[a].E, eB = E[b].E;
+    const ended = {title: 'How points ended', ca: na, cb: nb, cac: CA, cbc: CB, watch: 'Watch ' + (wA.length + wB.length + eA.length + eB.length), onWatch: W('Winners and errors', sub, [...wA, ...wB, ...eA, ...eB]),
+      head: eB.length > wB.length && wA.length >= eA.length ? nb + ' made more errors than winners; ' + na + ' did the opposite' : eA.length > wA.length && wB.length >= eB.length ? na + ' made more errors than winners; ' + nb + ' did the opposite' : 'Winners ' + (wA.length + wB.length) + ', errors ' + (eA.length + eB.length),
+      rows: [{label: 'Winners', a: wA.length, b: wB.length, openA: W(na + ' · winners', sub, wA), openB: W(nb + ' · winners', sub, wB)},
+        {label: 'Errors', a: eA.length, b: eB.length, openA: W(na + ' · errors', sub, eA), openB: W(nb + ' · errors', sub, eB)},
+        {label: 'Winners per error', a: eA.length ? r2(wA.length / eA.length) : '—', b: eB.length ? r2(wB.length / eB.length) : '—', openA: W(na + ' · winners and errors', sub, [...wA, ...eA]), openB: W(nb + ' · winners and errors', sub, [...wB, ...eB])},
+        {label: 'Their errors', a: F.oppE.length, b: '', openA: W('Opponent errors', sub, F.oppE)}]};
+    const byType = (la, lb) => { const ts = [...new Set([...la, ...lb].map(o => o.type))].map(t => [t, la.filter(o => o.type === t), lb.filter(o => o.type === t)]).sort((x, y) => y[1].length + y[2].length - x[1].length - x[2].length).slice(0, 8);
+      const mxv = Math.max(1, ...ts.map(t => t[1].length + t[2].length)); return ts.map(t => ({label: t[0], a: t[1].length, b: t[2].length, aw: t[1].length / mxv * 100, bw: t[2].length / mxv * 100, open: W(t[0], sub, [...t[1], ...t[2]])})); };
+    const topT = (la, lb) => { const r = byType(la, lb)[0]; return r ? r.label.toLowerCase() : '—'; };
+    const shotCards = [
+      {title: 'Winners by shot', head: 'Most winners came from the ' + topT(wA, wB), watch: 'Watch ' + (wA.length + wB.length), onWatch: W('Winners', sub, [...wA, ...wB]), rows: byType(wA, wB)},
+      {title: 'Errors by shot', head: 'Most errors came on the ' + topT(eA, eB), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), rows: byType(eA, eB)}];
+    const ueG = p => gs.map((g, i) => E[p].E.filter(o => o.gi === i).length), uA = ueG(a), uB = ueG(b);
+    const worstSet = [0, 1, 2].slice(0, nS).map(k => ({k, n: setG(k).reduce((s, i) => s + uA[i] + uB[i], 0)})).sort((x, y) => y.n - x.n)[0];
+    const ueChart = LC({n: gs.length, h: 170, min: 0, max: Math.max(2, ...uA.map((v, i) => v + uB[i])), step: 1, stacks: [{vals: uA, c: CA}, {vals: uB, c: CB}], vlines: gVL, xl: gXL,
+      title: 'Errors by game', head: worstSet.n + ' of ' + (eA.length + eB.length) + ' errors came in set ' + (worstSet.k + 1), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), legend: [lg(na, CA, 'bar'), lg(nb, CB, 'bar')]});
+    const frac = (l, lab) => ({label: lab, v: l.filter(o => o.ok).length + ' of ' + l.length, p: pct(l.filter(o => o.ok).length, l.length) + ' %', open: W(lab, sub, l)});
+    const press = [frac(F.bpC, 'Break points converted'), frac(F.bpS, 'Break points saved'), frac(F.gold, 'Golden points won'), frac(F.srv, 'Points won on serve'), frac(F.ret, 'Points won on return')];
+    const gW = F.gold.filter(o => o.ok).length;
+    // coordination
+    const midA = F.mid.filter(o => o.who === a), midB = F.mid.filter(o => o.who === b), midN = F.mid.filter(o => !o.who || !pids.includes(o.who));
+    const coK = [['Spacing in attack', r1(med(F.att.map(o => o.v))).toFixed(1), 'm', F.att], ['Spacing in defence', r1(med(F.def.map(o => o.v))).toFixed(1), 'm', F.def], ['Net arrival gap', r2(med(F.trans.map(o => o.v))).toFixed(2), 's median', F.trans],
+      ['Middle balls won', String(F.mid.filter(o => o.ok).length), 'of ' + F.mid.length, F.mid], ['Gaps over 4.5 m', String(F.gaps.length), 'points', F.gaps]].map((k, i) => ({label: k[0], v: k[1], u: k[2], bl: i ? '1px solid #E5E7EB' : '0', open: W(k[0], sub, k[3])}));
+    const ph = this.state.phase, H = F.heat[ph], mean = l => [avg(l.map(x => x[0])), avg(l.map(x => x[1]))];
+    const ma = mean(H[a]), mb = mean(H[b]), heat = []; [[a, CA], [b, CB]].forEach(([p, c]) => H[p].filter((_, j) => j % Math.max(1, Math.floor(H[p].length / 80)) === 0).forEach(x => heat.push({cx: r1(10 + x[0] * 50), cy: r1(20 + Math.max(.2, Math.min(9.8, x[1])) * 50), c})));
+    const pos = (m, name) => ({cx: r1(10 + m[0] * 50), cy: r1(20 + m[1] * 50), ty: r1(20 + m[1] * 50 - 18), name});
+    const courtHead = (ph === 'Attack' ? 'In attack' : 'In defence') + ', ' + na + ' averages ' + r1(Math.abs(ma[0] - 5)).toFixed(1) + ' m from the centre line, ' + nb + ' ' + r1(Math.abs(mb[0] - 5)).toFixed(1) + ' m';
+    const spG = gs.map((g, i) => { const l = F.att.filter(o => o.gi === i); return l.length ? r2(avg(l.map(o => o.v))) : null; }), spR = nice(spG, .5, .1);
+    const lostSp = gs.map((g, i) => g.lost ? spG[i] : null).filter(v => v != null), okSp = gs.map((g, i) => !g.lost ? spG[i] : null).filter(v => v != null);
+    const spChart = LC({n: gs.length, h: 150, ...spR, fmt: v => v.toFixed(1), bands: [{from: 3, to: 4, c: BAND}], series: [{vals: spG, c: CA}], vlines: gVL, xl: gXL,
+      dots: gs.map((g, i) => g.lost && spG[i] != null ? {i, v: spG[i], c: CR, sz: 10, title: 'Broken · set ' + g.set + ' · ' + g.before, open: W('Broken · set ' + g.set, sub, F.att.filter(o => o.gi === i))} : null).filter(Boolean),
+      title: 'Partner spacing in attack by game', head: lostSp.length ? 'Spacing ' + r1(avg(lostSp)).toFixed(1) + ' m in games they were broken, ' + r1(avg(okSp)).toFixed(1) + ' m in the rest' : 'Average spacing ' + r1(avg(okSp)).toFixed(1) + ' m', src: 'Video tracking',
+      watch: 'Watch ' + F.att.length, onWatch: W('Spacing in attack', sub, F.att), legend: [lg('Average spacing', CA, 'line'), lg('Target 3–4 m', BAND, 'bar'), lg('Broken serve', CR, 'bar')]});
+    const NB = [['Under 0.1 s', 0, .1], ['0.1–0.2 s', .1, .2], ['0.2–0.3 s', .2, .3], ['0.3–0.4 s', .3, .4], ['Over 0.4 s', .4, 9]].map(([l, lo, hi], i) => { const xs = F.trans.filter(o => o.v >= lo && o.v < hi); return {label: l, n: xs.length, w: xs.filter(o => o.ok).length, p: pct(xs.filter(o => o.ok).length, xs.length), c: i < 2 ? CA : CG, open: W('Net arrival gap ' + l, sub, xs)}; });
+    const early = F.trans.filter(o => o.v < .2), late = F.trans.filter(o => o.v >= .2);
+    const gapsL = F.gaps.slice().sort((x, y) => y.v - x.v).slice(0, 10).sort((x, y) => x.r.t0 - y.r.t0);
+    const ptL = r => r.golden ? '40–40' : (PTS[r.pts.A] || '40') + '–' + (PTS[r.pts.B] || '40');
+    // physical
+    const PA = F.p[a], PB = F.p[b], sAvg = (p, f) => { const l = prev.filter(x => x.p[p]).map(x => f(x.p[p], x)); return l.length ? avg(l) : null; }, sva = (p, f, fm) => { const v = sAvg(p, f); return v == null ? '' : 'Season ' + fm(v); };
+    const mOpen = (p, lab) => W(nm(p) + ' · ' + lab, sub, this.all(M));
+    const row = (label, fa, fb, sa, sb, oa, ob) => ({label, a: fa, b: fb, sa, sb, openA: oa, openB: ob});
+    const physT = [
+      {title: 'Movement', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), rows: [
+        row('Distance', fmt(PA.dist) + ' m', fmt(PB.dist) + ' m', sva(a, x => x.dist, fmt), sva(b, x => x.dist, fmt), mOpen(a, 'distance'), mOpen(b, 'distance')),
+        row('High-intensity distance', fmt(PA.hi) + ' m', fmt(PB.hi) + ' m', sva(a, x => x.hi, fmt), sva(b, x => x.hi, fmt), W(na + ' · sprints', sub, PA.sprint), W(nb + ' · sprints', sub, PB.sprint)),
+        row('Sprints over 16 km/h', PA.sprint.length, PB.sprint.length, sva(a, x => x.sprint.length, fmt), sva(b, x => x.sprint.length, fmt), W(na + ' · sprints', sub, PA.sprint), W(nb + ' · sprints', sub, PB.sprint)),
+        row('Moves over 1.5 m', PA.moves, PB.moves, sva(a, x => x.moves, fmt), sva(b, x => x.moves, fmt), mOpen(a, 'moves'), mOpen(b, 'moves')),
+        row('Jumps (overheads)', PA.jumps.length, PB.jumps.length, sva(a, x => x.jumps.length, fmt), sva(b, x => x.jumps.length, fmt), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps)),
+        row('Player load', fmt(sum(PA.load)), fmt(sum(PB.load)), sva(a, x => sum(x.load), fmt), sva(b, x => sum(x.load), fmt), mOpen(a, 'load'), mOpen(b, 'load'))]},
+      {title: 'Heart rate', src: 'Chest strap', ca: na, cb: nb, cac: CA, cbc: CB, rows: [
+        row('Average', PA.hrAvg + ' bpm', PB.hrAvg + ' bpm', sva(a, x => x.hrAvg, Math.round), sva(b, x => x.hrAvg, Math.round), mOpen(a, 'heart rate'), mOpen(b, 'heart rate')),
+        row('Peak', PA.hrPeak + ' bpm', PB.hrPeak + ' bpm', sva(a, x => x.hrPeak, Math.round), sva(b, x => x.hrPeak, Math.round), mOpen(a, 'heart rate'), mOpen(b, 'heart rate')),
+        row('Drop 20 s after a point', PA.dropAvg + ' bpm', PB.dropAvg + ' bpm', sva(a, x => x.dropAvg, r1), sva(b, x => x.dropAvg, r1), mOpen(a, 'recovery'), mOpen(b, 'recovery')),
+        row('Energy', fmt(PA.kcal) + ' kcal', fmt(PB.kcal) + ' kcal', sva(a, x => x.kcal, fmt), sva(b, x => x.kcal, fmt), mOpen(a, 'energy'), mOpen(b, 'energy'))]},
+      {title: 'Next morning', src: 'Wrist wearable', ca: na, cb: nb, cac: CA, cbc: CB, head: (PA.am.ready < PB.am.ready ? na : nb) + ' woke with the lower readiness score', rows: [
+        row('Sleep', hm(PA.am.sleep), hm(PB.am.sleep), sva(a, x => x.am.sleep, hm), sva(b, x => x.am.sleep, hm), mOpen(a, 'sleep'), mOpen(b, 'sleep')),
+        row('HRV', PA.am.hrv + ' ms', PB.am.hrv + ' ms', 'Baseline ' + trait(a).hrv, 'Baseline ' + trait(b).hrv, mOpen(a, 'HRV'), mOpen(b, 'HRV')),
+        row('Resting HR', PA.am.rhr + ' bpm', PB.am.rhr + ' bpm', 'Baseline ' + trait(a).rest, 'Baseline ' + trait(b).rest, mOpen(a, 'resting HR'), mOpen(b, 'resting HR')),
+        row('Readiness', PA.am.ready, PB.am.ready, '', '', mOpen(a, 'readiness'), mOpen(b, 'readiness'))]}];
+    const hrR = nice([...PA.hr, ...PB.hr], 10, 4);
+    const hrChart = LC({n: N, h: 190, ...hrR, bands: [{from: Math.round(trait(a).hrMax * .8), to: Math.round(trait(a).hrMax * .9), c: '#FEF3E2'}, {from: Math.round(trait(a).hrMax * .9), to: hrR.max, c: '#FDE8E8'}], series: [{vals: PA.hr, c: CA}, {vals: PB.hr, c: CB}], vlines: pStart.slice(1), xl: pXL,
+      title: 'Heart rate through the match', head: 'Average ' + PA.hrAvg + ' bpm for ' + na + ', ' + PB.hrAvg + ' for ' + nb + '; highest in set ' + (1 + [0, 1, 2].slice(0, nS).map(k => avg(PA.hr.slice(pStart[k], pStart[k + 1] || N))).reduce((bi, v, i, arr) => v > arr[bi] ? i : bi, 0)),
+      src: 'Chest strap', watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), legend: [lg(na, CA, 'line'), lg(nb, CB, 'line'), lg('Zone 4 · ' + na, '#FDE3B8', 'bar'), lg('Zone 5', '#FBCACA', 'bar')]});
+    const dA = gs.map((g, i) => Math.round(PA.gd[i] || 0)), dB = gs.map((g, i) => Math.round(PB.gd[i] || 0)), moreB = dB.filter((v, i) => v > dA[i]).length, dR = nice([0, ...dA, ...dB], 50);
+    const distChart = LC({n: gs.length, h: 160, ...dR, min: 0, fmt: v => Math.round(v), groups: [{vals: dA, c: CA}, {vals: dB, c: CB}], vlines: gVL, xl: gXL,
+      title: 'Distance per game (m)', head: (moreB >= gs.length / 2 ? nb : na) + ' covered more ground in ' + Math.max(moreB, gs.length - moreB) + ' of ' + gs.length + ' games', src: 'GPS vest', legend: [lg(na, CA, 'bar'), lg(nb, CB, 'bar')]});
+    const ZL = ['Zone 1 · under 60 %', 'Zone 2 · 60–70 %', 'Zone 3 · 70–80 %', 'Zone 4 · 80–90 %', 'Zone 5 · over 90 %'], zmx = Math.max(1, ...PA.zones, ...PB.zones);
+    const zones = {title: 'Time in heart rate zones', src: 'Chest strap', ca: na, cb: nb, cac: CA, cbc: CB, head: (PB.zones[4] > PA.zones[4] ? nb : na) + ' spent ' + Math.abs(Math.round(PB.zones[4] - PA.zones[4])) + ' more minutes in zone 5',
+      rows: ZL.map((l, i) => ({label: l, a: Math.round(PA.zones[i]) + ' min', b: Math.round(PB.zones[i]) + ' min', bars: true, aw: PA.zones[i] / zmx * 100, bw: PB.zones[i] / zmx * 100, openA: mOpen(a, 'heart rate'), openB: mOpen(b, 'heart rate')}))};
+    const SR = [0, 1, 2].slice(0, nS), bySet = (l, k) => l.filter(o => o.set === k + 1);
+    const topMx = Math.max(1, ...PA.top, ...PB.top), ldMx = Math.max(1, ...PA.load, ...PB.load);
+    const dirT = Object.keys(PA.dir).map(k => [k, pct(PA.dir[k], sum(Object.values(PA.dir))), pct(PB.dir[k], sum(Object.values(PB.dir)))]);
+    const physT2 = [
+      {title: 'Top speed by set', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Top speed ' + r1(Math.max(...PA.top)) + ' km/h for ' + na + ', ' + r1(Math.max(...PB.top)) + ' for ' + nb, rows: SR.map(k => ({label: 'Set ' + (k + 1), a: r1(PA.top[k]) + ' km/h', b: r1(PB.top[k]) + ' km/h', bars: true, aw: PA.top[k] / topMx * 100, bw: PB.top[k] / topMx * 100, openA: W(na + ' · sprints · set ' + (k + 1), sub, bySet(PA.sprint, k)), openB: W(nb + ' · sprints · set ' + (k + 1), sub, bySet(PB.sprint, k))}))},
+      {title: 'Player load by set', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Load is distance plus overheads', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: Math.round(PA.load[k]), b: Math.round(PB.load[k]), bars: true, aw: PA.load[k] / ldMx * 100, bw: PB.load[k] / ldMx * 100, openA: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1)), openB: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1))}))},
+      {title: 'Movement direction', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: (dirT[2][2] > dirT[2][1] ? nb : na) + ' moved backwards more', rows: dirT.map(r => ({label: r[0], a: r[1] + ' %', b: r[2] + ' %', bars: true, aw: r[1] * 2, bw: r[2] * 2, openA: mOpen(a, 'movement'), openB: mOpen(b, 'movement')}))}];
+    // biomechanics
+    const sAvgSpd = (p, t) => { const l = [].concat(...prev.filter(x => x.p[p]).map(x => (x.p[p].shots[t] || []).map(o => o.v))); return l.length ? avg(l) : null; };
+    const types = [...new Set([...Object.keys(PA.shots), ...Object.keys(PB.shots)])].filter(t => t !== 'Serve' && t !== 'Return').sort((x, y) => (RS[y] || 0) - (RS[x] || 0)).slice(0, 7);
+    const spdCell = (p, t) => { const l = F.p[p].shots[t] || []; if (!l.length) return ['—', '']; const v = Math.round(avg(l.map(o => o.v))), s = sAvgSpd(p, t); return [v + ' km/h', l.length + ' shots' + (s != null ? ' · ' + sgn(v - Math.round(s)) + ' vs season' : '')]; };
+    const shotT = {title: 'Racket speed by shot', src: 'Racket sensor', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Average racket speed per shot type, against the season', rows: types.map(t => { const x = spdCell(a, t), y = spdCell(b, t); return {label: t, a: x[0], b: y[0], sa: x[1], sb: y[1], openA: W(na + ' · ' + t, sub, PA.shots[t] || []), openB: W(nb + ' · ' + t, sub, PB.shots[t] || [])}; })};
+    const ohIdx = o => o.k, setAvg = (l, k) => { const x = l.filter(o => o.set === k + 1); return x.length ? r2(avg(x.map(o => o.v))) : null; };
+    const segS = (l, c) => SR.map(k => ({vals: Array.from({length: N}, (_, i) => i >= pStart[k] && i < (pStart[k + 1] || N) ? setAvg(l, k) : null), c, w: 2, dash: '6 4'}));
+    const drop = setAvg(PA.oh, 0) != null && setAvg(PA.oh, nS - 1) != null ? Math.round((setAvg(PA.oh, 0) - setAvg(PA.oh, nS - 1)) * 100) : 0, chR = nice([...PA.oh, ...PB.oh].map(o => o.v), .1, .02);
+    const chChart = LC({n: N, h: 250, ...chR, fmt: v => v.toFixed(2), series: [...segS(PA.oh, CA), ...segS(PB.oh, CB)], vlines: pStart.slice(1), xl: pXL,
+      dots: [...PA.oh.map(o => ({i: ohIdx(o), v: o.v, c: CA, sz: 8, title: na + ' · ' + o.r.shots[o.i].type + ' · ' + o.v + ' m', open: W(na + ' · overhead', sub, [o])})), ...PB.oh.map(o => ({i: ohIdx(o), v: o.v, c: CB, sz: 8, title: nb + ' · ' + o.r.shots[o.i].type + ' · ' + o.v + ' m', open: W(nb + ' · overhead', sub, [o])}))],
+      title: 'Overhead contact height (m)', head: na + "'s contact point " + (drop >= 0 ? 'dropped ' : 'rose ') + Math.abs(drop) + ' cm from set 1 to set ' + nS, src: 'Pose tracking', watch: 'Watch ' + (PA.oh.length + PB.oh.length), onWatch: W('Overheads', sub, [...PA.oh, ...PB.oh]), legend: [lg(na + ' overhead', CA, 'bar'), lg(nb + ' overhead', CB, 'bar'), lg('Set average', CG, 'line')]});
+    const spP = (P, k) => { const l = bySet(P.split, k); return pct(l.filter(o => o.ok).length, l.length); }, stP = (P, k) => Math.round(avg(bySet(P.step, k).map(o => o.v)));
+    const wSet = P => SR.reduce((bi, k) => spP(P, k) < spP(P, bi) ? k : bi, 0);
+    const bioT = [
+      {title: 'Split-step on opponent contact', src: 'Pose tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Lowest rate: ' + nb + ' in set ' + (wSet(PB) + 1) + ' (' + spP(PB, wSet(PB)) + ' %)', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: spP(PA, k) + ' %', b: spP(PB, k) + ' %', bars: true, aw: spP(PA, k), bw: spP(PB, k), openA: W(na + ' · no split-step · set ' + (k + 1), sub, bySet(PA.split, k).filter(o => !o.ok)), openB: W(nb + ' · no split-step · set ' + (k + 1), sub, bySet(PB.split, k).filter(o => !o.ok))}))},
+      {title: 'First step after opponent contact', src: 'Video tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Median movement start from the tracked rallies', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: stP(PA, k) + ' ms', b: stP(PB, k) + ' ms', bars: true, aw: stP(PA, k) / 9, bw: stP(PB, k) / 9, openA: W(na + ' · slowest starts · set ' + (k + 1), sub, bySet(PA.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12)), openB: W(nb + ' · slowest starts · set ' + (k + 1), sub, bySet(PB.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12))}))},
+      {title: 'Movement quality', src: 'Pose tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: (PA.mq.land > PB.mq.land ? na : nb) + ' lands less evenly after overheads', rows: [
+        row('Knee bend at the volley', PA.mq.knee + '°', PB.mq.knee + '°', sva(a, x => x.mq.knee, v => Math.round(v) + '°'), sva(b, x => x.mq.knee, v => Math.round(v) + '°'), W(na + ' · volleys', sub, PA.shots.Volley || []), W(nb + ' · volleys', sub, PB.shots.Volley || [])),
+        row('Trunk rotation on the smash', PA.mq.trunk + '°', PB.mq.trunk + '°', sva(a, x => x.mq.trunk, v => Math.round(v) + '°'), sva(b, x => x.mq.trunk, v => Math.round(v) + '°'), W(na + ' · smashes', sub, PA.shots.Smash || []), W(nb + ' · smashes', sub, PB.shots.Smash || [])),
+        row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]}];
+    const won = M.winner === 'A', rl = F.N ? r1(avg(M.rallies.map(r => r.shots.length))) : 0, dur = Math.round(M.secs / 60);
+    return {date: M.date, event: mlab(M), res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
+      scoreRows: [{name: M.A.name, dot: CA, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#A3C9FF', sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
+      meta: [{label: 'Duration', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', v: F.won.length + ' of ' + N}, {label: 'Avg rally', v: rl + ' shots'}],
+      mom, ended, shotCards, ueChart, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
+      coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
+      netHead: 'Arriving within 0.2 s of each other: ' + pct(early.filter(o => o.ok).length, early.length) + ' % of points won; later, ' + pct(late.filter(o => o.ok).length, late.length) + ' %',
+      mid: {total: F.mid.length, onWatch: W('Middle balls', sub, F.mid), na, nb, ta: midA.length, tb: midB.length, tn: midN.length, pa: pct(midA.length, F.mid.length), pb: pct(midB.length, F.mid.length),
+        head: (midA.length >= midB.length ? na : nb) + ' took most middle balls; ' + midN.length + ' fell between them',
+        rows: [{name: na + ' took it', l: midA, c: CA}, {name: nb + ' took it', l: midB, c: CB}, {name: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
+      gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'Won point' : 'Lost point', oc: o.ok ? '#111827' : CR, open: W('Gap over 4.5 m', sub, [o])})),
+      gapHead: 'Lost ' + F.gaps.filter(o => !o.ok).length + ' of ' + F.gaps.length + ' points when the gap opened', onGaps: W('Gaps over 4.5 m', sub, F.gaps),
+      physT, hrChart, distChart, zones, physT2, shotT, chChart, bioT};
+  }
+
+  // ---------- season (pair / player) ----------
+  season(S) {
+    const s = this.state, MI = window.MI, W = this.op.bind(this), pids = S.kind === 'player' ? [S.id] : MI.PAIRS[S.id].players.slice(), cols = [CA, CB];
+    const opps = [...new Set(S.ms.map(M => M.B.id))];
+    let ms = S.ms.filter(M => s.opp === 'all' || M.B.id === s.opp); if (s.period === 'Last 10') ms = ms.slice(-10); if (s.period === 'Last 5') ms = ms.slice(-5);
+    const n = ms.length; if (!n) return null;
+    const Fs = ms.map(facts), xl = [], mo = M => MON.indexOf(M.date.split(' ')[1]);
+    ms.forEach((M, i) => { if (i === 0 || mo(ms[i - 1]) !== mo(M)) xl.push({i, label: MON[mo(M)]}); });
+    const sub = S.name + ' · ' + n + (n === 1 ? ' match' : ' matches'), leg = pids.map((p, k) => lg(nm(p), cols[k], 'line'));
+    const allOcc = Fs.reduce((acc, F) => acc.concat(this.all(F.M)), []);
+    const dotsFor = (vals, k, lab, occF) => ms.map((M, i) => ({i, v: vals[i], c: cols[k] || CA, sz: 8, title: M.event + ' · ' + M.B.name + ' · ' + vals[i], open: W(lab + ' · ' + M.event, mlab(M), occF(Fs[i]))}));
+    const per = (p, f) => Fs.map(F => F.p[p] ? f(F.p[p], F) : null);
+    // results
+    const ptsW = Fs.map(F => pct(F.won.length, F.N)), wins = ms.filter(M => M.winner === 'A').length, rr = nice(ptsW, 5, 2);
+    const result = LC({n, h: 190, ...rr, series: [{vals: ptsW, c: CA}], refs: [50], xl, dots: ms.map((M, i) => ({i, v: ptsW[i], c: M.winner === 'A' ? CA : CG, title: mlab(M) + ' · vs ' + M.B.name + ' · ' + (M.winner === 'A' ? 'Won' : 'Lost') + ' · ' + ptsW[i] + ' % of points', open: W(M.A.name + ' vs ' + M.B.name, mlab(M) + ' · ' + M.date, this.all(M))})),
+      title: 'Points won and results', head: 'Won ' + wins + ' of ' + n + '; ' + r1(avg(ptsW)) + ' % of points won', watch: 'Watch ' + n + ' matches', onWatch: W(S.name, sub, allOcc), legend: [lg('Won', CA, 'bar'), lg('Lost', CG, 'bar'), lg('50 %', CG, 'line')]});
+    // wins vs losses
+    const WI = Fs.filter(F => F.M.winner === 'A'), LO = Fs.filter(F => F.M.winner !== 'A');
+    const MET = [...pids.map(p => [nm(p) + ' errors per set', F => F.p[p] ? F.end[p].E.length / F.M.nsets : null, 1, '', F => F.end[p] ? F.end[p].E : []]),
+      ['Reach the net together', F => F.trans.length ? pct(F.trans.filter(o => o.v <= .2).length, F.trans.length) : null, 0, ' %', F => F.trans],
+      ['Partner spacing in attack', F => F.att.length ? med(F.att.map(o => o.v)) : null, 2, ' m', F => F.att],
+      ['Middle balls won', F => F.mid.length ? pct(F.mid.filter(o => o.ok).length, F.mid.length) : null, 0, ' %', F => F.mid],
+      ...pids.map(p => [nm(p) + ' split-step', F => F.p[p] ? pct(F.p[p].split.filter(o => o.ok).length, F.p[p].split.length) : null, 0, ' %', F => F.p[p] ? F.p[p].split.filter(o => !o.ok) : []]),
+      ...pids.map(p => [nm(p) + ' distance', F => F.p[p] ? F.p[p].dist : null, -1, ' m', F => this.all(F.M)])];
+    const fx = (v, d) => v == null ? '—' : d < 0 ? fmt(v) : d === 0 ? String(Math.round(v)) : v.toFixed(d);
+    const mAvg = (L, f) => { const v = L.map(f).filter(x => x != null); return v.length ? avg(v) : null; };
+    const wl = {title: 'Wins vs losses', ca: 'Wins · ' + WI.length, cb: 'Losses · ' + LO.length, cac: CA, cbc: CG, watch: 'Watch ' + n + ' matches', onWatch: W(S.name, sub, allOcc),
+      head: WI.length && LO.length ? (() => { const e = MET[0], x = mAvg(WI, e[1]), y = mAvg(LO, e[1]); return MET[0][0].replace(' per set', '') + ': ' + fx(x, 1) + ' per set in wins, ' + fx(y, 1) + ' in losses'; })() : 'Needs both wins and losses in this selection',
+      rows: MET.map(r => { const x = mAvg(WI, r[1]), y = mAvg(LO, r[1]), m = Math.max(x || 0, y || 0) || 1; return {label: r[0], a: WI.length ? fx(x, r[2]) + (x == null ? '' : r[3]) : '—', b: LO.length ? fx(y, r[2]) + (y == null ? '' : r[3]) : '—', bars: true, aw: (x || 0) / m * 100, bw: (y || 0) / m * 100,
+        openA: W(r[0] + ' · wins', sub, [].concat(...WI.map(r[4]))), openB: W(r[0] + ' · losses', sub, [].concat(...LO.map(r[4])))}; })};
+    // set 1 vs final set
+    const F3 = Fs.filter(F => F.M.nsets === 3), lastS = 3;
+    const FD = [].concat(...pids.map(p => [
+      [nm(p) + ' · errors', k => F3.map(F => F.end[p] ? F.end[p].E.filter(o => o.set === k).length : 0), v => r1(avg(v)) + '', k => [].concat(...F3.map(F => F.end[p] ? F.end[p].E.filter(o => o.set === k) : []))],
+      [nm(p) + ' · top speed', k => F3.map(F => F.p[p] ? F.p[p].top[k - 1] : 0), v => r1(avg(v)) + ' km/h', k => [].concat(...F3.map(F => F.p[p] ? F.p[p].sprint.filter(o => o.set === k) : []))],
+      [nm(p) + ' · smash speed', k => [].concat(...F3.map(F => F.p[p] ? (F.p[p].shots.Smash || []).filter(o => o.set === k).map(o => o.v) : [])), v => Math.round(avg(v)) + ' km/h', k => [].concat(...F3.map(F => F.p[p] ? (F.p[p].shots.Smash || []).filter(o => o.set === k) : []))],
+      [nm(p) + ' · split-step', k => { const l = [].concat(...F3.map(F => F.p[p] ? F.p[p].split.filter(o => o.set === k) : [])); return [pct(l.filter(o => o.ok).length, l.length)]; }, v => v[0] + ' %', k => [].concat(...F3.map(F => F.p[p] ? F.p[p].split.filter(o => o.set === k && !o.ok) : []))]]));
+    const fade = {title: 'Set 1 vs set 3', ca: 'Set 1', cb: 'Set 3', cac: CA, cbc: CB, head: F3.length ? F3.length + ' three-set ' + (F3.length === 1 ? 'match' : 'matches') + ' in this selection' : 'No three-set matches in this selection',
+      rows: F3.length ? FD.map(r => { const x = r[1](1), y = r[1](lastS), ax = avg(x), ay = avg(y); return {label: r[0], a: r[2](x), b: r[2](y), sb: ax ? sgn(Math.round((ay - ax) / ax * 100)) + ' %' : '', openA: W(r[0] + ' · set 1', sub, r[3](1)), openB: W(r[0] + ' · set 3', sub, r[3](lastS))}; }) : []};
+    // errors and winners
+    const ueS = pids.map(p => Fs.map(F => F.p[p] ? r1(F.end[p].E.length / F.M.nsets) : null)), ueR = nice([].concat(...ueS), 1, .5);
+    const half = l => { const q = Math.min(3, Math.max(1, Math.floor(l.length / 2))), v = l.filter(x => x != null); return [r1(avg(v.slice(0, q))), r1(avg(v.slice(-q)))]; };
+    const ourW = F => [].concat(...F.A.filter(p => pids.includes(p)).map(p => F.end[p].W)), ourE = F => [].concat(...F.A.filter(p => pids.includes(p)).map(p => F.end[p].E));
+    const ratio = Fs.map(F => { const e = ourE(F).length; return e ? r2(ourW(F).length / e) : null; }), above = ratio.filter(v => v != null && v >= 1).length, raR = nice(ratio, .5, .1);
+    const mons = [...new Set(ms.map(mo))], byMo = f => mons.map(m => { const L = Fs.filter(F => mo(F.M) === m); return r1(avg(L.map(f))); });
+    const cat = t => t === 'Smash' ? 0 : t === 'Víbora' || t === 'Bandeja' ? 1 : t === 'Volley' || t === 'Block' ? 2 : 3;
+    const stk = [0, 1, 2, 3].map(c => byMo(F => ourW(F).filter(o => cat(o.type) === c).length)), tot = mons.map((m, i) => stk[0][i] + stk[1][i] + stk[2][i] + stk[3][i]);
+    const err = [
+      LC({n, ...ueR, min: 0, series: ueS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(ueS[k], k, nm(p) + ' · errors', F => F.end[p] ? F.end[p].E : []))),
+        title: 'Errors per set', head: nm(pids[pids.length - 1]) + "'s errors per set: " + half(ueS[ueS.length - 1])[0] + ' early, ' + half(ueS[ueS.length - 1])[1] + ' lately', src: 'Video tagging', watch: 'Watch ' + sum(Fs.map(F => ourE(F).length)), onWatch: W('Errors', sub, [].concat(...Fs.map(ourE))), legend: leg}),
+      LC({n, ...raR, min: 0, fmt: v => v.toFixed(1), series: [{vals: ratio, c: CA}], refs: [1], xl, dots: dotsFor(ratio, 0, 'Winners and errors', F => [...ourW(F), ...ourE(F)]), title: 'Winners per error', head: 'More winners than errors in ' + above + ' of ' + n + ' matches', src: 'Video tagging', legend: [lg(S.kind === 'player' ? nm(S.id) : 'Pair', CA, 'line'), lg('Break-even', CG, 'line')]}),
+      LC({n: mons.length, min: 0, max: Math.max(5, Math.ceil(Math.max(...tot) / 5) * 5), step: Math.max(5, Math.ceil(Math.max(...tot) / 5) * 5) / 5 * 1, stacks: [{vals: stk[0], c: CA}, {vals: stk[1], c: '#6B7280'}, {vals: stk[2], c: CB}, {vals: stk[3], c: '#D1D5DB'}], xl: mons.map((m, i) => ({i, label: MON[m]})),
+        title: 'Winners per match by shot', head: 'Smashes: ' + pct(stk[0][0], tot[0]) + ' % of winners in ' + MON[mons[0]] + ', ' + pct(stk[0][mons.length - 1], tot[mons.length - 1]) + ' % in ' + MON[mons[mons.length - 1]], src: 'Video tagging', watch: 'Watch ' + sum(Fs.map(F => ourW(F).length)), onWatch: W('Winners', sub, [].concat(...Fs.map(ourW))), legend: [lg('Smash', CA, 'bar'), lg('Víbora / bandeja', '#6B7280', 'bar'), lg('Volley', CB, 'bar'), lg('Other', '#D1D5DB', 'bar')]})];
+    // coordination
+    const spV = Fs.map(F => F.att.length ? r2(med(F.att.map(o => o.v))) : null), ntV = Fs.map(F => F.trans.length ? pct(F.trans.filter(o => o.v <= .2).length, F.trans.length) : null), mwV = Fs.map(F => F.mid.length ? pct(F.mid.filter(o => o.ok).length, F.mid.length) : null);
+    const coord = [
+      LC({n, ...nice(spV, .5, .2), fmt: v => v.toFixed(1), bands: [{from: 3, to: 4, c: BAND}], series: [{vals: spV, c: CA}], xl, dots: dotsFor(spV, 0, 'Spacing in attack', F => F.att), title: 'Partner spacing in attack (m)', head: 'Spacing ' + half(spV)[0].toFixed(1) + ' m early, ' + half(spV)[1].toFixed(1) + ' m lately', src: 'Video tracking', legend: [lg('Median', CA, 'line'), lg('Target 3–4 m', BAND, 'bar')]}),
+      LC({n, ...nice(ntV, 10, 5), series: [{vals: ntV, c: CA}], xl, dots: dotsFor(ntV, 0, 'Net arrivals', F => F.trans), title: 'Reach the net together (%)', head: 'Arriving within 0.2 s: ' + half(ntV)[0] + ' % early, ' + half(ntV)[1] + ' % lately', src: 'Video tracking', legend: [lg('Within 0.2 s', CA, 'line')]}),
+      LC({n, ...nice(mwV, 10, 5), series: [{vals: mwV, c: CA}], refs: [50], xl, dots: dotsFor(mwV, 0, 'Middle balls', F => F.mid), title: 'Middle balls won (%)', head: 'Middle balls won: ' + half(mwV)[0] + ' % early, ' + half(mwV)[1] + ' % lately', src: 'Video tracking', legend: [lg('Points won', CA, 'line')]})];
+    // workload (weekly, from match loads plus a generated training baseline)
+    const ap = s.acwr && pids.includes(s.acwr) ? s.acwr : pids[pids.length - 1], D0 = Date.UTC(2026, 0, 5), wk = M => Math.floor((Date.UTC(2026, mo(M), +M.date.split(' ')[0]) - D0) / 6048e5);
+    const all = S.ms, Wn = Math.max(...all.map(wk)) + 2, q = rng(hs('wk' + ap + S.ws)), load = [];
+    for (let w = 0; w < Wn; w++) { const mm = all.filter(M => wk(M) === w); load.push(1800 + q() * 400 + sum(mm.map(M => { const F = facts(M); return F.p[ap] ? sum(F.p[ap].load) * 4 : 0; }))); }
+    const acw = load.map((v, w) => w < 4 ? null : r2(v / avg(load.slice(w - 4, w)))), amax = Math.max(...acw.filter(v => v != null)), aIdx = acw.indexOf(amax), wkMon = Array.from({length: Wn}, (_, w) => new Date(D0 + w * 6048e5).getUTCMonth()), wxl = [];
+    wkMon.forEach((m, w) => { if (w === 0 || wkMon[w - 1] !== m) wxl.push({i: w, label: MON[m]}); });
+    const acwr = LC({n: Wn, h: 170, ...nice(acw, .3, .1), fmt: v => v.toFixed(1), bands: [{from: .8, to: 1.3, c: BAND}], series: [{vals: acw, c: CA}], xl: wxl,
+      dots: acw.map((v, w) => { if (v == null || v <= 1.3) return null; const mm = all.filter(M => wk(M) === w || wk(M) === w - 1); return {i: w, v, c: CR, sz: 10, title: 'Week of ' + MON[wkMon[w]] + ' · ' + v, open: mm.length ? W(nm(ap) + ' · high-load week', MON[wkMon[w]], [].concat(...mm.map(M => this.all(M)))) : null}; }).filter(Boolean),
+      title: 'Acute to chronic workload ratio · ' + nm(ap), head: nm(ap) + "'s load peaked at " + amax.toFixed(2) + ' in ' + MON[wkMon[aIdx]] + (amax > 1.3 ? ', above the safe range' : ', inside the safe range'), src: 'GPS vest + training log',
+      legend: [lg('Week vs previous 4', CA, 'line'), lg('Safe range 0.8–1.3', BAND, 'bar'), lg('Above range', CR, 'bar')]});
+    const dS = pids.map(p => per(p, P => Math.round(P.dist))), hS = pids.map(p => per(p, P => P.hrAvg)), rS = pids.map(p => per(p, P => P.dropAvg));
+    const phys = [
+      LC({n, ...nice([].concat(...dS), 250, 50), fmt: v => fmt(v), series: dS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(dS[k], k, nm(p) + ' · distance', F => this.all(F.M)))), title: 'Distance per match (m)', head: pids.length > 1 ? nm(pids[1]) + ' covers ' + Math.round((avg(dS[1].filter(Boolean)) / avg(dS[0].filter(Boolean)) - 1) * 100) + ' % ' + (avg(dS[1].filter(Boolean)) >= avg(dS[0].filter(Boolean)) ? 'more' : 'less') + ' ground than ' + nm(pids[0]) : 'Average ' + fmt(avg(dS[0].filter(Boolean))) + ' m per match', src: 'GPS vest', legend: leg}),
+      LC({n, ...nice([].concat(...hS), 5, 2), series: hS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(hS[k], k, nm(p) + ' · heart rate', F => this.all(F.M)))), title: 'Average match heart rate (bpm)', head: nm(pids[pids.length - 1]) + "'s match heart rate: " + half(hS[hS.length - 1])[0] + ' early, ' + half(hS[hS.length - 1])[1] + ' lately', src: 'Chest strap', legend: leg}),
+      LC({n, ...nice([].concat(...rS), 2, 1), series: rS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(rS[k], k, nm(p) + ' · recovery', F => this.all(F.M)))), title: 'Heart rate drop 20 s after a point (bpm)', head: pids.map((p, k) => nm(p) + ' ' + r1(avg(rS[k].filter(v => v != null)))).join(', ') + ' bpm on average', src: 'Chest strap', legend: leg})];
+    const smS = pids.map(p => per(p, P => P.shots.Smash && P.shots.Smash.length ? Math.round(avg(P.shots.Smash.map(o => o.v))) : null)), ssS = pids.map(p => per(p, P => pct(P.split.filter(o => o.ok).length, P.split.length))), chS = pids.map(p => per(p, P => P.oh.length ? r2(avg(P.oh.map(o => o.v))) : null));
+    const bio = [
+      LC({n, ...nice([].concat(...smS), 5, 2), series: smS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(smS[k], k, nm(p) + ' · smashes', F => F.p[p] ? F.p[p].shots.Smash || [] : []))), title: 'Smash racket speed (km/h)', head: nm(pids[0]) + "'s smash: " + half(smS[0])[0] + ' km/h early, ' + half(smS[0])[1] + ' lately', src: 'Racket sensor', legend: leg}),
+      LC({n, ...nice([].concat(...ssS), 5, 2), series: ssS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(ssS[k], k, nm(p) + ' · no split-step', F => F.p[p] ? F.p[p].split.filter(o => !o.ok) : []))), title: 'Split-step on opponent contact (%)', head: nm(pids[pids.length - 1]) + "'s split-step rate: " + half(ssS[ssS.length - 1])[0] + ' % early, ' + half(ssS[ssS.length - 1])[1] + ' % lately', src: 'Pose tracking', legend: leg}),
+      LC({n, ...nice([].concat(...chS), .05, .02), fmt: v => v.toFixed(2), series: chS.map((v, k) => ({vals: v, c: cols[k]})), xl, dots: [].concat(...pids.map((p, k) => dotsFor(chS[k], k, nm(p) + ' · overheads', F => F.p[p] ? F.p[p].oh : []))), title: 'Overhead contact height (m)', head: nm(pids[0]) + "'s contact point: " + half(chS[0])[0].toFixed(2) + ' m early, ' + half(chS[0])[1].toFixed(2) + ' m lately', src: 'Pose tracking', legend: leg})];
+    const oName = id => MI.PAIRS[id].name;
+    return {periodSegs: this.seg(['Season', 'Last 10', 'Last 5'], s.period, 'period'), acwrSegs: pids.map(p => ({label: nm(p), bg: p === ap ? '#FFFFFF' : 'transparent', color: p === ap ? '#111827' : '#6B7280', shadow: p === ap ? '0 1px 2px rgba(15,23,42,.12)' : 'none', pick: () => this.setState({acwr: p})})),
+      opp: s.opp === 'all' ? 'All opponents' : oName(s.opp), oppOpen: s.oppOpen, toggleOpp: () => this.setState({oppOpen: !s.oppOpen}), closeOpp: () => this.setState({oppOpen: false}),
+      oppItems: [['all', 'All opponents', S.ms.length], ...opps.map(o => [o, oName(o), S.ms.filter(M => M.B.id === o).length])].map(([k, l, c]) => ({label: l, n: c, bg: k === s.opp ? '#F1F5F9' : 'transparent', pick: () => this.setState({opp: k, oppOpen: false})})),
+      count: n + (n === 1 ? ' match' : ' matches') + ' · ' + ms[0].date.replace(' 2026', '') + ' – ' + ms[n - 1].date.replace(' 2026', ''), result, wl, fade, err, coord, acwr, phys, bio};
+  }
+
+  // ---------- team ----------
+  tbl(o) { return {gtc: 'minmax(0,1.4fr) repeat(' + o.cols.length + ',minmax(0,1fr))', ...o}; }
+  lastTie() {
+    const MI = window.MI, W = this.op.bind(this), T = MI.TIES[MI.TIES.length - 1], Fs = T.ms.map(facts), sub = T.event + ' · ' + T.round + ' · ' + T.date, won = T.winner === 'A';
+    const ms = T.ms.map((M, k) => ({draw: M.draw, us: M.A.name, them: M.B.name, score: M.score.replace(/-/g, '–'), res: M.winner === 'A' ? 'W' : 'L', rc: M.winner === 'A' ? '#111827' : '#6B7280', n: M.rallies.length,
+      thumb: window.MV ? window.MV.still(M, M.rallies[Math.min(3, M.rallies.length - 1)], 2, {names: false, bug: false}) : '', play: W(M.A.name + ' vs ' + M.B.name, mlab(M) + ' · ' + M.date, this.all(M))}));
+    const cell = (v, s, lab, occ) => ({v: String(v), s: s || '', open: W(lab, sub, occ)});
+    const fr = (l, lab, M) => cell(l.filter(o => o.ok).length + ' of ' + l.length, pct(l.filter(o => o.ok).length, l.length) + ' %', M.draw + ' · ' + lab, l);
+    const pbm = this.tbl({title: 'How each match was won', head: 'Houston won ' + T.wA + ' of 3 matches', first: '', cols: T.ms.map(M => ({label: M.draw})), rows: [
+      {label: 'Points won', cells: Fs.map(F => cell(F.won.length + ' of ' + F.N, pct(F.won.length, F.N) + ' %', F.M.draw + ' · points won', F.won))},
+      {label: 'Winners', cells: Fs.map(F => { const l = [].concat(...F.A.map(p => F.end[p].W)); return cell(l.length, '', F.M.draw + ' · winners', l); })},
+      {label: 'Errors', cells: Fs.map(F => { const l = [].concat(...F.A.map(p => F.end[p].E)); return cell(l.length, '', F.M.draw + ' · errors', l); })},
+      {label: 'Their errors', cells: Fs.map(F => cell(F.oppE.length, '', F.M.draw + ' · opponent errors', F.oppE))},
+      {label: 'Break points converted', cells: Fs.map(F => fr(F.bpC, 'break points', F.M))},
+      {label: 'Golden points won', cells: Fs.map(F => fr(F.gold, 'golden points', F.M))}]});
+    const mom = Fs.map(F => { const M = F.M, mx = Math.max(6, Math.ceil((Math.max(...F.diff.map(Math.abs)) + 1) / 6) * 6), bg = F.games.filter(g => g.brk || g.lost);
+      return LC({n: F.N, h: 150, min: -mx, max: mx, step: mx / 2, fmt: v => v > 0 ? '+' + v : String(v), series: [{vals: F.diff, c: DRAWC[M.draw]}], refs: [0],
+        dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? CA : CG, sz: 10, title: (g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, open: W(M.draw + ' · ' + (g.brk ? 'break for' : 'break against'), sub, g.rs.map(r => ({M, r, i: 0})))})),
+        title: M.draw + ' · ' + M.A.name, head: (M.winner === 'A' ? 'Won ' : 'Lost ') + M.score.replace(/-/g, '–'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W(M.draw + ' · breaks', sub, [].concat(...bg.map(g => g.rs.map(r => ({M, r, i: 0}))))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]}); });
+    const rows = []; Fs.forEach(F => F.A.forEach(p => { const P = F.p[p], M = F.M; rows.push({label: MI.PLAYERS[p].name, sub: M.draw + ' · ' + M.A.name, cells: [cell(fmt(P.dist) + ' m', '', nm(p) + ' · distance', this.all(M)), cell(P.sprint.length, '', nm(p) + ' · sprints', P.sprint), cell(P.hrAvg + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.hrPeak + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.jumps.length, '', nm(p) + ' · overheads', P.jumps)]}); }));
+    const top = rows.slice().sort((x, y) => parseInt(y.cells[0].v.replace(/,/g, '')) - parseInt(x.cells[0].v.replace(/,/g, '')))[0];
+    const squad = this.tbl({title: 'Houston players', src: 'GPS vest · chest strap', head: top ? top.label + ' covered the most ground (' + top.cells[0].v + ')' : '', first: 'Player', cols: ['Distance', 'Sprints', 'Avg HR', 'Peak HR', 'Overheads'].map(l => ({label: l})), rows});
+    return {date: T.date, event: T.event + ' · ' + T.round, res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', home: MI.TEAMS[T.A].name, away: MI.TEAMS[T.B].name, score: T.score, ms, pbm, mom, squad};
+  }
+  teamSeason() {
+    const MI = window.MI, W = this.op.bind(this), TS = MI.TIES, n = TS.length, all = [].concat(...TS.map(T => T.ms)), Fs = all.map(facts), sub = 'Houston Volts · ' + n + ' ties';
+    const tieOcc = T => [].concat(...T.ms.map(M => this.all(M)));
+    const xl = []; TS.forEach((T, i) => { if (i === 0 || TS[i - 1].event !== T.event) xl.push({i, label: T.event.replace(" City's Cup", '').replace(' Finals', '')}); });
+    const wonT = TS.filter(T => T.winner === 'A').length;
+    const result = LC({n, h: 170, min: 0, max: 3, step: 1, series: [{vals: TS.map(T => T.wA), c: CA}], refs: [1.5], xl,
+      dots: TS.map((T, i) => ({i, v: T.wA, c: T.winner === 'A' ? CA : CG, sz: 11, title: T.event + ' · ' + T.round + ' · vs ' + MI.TEAMS[T.B].name + ' · ' + T.score, open: W('Houston Volts vs ' + MI.TEAMS[T.B].name, T.event + ' · ' + T.round + ' · ' + T.score, tieOcc(T))})),
+      title: 'Matches won per tie', head: 'Won ' + wonT + ' of ' + n + ' ties, ' + sum(TS.map(T => T.wA)) + ' of ' + n * 3 + ' matches', watch: 'Watch ' + n + ' ties', onWatch: W('Houston Volts', sub, [].concat(...TS.map(tieOcc))), legend: [lg('Tie won', CA, 'bar'), lg('Tie lost', CG, 'bar')]});
+    const cell = (v, s, lab, occ) => ({v: String(v), s: s || '', open: W(lab, sub, occ)});
+    const pairs = [...new Set(all.map(M => M.A.id))];
+    const lineups = this.tbl({title: 'Houston lineups', head: 'Record and points won by pair', first: 'Pair', cols: ['Matches', 'Record', 'Points won', 'Winners', 'Errors'].map(l => ({label: l})), rows: pairs.map(id => {
+      const L = Fs.filter(F => F.M.A.id === id), w = L.filter(F => F.M.winner === 'A').length, nm2 = MI.PAIRS[id].name, pw = sum(L.map(F => F.won.length)), pn = sum(L.map(F => F.N));
+      const wl = [].concat(...L.map(F => [].concat(...F.A.map(p => F.end[p].W)))), el = [].concat(...L.map(F => [].concat(...F.A.map(p => F.end[p].E))));
+      return {label: nm2, sub: MI.PAIRS[id].draw, cells: [cell(L.length, '', nm2, [].concat(...L.map(F => this.all(F.M)))), cell(w + '–' + (L.length - w), '', nm2 + ' · wins', [].concat(...L.filter(F => F.M.winner === 'A').map(F => this.all(F.M)))), cell(pct(pw, pn) + ' %', pw + ' of ' + pn, nm2 + ' · points won', [].concat(...L.map(F => F.won))), cell(wl.length, r1(wl.length / L.length) + ' per match', nm2 + ' · winners', wl), cell(el.length, r1(el.length / L.length) + ' per match', nm2 + ' · errors', el)]}; })});
+    const dv = d => TS.map(T => { const M = T.ms.find(x => x.draw === d); return M ? pct(facts(M).won.length, facts(M).N) : null; });
+    const DR = ['Men', 'Women', 'Mixed'], dS = DR.map(dv), best = DR.map((d, k) => [d, avg(dS[k].filter(v => v != null))]).sort((x, y) => y[1] - x[1])[0];
+    const byDraw = LC({n, h: 180, ...nice([].concat(...dS), 5, 2), series: dS.map((v, k) => ({vals: v, c: DRAWC[DR[k]]})), refs: [50], xl,
+      dots: [].concat(...DR.map((d, k) => TS.map((T, i) => { const M = T.ms.find(x => x.draw === d); return {i, v: dS[k][i], c: DRAWC[d], sz: 8, title: d + ' · ' + T.event + ' · ' + dS[k][i] + ' %', open: M ? W(M.A.name + ' vs ' + M.B.name, mlab(M), this.all(M)) : null}; }))),
+      title: 'Points won per tie by match (%)', head: best[0] + ' matches won the most points: ' + r1(best[1]) + ' % on average', legend: DR.map(d => lg(d, DRAWC[d], 'line'))});
+    const pl = [...new Set([].concat(...all.map(M => M.A.players)))];
+    const squad = this.tbl({title: 'Houston players', src: 'GPS vest · chest strap', head: 'Average per match played', first: 'Player', cols: ['Matches', 'Distance', 'Avg HR', 'Sprints', 'Overheads'].map(l => ({label: l})), rows: pl.map(p => {
+      const L = Fs.filter(F => F.p[p]), P = L.map(F => F.p[p]), nm3 = MI.PLAYERS[p].name;
+      return {label: nm3, sub: [...new Set(L.map(F => F.M.draw))].join(' · '), cells: [cell(L.length, '', nm3, [].concat(...L.map(F => this.all(F.M)))), cell(fmt(avg(P.map(x => x.dist))) + ' m', '', nm3 + ' · distance', [].concat(...L.map(F => this.all(F.M)))), cell(Math.round(avg(P.map(x => x.hrAvg))) + ' bpm', '', nm3 + ' · heart rate', [].concat(...L.map(F => this.all(F.M)))), cell(r1(avg(P.map(x => x.sprint.length))), '', nm3 + ' · sprints', [].concat(...P.map(x => x.sprint))), cell(r1(avg(P.map(x => x.jumps.length))), '', nm3 + ' · overheads', [].concat(...P.map(x => x.jumps)))]}; })});
+    return {count: n + ' ties · ' + TS[0].date.replace(' 2026', '') + ' – ' + TS[n - 1].date.replace(' 2026', ''), result, lineups, byDraw, squad};
+  }
+
+  componentDidMount() { if (!window.MI) { const w = () => window.MI ? this.forceUpdate() : setTimeout(w, 80); setTimeout(w, 80); } }
+  componentDidUpdate(prev) { if (prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind) { if (this.state.opp !== 'all' || this.state.acwr) this.setState({opp: 'all', acwr: null}); } }
+
+  renderVals() {
+    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, lm: {scoreRows: [], meta: [], shotCards: [], press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], physT: [], physT2: [], bioT: []}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
+    if (!window.MI) return off;
+    const S = this.subject(), tab = this.props.tab || 'Last match', team = S.kind === 'team';
+    if (!S.ms.length) return {...off, isEmpty: true};
+    if (team) return tab === 'Season trends' ? {...off, isTS: true, ts: this.teamSeason()} : {...off, isTL: true, tl: this.lastTie()};
+    if (tab === 'Season trends') { const st = this.season(S); return st ? {...off, isST: true, st} : {...off, isEmpty: true}; }
+    return {...off, isLM: true, lm: this.lastMatch(S)};
+  }
+}
+
+</script>
+</body>
+</html>
