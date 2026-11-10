@@ -12,7 +12,7 @@
     <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;min-width:0">{{ c.title }}</div>
     <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
       <sc-if value="{{ c.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ c.src }}</div></sc-if>
-      <sc-if value="{{ c.watch }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#027BFC;cursor:pointer;white-space:nowrap" style-hover="color:#1C6EF0" onClick="{{ c.onWatch }}"><i data-lucide="play" style="width:13px;height:13px"></i>{{ c.watch }}</div></sc-if>
+      <sc-if value="{{ c.watch }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#1C3FCA;cursor:pointer;white-space:nowrap" style-hover="color:#1C6EF0" onClick="{{ c.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ c.watch }}</div></sc-if>
     </div>
   </div>
   <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ c.head }}</div>
@@ -30,7 +30,7 @@
     </svg>
     <sc-for list="{{ c.grid }}" as="g" hint-placeholder-count="0"><div style="position:absolute;left:-42px;width:34px;text-align:right;top:{{ g.y }}px;transform:translateY(-50%);font-size:11px;color:#9CA3AF;white-space:nowrap">{{ g.label }}</div></sc-for>
     <sc-for list="{{ c.xl }}" as="x" hint-placeholder-count="0"><div style="position:absolute;bottom:0;transform:translateX(-50%);font-size:11px;color:#6B7280;white-space:nowrap;left:{{ x.l }}%">{{ x.label }}</div></sc-for>
-    <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="0"><div title="{{ d.title }}" onClick="{{ d.open }}" style="position:absolute;transform:translate(-50%,-50%);border-radius:50%;corner-shape:round;border:2px solid #FFFFFF;cursor:pointer;width:{{ d.sz }}px;height:{{ d.sz }}px;left:{{ d.l }}%;top:{{ d.y }}px;background:{{ d.c }};box-shadow:0 0 0 1px {{ d.c }}" style-hover="box-shadow:0 0 0 2px #027BFC"></div></sc-for>
+    <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="0"><div title="{{ d.title }}" onClick="{{ d.open }}" style="position:absolute;transform:translate(-50%,-50%);border-radius:50%;corner-shape:round;border:2px solid #FFFFFF;cursor:pointer;width:{{ d.sz }}px;height:{{ d.sz }}px;left:{{ d.l }}%;top:{{ d.y }}px;background:{{ d.c }};box-shadow:0 0 0 1px {{ d.c }}" style-hover="box-shadow:0 0 0 2px #1C3FCA"></div></sc-for>
   </div>
 </div>
 </x-dc>
