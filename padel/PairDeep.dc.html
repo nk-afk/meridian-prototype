@@ -25,7 +25,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
         <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ m.label }}</div><div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ m.v }}</div></div></sc-for>
       </div>
-      <button class="btn primary" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch match</button>
+      <button class="btn primary" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><i data-lucide="play"></i>Watch match</button>
     </div>
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
@@ -35,7 +35,7 @@
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
     <sc-for list="{{ lm.shotCards }}" as="sc" hint-placeholder-count="2">
       <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>{{ sc.watch }}</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><i data-lucide="play" style="width:13px;height:13px"></i>{{ sc.watch }}</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ sc.head }}</div>
         <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
           <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="6">
@@ -60,7 +60,7 @@
             <div style="font-size:13px;color:#4B5563;font-weight:500">{{ p.label }}</div>
             <div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ p.v }}</div>
             <div style="font-size:12px;color:#6B7280;text-align:right">{{ p.p }}</div>
-            <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+            <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
           </div>
         </sc-for>
       </div>
@@ -71,7 +71,7 @@
   <div class="pcard" style="margin-top:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
     <sc-for list="{{ lm.coK }}" as="k" hint-placeholder-count="5">
       <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-left:{{ k.bl }};cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
-        <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;white-space:nowrap">{{ k.label }}</div><svg width="10" height="10" viewBox="0 0 10 10" style="color:#027BFC"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;white-space:nowrap">{{ k.label }}</div><span class="chev" style="display:inline-grid;place-items:center"><i data-lucide="chevron-right"></i></span></div>
         <div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ k.v }} <span style="font-size:13px;font-weight:500;color:#6B7280">{{ k.u }}</span></div>
       </div>
     </sc-for>
@@ -110,7 +110,7 @@
             <div style="font-size:13px;color:#4B5563;font-weight:500">{{ r.label }}</div>
             <div style="height:10px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ r.p }}%;background:{{ r.c }}"></div></div>
             <div style="font-size:13px;font-weight:700;text-align:right;white-space:nowrap">{{ r.p }} % <span style="color:#6B7280;font-weight:500">· {{ r.w }}/{{ r.n }}</span></div>
-            <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+            <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
           </div>
         </sc-for>
       </div>
@@ -118,7 +118,7 @@
   </div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch {{ lm.mid.total }}</div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><i data-lucide="play" style="width:13px;height:13px"></i>Watch {{ lm.mid.total }}</div></div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
       <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#2B7FFF;width:{{ lm.mid.pb }}%"></div><div style="background:#E5484D;flex:1"></div></div>
       <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E5484D">Neither {{ lm.mid.tn }}</div></div>
@@ -133,7 +133,7 @@
     </div>
     <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB">
-        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg>Watch all</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><i data-lucide="play" style="width:13px;height:13px"></i>Watch all</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
       </div>
       <div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 80px 90px 36px;padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Set · games</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Phase</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right">Gap</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div></div></div>
@@ -144,7 +144,7 @@
           <div style="padding:9px 10px;font-size:13px;color:#4B5563">{{ r.phase }}</div>
           <div style="padding:9px 10px;font-size:13px;font-weight:700;text-align:right">{{ r.gap }} <span style="color:#6B7280;font-weight:500">m</span></div>
           <div style="padding:9px 10px;font-size:13px;font-weight:600;color:{{ r.oc }}">{{ r.out }}</div>
-          <div style="display:grid;place-items:center;color:#027BFC"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div>
+          <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
         </div>
       </sc-for>
     </div>
