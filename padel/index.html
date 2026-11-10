@@ -3687,7 +3687,7 @@ class Component extends DCLogic {
     const s = this.state, MI = window.MI, MV = window.MV;
     const isSP = (s.screen === 'subj' || s.screen === 'pat') && s.mx;
     const onP = s.screen === 'players' || (isSP && s.mx.kind === 'player'), onT = s.screen === 'teams' || s.screen === 'team' || (isSP && s.mx.kind !== 'player');
-    const nav = on => ({bg: on ? '#F1F5F9' : 'transparent', color: on ? '#111827' : '#6B7280'});
+    const nav = on => ({bg: on ? 'rgba(255,255,255,.14)' : 'transparent', color: on ? '#fff' : 'rgba(255,255,255,.72)', on: on ? '1' : '0'});
     const goPlayers = () => this.mxGo({screen: 'players'}), goTeams = () => this.mxGo({screen: 'teams'});
     const out = {navP: nav(onP), navT: nav(onT), goPlayers, goTeams, isTeamsPP: false, isTeamsPPL: false, isLst: false, isSubj: false, isPat: false, rpOpen: !!s.rp, rpTitle: s.rp ? s.rp.title : '', rpSub: s.rp ? s.rp.sub : '', rpClose: () => this.rpClose(),
       drawerMethod: s.drawer === 'method', vref: this.vref, cref: this.cref, sref: this.sref, tref: this.tref, mxMenuOpen: !!s.mxMenu, mxCloseMenu: () => this.setState({mxMenu: null}),
