@@ -25,7 +25,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
         <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ m.label }}</div><div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ m.v }}</div></div></sc-for>
       </div>
-      <button class="btn primary" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><i data-lucide="play"></i>Watch match</button>
+      <button class="btn primary" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</button>
     </div>
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
@@ -35,15 +35,11 @@
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
     <sc-for list="{{ lm.shotCards }}" as="sc" hint-placeholder-count="2">
       <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><i data-lucide="play" style="width:13px;height:13px"></i>{{ sc.watch }}</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ sc.watch }}</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ sc.head }}</div>
-        <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
+        <div class="hbars hbwide" style="margin-top:2px">
           <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="6">
-            <div style="display:grid;grid-template-columns:118px minmax(0,1fr) 44px;align-items:center;gap:10px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}">
-              <div style="font-size:13px;color:#4B5563;font-weight:500;white-space:nowrap">{{ r.label }}</div>
-              <div style="display:flex;height:10px;gap:2px"><div style="border-radius:3px;background:#111827;width:{{ r.aw }}%"></div><div style="border-radius:3px;background:#2B7FFF;width:{{ r.bw }}%"></div></div>
-              <div style="font-size:12.5px;font-weight:600;text-align:right;white-space:nowrap">{{ r.a }} <span style="color:#027BFC">{{ r.b }}</span></div>
-            </div>
+            <div class="hbrow" style="cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname">{{ r.label }}</span><div class="hbtrack" style="display:flex;gap:2px"><div class="hbfill" style="width:{{ r.aw }}%"></div><div class="hbfill" style="width:{{ r.bw }}%;background:var(--bar)"></div></div><span class="hbval" style="width:auto">{{ r.a }} <span style="color:var(--color-primary)">{{ r.b }}</span></span></div>
           </sc-for>
         </div>
       </div>
@@ -54,16 +50,7 @@
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px">
       <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;min-height:22px;display:flex;align-items:center">Pressure points</div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.pressHead }}</div>
-      <div style="display:flex;flex-direction:column">
-        <sc-for list="{{ lm.press }}" as="p" hint-placeholder-count="5">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) 70px 44px 22px;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ p.open }}">
-            <div style="font-size:13px;color:#4B5563;font-weight:500">{{ p.label }}</div>
-            <div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ p.v }}</div>
-            <div style="font-size:12px;color:#6B7280;text-align:right">{{ p.p }}</div>
-            <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
-          </div>
-        </sc-for>
-      </div>
+      <table class="ptable"><tbody><sc-for list="{{ lm.press }}" as="p" hint-placeholder-count="5"><tr class="prow" onClick="{{ p.open }}"><td>{{ p.label }}</td><td class="num">{{ p.v }}</td><td class="num tdet">{{ p.p }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
     </div>
   </div>
 
@@ -106,47 +93,32 @@
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.netHead }}</div>
         <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
         <sc-for list="{{ lm.net }}" as="r" hint-placeholder-count="5">
-          <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:12px;align-items:center;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}">
-            <div style="font-size:13px;color:#4B5563;font-weight:500">{{ r.label }}</div>
-            <div style="height:10px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ r.p }}%;background:{{ r.c }}"></div></div>
-            <div style="font-size:13px;font-weight:700;text-align:right;white-space:nowrap">{{ r.p }} % <span style="color:#6B7280;font-weight:500">· {{ r.w }}/{{ r.n }}</span></div>
-            <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
-          </div>
+          <div class="hbrow" style="grid-template-columns:120px minmax(0,1fr) 92px 22px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname" style="color:var(--color-text-muted);font-size:13px">{{ r.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ r.p }}%;background:{{ r.c }}"></div></div><span class="hbval" style="width:auto;font-size:13px;font-weight:700;color:var(--color-text)">{{ r.p }} % <span style="color:var(--color-text-soft);font-weight:500">· {{ r.w }}/{{ r.n }}</span></span><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div>
         </sc-for>
       </div>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><i data-lucide="play" style="width:13px;height:13px"></i>Watch {{ lm.mid.total }}</div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch {{ lm.mid.total }}</div></div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
-      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#2B7FFF;width:{{ lm.mid.pb }}%"></div><div style="background:#E5484D;flex:1"></div></div>
-      <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E5484D">Neither {{ lm.mid.tn }}</div></div>
+      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#7FB2FF;width:{{ lm.mid.pb }}%"></div><div style="background:#E50C00;flex:1"></div></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E50C00">Neither {{ lm.mid.tn }}</div></div>
       <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
         <sc-for list="{{ lm.mid.rows }}" as="c" hint-placeholder-count="3">
           <div style="display:flex;flex-direction:column;gap:5px;cursor:pointer" style-hover="opacity:.75" onClick="{{ c.open }}">
             <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;white-space:nowrap"><div style="color:#4B5563;font-weight:500">{{ c.name }}</div><div style="font-weight:700">{{ c.v }} % <span style="color:#6B7280;font-weight:500">· {{ c.w }}/{{ c.n }}</span></div></div>
-            <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ c.v }}%;background:{{ c.c }}"></div></div>
+            <div style="height:8px;border-radius:4px;background:rgba(16,24,40,.06);overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ c.v }}%;background:{{ c.c }}"></div></div>
           </div>
         </sc-for>
       </div>
     </div>
     <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB">
-        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><i data-lucide="play" style="width:13px;height:13px"></i>Watch all</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch all</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
       </div>
-      <div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 80px 90px 36px;padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Set · games</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Phase</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right">Gap</div><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">Point</div><div></div></div>
-      <sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8">
-        <div style="display:grid;grid-template-columns:130px 90px minmax(0,1fr) 80px 90px 36px;align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ r.open }}">
-          <div style="padding:9px 10px;font-size:13px;font-weight:600;white-space:nowrap">{{ r.set }}</div>
-          <div style="padding:9px 10px;font-size:13px;color:#4B5563">{{ r.pt }}</div>
-          <div style="padding:9px 10px;font-size:13px;color:#4B5563">{{ r.phase }}</div>
-          <div style="padding:9px 10px;font-size:13px;font-weight:700;text-align:right">{{ r.gap }} <span style="color:#6B7280;font-weight:500">m</span></div>
-          <div style="padding:9px 10px;font-size:13px;font-weight:600;color:{{ r.oc }}">{{ r.out }}</div>
-          <div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div>
-        </div>
-      </sc-for>
+      <table class="dtable" style="width:100%"><thead><tr><th>Set · games</th><th>Point</th><th>Phase</th><th class="num">Gap</th><th>Point</th><th></th></tr></thead><tbody><sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8"><tr class="prow" onClick="{{ r.open }}"><td style="font-weight:600">{{ r.set }}</td><td class="tdet">{{ r.pt }}</td><td class="tdet">{{ r.phase }}</td><td class="num" style="font-weight:700">{{ r.gap }} <span style="color:var(--color-text-soft);font-weight:500">m</span></td><td style="font-weight:600;color:{{ r.oc }}">{{ r.out }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
     </div>
   </div>
 
@@ -228,13 +200,13 @@
     <div style="display:flex;flex-direction:column">
       <sc-for list="{{ tl.ms }}" as="m" hint-placeholder-count="3">
         <div style="display:grid;grid-template-columns:120px 80px minmax(0,1fr) minmax(0,1fr) 120px 36px 110px;align-items:center;border-top:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ m.play }}">
-          <div style="padding:8px 12px"><div style="position:relative;width:96px;height:54px;border-radius:6px;overflow:hidden;background:#0B1322"><img src="{{ m.thumb }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><div style="position:absolute;left:5px;bottom:5px;width:20px;height:20px;border-radius:50%;corner-shape:round;background:rgba(11,19,34,.72);color:#FFFFFF;display:grid;place-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"></path></svg></div></div></div>
+          <div style="padding:8px 12px"><div style="position:relative;width:96px;height:54px;border-radius:6px;overflow:hidden;background:#0B1322"><img src="{{ m.thumb }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><div style="position:absolute;left:5px;bottom:5px;width:20px;height:20px;border-radius:50%;corner-shape:round;background:rgba(11,19,34,.72);color:#FFFFFF;display:grid;place-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div></div></div>
           <div style="padding:10px 12px;font-size:13px;font-weight:600">{{ m.draw }}</div>
           <div style="padding:10px 12px;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.us }}</div>
           <div style="padding:10px 12px;font-size:13px;color:#4B5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">vs {{ m.them }}</div>
           <div style="padding:10px 12px;font-size:13px;font-weight:600;white-space:nowrap">{{ m.score }}</div>
           <div style="padding:10px 0;font-size:13px;font-weight:700;color:{{ m.rc }}">{{ m.res }}</div>
-          <div style="padding:10px 12px;font-size:12.5px;font-weight:600;color:#027BFC;text-align:right;white-space:nowrap">{{ m.n }} rallies</div>
+          <div style="padding:10px 12px;font-size:12.5px;font-weight:600;color:#1C3FCA;text-align:right;white-space:nowrap">{{ m.n }} rallies</div>
         </div>
       </sc-for>
     </div>
@@ -298,7 +270,7 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1144},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Last match&quot;,&quot;Season trends&quot;,&quot;Last tie&quot;],&quot;default&quot;:&quot;Last match&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pair&quot;,&quot;player&quot;,&quot;team&quot;],&quot;default&quot;:&quot;pair&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;sid&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AB&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ws&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;PP&quot;,&quot;PPL&quot;],&quot;default&quot;:&quot;PP&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;play&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(title: string, sub: string, items: object[]) => void&quot;}}">
-const CA = '#111827', CB = '#2B7FFF', CG = '#AFAFBB', CR = '#E5484D', BAND = '#EEF5FF', CM = '#8B5CF6';
+const CA = '#111827', CB = '#A3C9FF', CG = '#AFAFBB', CR = '#E50C00', BAND = '#EEF5FF', CM = '#8B5CF6';
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const hs = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -531,7 +503,7 @@ class Component extends DCLogic {
         row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]}];
     const won = M.winner === 'A', rl = F.N ? r1(avg(M.rallies.map(r => r.shots.length))) : 0, dur = Math.round(M.secs / 60);
     return {date: M.date, event: mlab(M), res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
-      scoreRows: [{name: M.A.name, dot: CA, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#A3C9FF', sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
+      scoreRows: [{name: M.A.name, dot: CA, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#D9453B', sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
       meta: [{label: 'Duration', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', v: F.won.length + ' of ' + N}, {label: 'Avg rally', v: rl + ' shots'}],
       mom, ended, shotCards, ueChart, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
       coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
