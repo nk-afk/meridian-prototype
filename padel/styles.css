@@ -1651,3 +1651,8 @@ body::before{content:none}
 .pch .seg{border:0}
 /* ======================== SEARCH BAR radius match Export (13) ======================== */
 .topsearch-gym{border-radius:13px}
+
+/* football type roles ported from Players v1 */
+.ptitle{font-size:28px;line-height:32px;font-weight:700;letter-spacing:-.015em;color:var(--color-text)}
+.pt-pname{font-size:15px;font-weight:700;color:var(--color-text)}
+.psub{font-size:14px;color:var(--color-text-soft)}
