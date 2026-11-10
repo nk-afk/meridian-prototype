@@ -13,6 +13,7 @@
   --c-notobs:#9CA3AF; --c-notobs-soft:#EEF1F4;
   --c-dot:#16A34A; /* calendar session dot (green, per reference) */
   --sb-steel:#A3C9FF; --sb-steel2:#A3C9FF; --sb-grey:#AFAFBB; --sb-green:#9CDE68; --sb-gold:#FFB54D; --sb-clay:#FF8680;
+  --bar-track:rgba(16,24,40,.06); /* the one gray used behind every bar track (horizontal, progress, vertical, timeline) */
   /* Data-viz stacked-bar palette — reuses the bipstrip blues (live/stop/dead); the CTA primary is NEVER used on bars */
   --bar-deep:#2B7FFF; --bar:#7FB2FF; --bar-soft:#B8D5FF;
   --r-sm:6px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
@@ -22,12 +23,12 @@
   /* right inset that matches .wrap's content right edge (max-width 1420, 28px pad), at any width */
   --rail-inset:max(28px, calc((100vw - var(--side) - 1420px)/2 + 28px));
 }
-/* global reset removed for padel (Deep Canvas is inline-styled; components set their own box-sizing). Re-sync from football/styles.css then delete this line's reset. */
+/* global reset stripped for padel (disrupts inline-styled elements) */
 /* keep true circles circular, not squircle */
 .avatar,.pnum,.brand .mark,.exc,.thumb .play,.sd,.dw-ex-thumb .pl span,.exlb-pbig span,.hl-play span{corner-shape:round}
 body{font-family:var(--ff);background:var(--color-page);color:var(--color-text);font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
 .num{font-variant-numeric:tabular-nums}
-.eyebrow{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft)}
+.eyebrow,.dw-sec .l{font-size:11px;line-height:14px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft)}
 a{color:inherit;text-decoration:none}
 button{font-family:var(--ff)}
 
@@ -150,9 +151,9 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .sessrow:hover{background:var(--color-surface-subtle)}
 .sessrow.active{background:var(--color-primary-tint)}
 .sr-time{font-size:14px;color:var(--color-text-soft);width:48px;flex:none}
-.sessrow.active .sr-time{color:var(--color-primary-ink)}
+.sessrow.active .sr-time{color:var(--color-primary-text)}
 .sr-name{font-size:15px;font-weight:600;color:var(--color-text)}
-.sessrow.active .sr-name{color:var(--color-primary-ink)}
+.sessrow.active .sr-name{color:var(--color-primary-text)}
 .sr-check{margin-left:auto;color:var(--color-primary-text);display:none;place-items:center}
 .sessrow.active .sr-check{display:inline-grid}
 .sr-check svg{width:18px;height:18px}
@@ -343,7 +344,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .dw-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--color-border);background:none;border-radius:var(--r-md);cursor:pointer;display:grid;place-items:center;color:var(--color-text-soft)}
 .dw-close svg{width:16px;height:16px}
 .dw-body{padding:18px 20px;display:flex;flex-direction:column;gap:28px}
-.dw-sec .l{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin-bottom:6px}
+.dw-sec .l{margin-bottom:6px}  /* same micro-label as .eyebrow (shared definition above) + drawer spacing */
 .dw-sec p{font-size:13.5px;line-height:1.5;color:var(--color-text)}
 .forcoach{border-left:3px solid var(--color-primary-border);background:var(--color-primary-tint);padding:10px 12px;border-radius:0 var(--r-md) var(--r-md) 0}
 .verdicts{display:flex;gap:8px}
@@ -740,7 +741,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .bipstrip .seg{height:100%;padding:0;border:0;border-radius:0}
 .bipstrip .seg:first-child{border-top-left-radius:6px;border-bottom-left-radius:6px}
 .bipstrip .seg:last-child{border-top-right-radius:6px;border-bottom-right-radius:6px}
-.bipstrip .live{background:#2B7FFF} .bipstrip .stop{background:#7FB2FF} .bipstrip .dead{background:#B8D5FF}
+.bipstrip .live{background:#2B7FFF} .bipstrip .stop{background:#7FB2FF} .bipstrip .dead{background:var(--sb-steel)}  /* light comparison = the standard bar blue, not a new light blue */
 .biplegend{display:flex;gap:14px;margin-top:8px;font-size:11.5px;color:var(--color-text-soft)}
 .biplegend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
 
@@ -1016,7 +1017,7 @@ body.standalone .wrap2{min-height:100vh}
 .hc-ctrls .rt{display:flex;align-items:center;gap:12px}
 /* event timeline */
 .hc-tl{position:relative;height:30px;margin-top:10px}
-.hc-tl .track{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:2px;background:var(--color-surface-muted)}
+.hc-tl .track{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:2px;background:var(--bar-track)}
 .hc-tl .mk{position:absolute;top:8px;width:3px;height:14px;border-radius:2px;background:var(--teamA);transform:translateX(-50%)}
 .hc-tl .mk.b{background:var(--teamB)}
 .hc-tl .play{position:absolute;top:6px;width:2px;height:18px;background:var(--color-text);transform:translateX(-50%)}
@@ -1262,7 +1263,7 @@ body.standalone .wrap2{min-height:100vh}
 .lcbar{display:flex;align-items:center;gap:8px;height:16px}
 .lctrack{flex:1;height:10px;background:#E0E6ED;border-radius:3px;position:relative;overflow:visible}
 .lcfill{height:100%;border-radius:3px}
-.lcfill.m{background:var(--bar-soft)} .lcfill.h{background:var(--bar)} .lcfill.a{background:var(--bar-deep)}
+.lcfill.m{background:var(--sb-steel)} .lcfill.h{background:var(--bar)} .lcfill.a{background:var(--bar-deep)}  /* comparison scale: light(sb-steel) → middle(bar) → dark(bar-deep) */
 .lcval{width:42px;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-text-muted)}
 .lcref{position:absolute;top:-4px;bottom:-4px;left:66.6%;width:2px;background:var(--color-text-soft);opacity:.45}
 .lcaxis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--color-text-soft);margin:6px 0 0 132px}
@@ -1357,7 +1358,7 @@ body.standalone .wrap2{min-height:100vh}
 .hbrow{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;font-size:12px}
 .hbrow.sel .hbname,.hbrow.sel .hbval{font-weight:700;color:var(--color-text)}
 .hbname{color:var(--color-text-muted);font-weight:600;font-variant-numeric:tabular-nums}
-.hbtrack{height:13px;background:var(--color-surface-muted);border-radius:3px;overflow:hidden}
+.hbtrack{height:13px;background:var(--bar-track);border-radius:3px;overflow:hidden}
 .hbfill{height:100%;background:#A3C9FF;border-radius:3px}
 .hbval{width:40px;text-align:right;font-variant-numeric:tabular-nums;color:var(--color-text-muted);font-weight:600}
 .hbwide{margin-top:18px}
@@ -1645,14 +1646,30 @@ body::before{content:none}
 .topsearch-gym:hover>svg,.topsearch-gym:focus-within>svg{color:#6B7280}
 .topsearch-gym input::placeholder{color:#9CA3AF}
 /* ======================== TRACK 50% + SEG CHIP + SEARCH ICON ======================== */
-.sg-track,.minibar{background:rgba(255,255,255,.5)}
-.seg{background:rgba(28,63,202,.08);border:1px solid rgba(28,63,202,.10)}
+.sg-track,.minibar{background:var(--bar-track)}  /* visible gray track token */
+.seg{background:rgba(28,63,202,.08);border:0}
 .lib-flt .seg{border-radius:13px;border:0}
 .pch .seg{border:0}
 /* ======================== SEARCH BAR radius match Export (13) ======================== */
 .topsearch-gym{border-radius:13px}
 
-/* football type roles ported from Players v1 */
-.ptitle{font-size:28px;line-height:32px;font-weight:700;letter-spacing:-.015em;color:var(--color-text)}
-.pt-pname{font-size:15px;font-weight:700;color:var(--color-text)}
-.psub{font-size:14px;color:var(--color-text-soft)}
+/* ========================================================================
+   PLAY BUTTON — the one canonical media play control.
+   Always a circle with a FILLED play triangle. Never a square / rounded-square
+   button, never an outline/stroked triangle. Reuse .playbtn everywhere a play
+   affordance is needed (clip thumbs, highlight banners, recap posters, etc.).
+   Markup: <button class="playbtn md"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+   ======================================================================== */
+.playbtn{display:grid;place-items:center;border-radius:50%;corner-shape:round;background:rgba(17,24,39,.55);color:#fff;border:0;padding:0;cursor:pointer;flex:none;transition:background .15s,transform .12s}
+.playbtn:hover{background:rgba(17,24,39,.72)}
+.playbtn:active{transform:scale(.96)}
+/* filled triangle with slightly rounded corners (stroke same colour, round joins); nudged right for optical centering */
+.playbtn svg{fill:currentColor;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;display:block}
+.playbtn.xs{width:28px;height:28px} .playbtn.xs svg{width:11px;height:11px;margin-left:1px}
+.playbtn.sm{width:34px;height:34px} .playbtn.sm svg{width:14px;height:14px;margin-left:1.5px}
+.playbtn.md{width:44px;height:44px} .playbtn.md svg{width:18px;height:18px;margin-left:2px}
+.playbtn.lg{width:56px;height:56px} .playbtn.lg svg{width:24px;height:24px;margin-left:2.5px}
+/* optional solid brand fill, only if ever placed on light media */
+.playbtn.solid{background:var(--color-primary)} .playbtn.solid:hover{background:var(--color-primary-hover)}
+/* auto-centre as an overlay on a media box */
+.thumb .playbtn,.hl-thumb .playbtn,.hc-poster .playbtn{position:absolute;inset:0;margin:auto}
