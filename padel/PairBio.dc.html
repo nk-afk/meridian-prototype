@@ -53,7 +53,7 @@
               <div ref="{{ headRef }}" style="position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#027BFC;border-radius:1px;pointer-events:none;left:51%"></div>
             </div>
           </div>
-          <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}"><div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}"><div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
             <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Effect on the shot</div>
             <sc-for list="{{ ef }}" as="r" hint-placeholder-count="3">
               <div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #F1F5F9">
@@ -66,7 +66,7 @@
 
         <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
           <sc-if value="{{ hasPanels }}" hint-placeholder-val="{{ true }}">
-            <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Weight transfer</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ wt.norm }}</div></div>
               <div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:22px;font-weight:700;white-space:nowrap;color:{{ wt.c }}">{{ wt.v }}</div><div style="font-size:12.5px;color:#6B7280;white-space:nowrap">{{ wt.sub }}</div></div>
               <svg viewBox="0 0 300 112" style="width:100%;height:auto;display:block">
@@ -81,7 +81,7 @@
               </svg>
             </div>
 
-            <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Kinetic chain</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ ch.sub }}</div></div>
               <sc-for list="{{ ch.rows }}" as="r" hint-placeholder-count="5">
                 <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 64px;align-items:center;gap:8px;height:34px">
@@ -97,7 +97,7 @@
               <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 64px;gap:8px"><div></div><div style="position:relative;height:14px"><div style="position:absolute;transform:translateX(-50%);font-size:10.5px;color:#6B7280;white-space:nowrap;left:{{ ch.zero }}%">Contact</div></div><div></div></div>
             </div>
 
-            <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 8px;display:flex;flex-direction:column">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column">
               <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;margin-bottom:4px">{{ ka.title }}</div>
               <sc-for list="{{ ka.rows }}" as="k" hint-placeholder-count="4">
                 <div style="display:flex;flex-direction:column;gap:5px;padding:8px 0;border-top:1px solid #F1F5F9">
@@ -112,7 +112,7 @@
           </sc-if>
 
           <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
-            <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
               <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ ls.eyebrow }}</div>
               <div style="font-size:15px;font-weight:600">{{ ls.match }}</div>
               <div style="font-size:12.5px;color:#6B7280">{{ ls.date }}</div>
@@ -129,7 +129,7 @@
 
       <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}">
         <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;align-items:start">
-          <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Effect on the body</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">Own range 85–115</div></div>
             <div style="display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start">
               <svg viewBox="0 0 160 300" style="width:100%;height:auto;display:block">
@@ -153,7 +153,7 @@
               </div>
             </sc-if>
           </div>
-          <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+          <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Clips</div><div style="font-size:12px;color:#6B7280">Synced at contact</div></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
             <sc-for list="{{ clips }}" as="c" hint-placeholder-count="2">
@@ -179,7 +179,7 @@
       </sc-if>
 
       <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
-        <div style="background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.8);border-radius:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 12px 32px rgba(16,24,40,.07),0 2px 6px rgba(16,24,40,.04),inset 0 1px 0 rgba(255,255,255,.95);padding:14px 16px 12px">
+        <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 12px">
           <div style="display:grid;column-gap:18px;row-gap:10px;align-items:center;grid-template-columns:{{ ld.cols }}">
             <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Load per match</div>
             <sc-for list="{{ ld.heads }}" as="hn" hint-placeholder-count="2"><div style="font-size:13px;font-weight:600">{{ hn }}</div></sc-for>
