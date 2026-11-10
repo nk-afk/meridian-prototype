@@ -42,7 +42,7 @@
                 <span>{{ grp.label }}</span><span style="color:#A3C9FF;margin-left:6px">{{ grp.pos }}</span><span style="color:#FFFFFF;margin:0 6px 0 4px">{{ grp.v }}</span>
                 <button class="dp-arrow" style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.prev }}"><i data-lucide="chevron-left"></i></button>
                 <button class="dp-arrow" style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.next }}"><i data-lucide="chevron-right"></i></button>
-                <button style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.close }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+                <button style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.close }}"><i data-lucide="x" style="width:13px;height:13px"></i></button>
               </div>
             </sc-if>
           </div>
@@ -58,7 +58,7 @@
             <sc-for list="{{ ef }}" as="r" hint-placeholder-count="3">
               <div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #F1F5F9">
                 <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ r.metric }}</div>
-                <sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:minmax(0,1fr) 90px 70px 18px;align-items:center;gap:10px;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ d.bg }}" onClick="{{ d.open }}"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.label }}</div><div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ d.v }}</div><div style="font-size:12px;color:#6B7280;text-align:right;white-space:nowrap">{{ d.n }}</div><div style="color:#027BFC;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div></div></sc-for>
+                <sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:minmax(0,1fr) 90px 70px 18px;align-items:center;gap:10px;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ d.bg }}" onClick="{{ d.open }}"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.label }}</div><div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ d.v }}</div><div style="font-size:12px;color:#6B7280;text-align:right;white-space:nowrap">{{ d.n }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
               </div>
             </sc-for>
           </div></sc-if>
@@ -120,7 +120,7 @@
               <div style="position:relative;height:6px;border-radius:3px;background:#F1F5F9"><div style="position:absolute;top:0;bottom:0;border-radius:3px;background:#D1D5DB;left:{{ ls.bl }}%;width:{{ ls.bw }}%"></div><div style="position:absolute;top:-3px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;left:{{ ls.ml }}%;background:{{ ls.c }}"></div></div>
               <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-top:10px">Strokes behind it</div>
               <div style="display:flex;flex-direction:column">
-                <sc-for list="{{ ls.rows }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ r.bg }}" onClick="{{ r.pick }}"><div style="font-size:13px;font-weight:600">{{ r.label }}</div><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ r.n }}</div><div style="color:#027BFC;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div></div></sc-for>
+                <sc-for list="{{ ls.rows }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ r.bg }}" onClick="{{ r.pick }}"><div style="font-size:13px;font-weight:600">{{ r.label }}</div><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ r.n }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
               </div>
             </div>
           </sc-if>
@@ -149,7 +149,7 @@
             <sc-if value="{{ bm.hasSel }}" hint-placeholder-val="{{ false }}">
               <div style="display:flex;flex-direction:column;border-top:1px solid #F1F5F9;padding-top:8px">
                 <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ bm.selL }}</div>
-                <sc-for list="{{ bm.strokes }}" as="x" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ x.pick }}"><div style="font-size:13px;font-weight:600;white-space:nowrap">{{ x.label }}</div><div style="font-size:12px;white-space:nowrap;color:{{ x.c }}">{{ x.v }}</div><div style="color:#027BFC;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"></path></svg></div></div></sc-for>
+                <sc-for list="{{ bm.strokes }}" as="x" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ x.pick }}"><div style="font-size:13px;font-weight:600;white-space:nowrap">{{ x.label }}</div><div style="font-size:12px;white-space:nowrap;color:{{ x.c }}">{{ x.v }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
               </div>
             </sc-if>
           </div>
