@@ -47,20 +47,15 @@
             </sc-if>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
-            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ togglePlay }}"><sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"></path></svg></sc-if></button>
+            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ togglePlay }}"><sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></sc-if></button>
             <div style="position:relative;flex:1;display:flex;gap:3px;height:34px">
               <sc-for list="{{ phases }}" as="p" hint-placeholder-count="5"><button style="flex:{{ p.flex }};min-width:0;border:0;border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;background:{{ p.bg }};color:{{ p.color }};font-weight:{{ p.fw }};box-shadow:{{ p.shadow }}" onClick="{{ p.pick }}">{{ p.label }}</button></sc-for>
-              <div ref="{{ headRef }}" style="position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#027BFC;border-radius:1px;pointer-events:none;left:51%"></div>
+              <div ref="{{ headRef }}" style="position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#1C3FCA;border-radius:1px;pointer-events:none;left:51%"></div>
             </div>
           </div>
           <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}"><div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
             <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Effect on the shot</div>
-            <sc-for list="{{ ef }}" as="r" hint-placeholder-count="3">
-              <div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #F1F5F9">
-                <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ r.metric }}</div>
-                <sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:minmax(0,1fr) 90px 70px 18px;align-items:center;gap:10px;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ d.bg }}" onClick="{{ d.open }}"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.label }}</div><div style="font-size:14px;font-weight:700;text-align:right;white-space:nowrap">{{ d.v }}</div><div style="font-size:12px;color:#6B7280;text-align:right;white-space:nowrap">{{ d.n }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
-              </div>
-            </sc-for>
+            <table class="dtable" style="width:100%"><tbody><sc-for list="{{ ef }}" as="r" hint-placeholder-count="3"><tr class="grp"><td colspan="4">{{ r.metric }}</td></tr><sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><tr class="prow" style="background:{{ d.bg }}" onClick="{{ d.open }}"><td>{{ d.label }}</td><td class="num" style="font-weight:700">{{ d.v }}</td><td class="num tdet">{{ d.n }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></sc-for></tbody></table>
           </div></sc-if>
         </div>
 
@@ -165,12 +160,12 @@
             </sc-for>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
-            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ toggleClip }}"><sc-if value="{{ cplay }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ cpaused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"></path></svg></sc-if></button>
+            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ toggleClip }}"><sc-if value="{{ cplay }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ cpaused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></sc-if></button>
             <div style="position:relative;flex:1;height:34px;cursor:pointer" onClick="{{ clipSeek }}">
               <div style="position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:#E5E7EB"></div>
               <div style="position:absolute;top:6px;bottom:6px;width:2px;margin-left:-1px;background:#9CA3AF;left:51%"></div>
               <div style="position:absolute;bottom:-12px;left:51%;transform:translateX(-50%);font-size:10.5px;color:#6B7280;white-space:nowrap">Contact</div>
-              <div ref="{{ cheadRef }}" style="position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#027BFC;box-shadow:0 0 0 2px #FFFFFF;left:51%"></div>
+              <div ref="{{ cheadRef }}" style="position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#1C3FCA;box-shadow:0 0 0 2px #FFFFFF;left:51%"></div>
             </div>
             <button style="height:34px;padding:0 12px;border-radius:10px;border:1px solid #E5E7EB;background:#FFFFFF;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:#F9FAFB" onClick="{{ clipContact }}">Contact</button>
           </div>
@@ -545,9 +540,9 @@ class Component extends DCLogic {
       out.hd = {eyebrow: full, title: 'Fatigue', stats: [{v: F.n[0], u: '', l: 'Set 1 overheads'}, {v: F.n[1], u: '', l: 'Set 3 overheads'}]};
       out.ovSegs = Object.keys(FTT).map(k => ({label: k, ...seg(s.ovT === k), pick: () => this.setState({ovT: k})}));
       out.tags = [{label: 'Set 1', sw: '#A3C9FF', swd: 'block'}, {label: 'Set 3', sw: WARN, swd: 'block'}];
-      out.wt = {...wtBand(F.N.wt), lines: [wtLine(F.P1, '#027BFC'), wtLine(F.P3, WARN)], v: F.wt[0] + '% → ' + F.wt[1] + '%', sub: 'by contact', c: out1(F.wt[1], F.N.wt) ? WARN : '#111827', norm: 'Normal ' + F.N.wt.m + ' ± ' + F.N.wt.sd + '%'};
+      out.wt = {...wtBand(F.N.wt), lines: [wtLine(F.P1, '#1C3FCA'), wtLine(F.P3, WARN)], v: F.wt[0] + '% → ' + F.wt[1] + '%', sub: 'by contact', c: out1(F.wt[1], F.N.wt) ? WARN : '#111827', norm: 'Normal ' + F.N.wt.m + ' ± ' + F.N.wt.sd + '%'};
       const b3 = ooo(F.c3);
-      out.ch = {sub: 'Set 1 · set 3', zero, rows: CHL.map((l, i) => { const w = b3[i] >= 0; return {label: l, note: w ? 'Set 3 before ' + CHL[b3[i]].toLowerCase() : 'In order', nc: w ? WTXT : '#6B7280', lc: w ? WTXT : '#111827', ms: F.c1[i] + ' / ' + F.c3[i], dots: [{l: chL(F.c1[i]), c: '#027BFC'}, {l: chL(F.c3[i]), c: WARN}]}; })};
+      out.ch = {sub: 'Set 1 · set 3', zero, rows: CHL.map((l, i) => { const w = b3[i] >= 0; return {label: l, note: w ? 'Set 3 before ' + CHL[b3[i]].toLowerCase() : 'In order', nc: w ? WTXT : '#6B7280', lc: w ? WTXT : '#111827', ms: F.c1[i] + ' / ' + F.c3[i], dots: [{l: chL(F.c1[i]), c: '#1C3FCA'}, {l: chL(F.c3[i]), c: WARN}]}; })};
       out.ka = {title: 'Knee flexion at load', rows: [kaRow('Set 1', F.kn[0], F.N.kn, '°'), kaRow('Set 3', F.kn[1], F.N.kn, '°')]};
     }
 
