@@ -9,7 +9,7 @@
 <x-dc>
 <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;height:100%;box-sizing:border-box;font-variant-numeric:tabular-nums">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px">
-    <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;white-space:nowrap">{{ t.title }}</div>
+    <div class="eyebrow" style="white-space:nowrap">{{ t.title }}</div>
     <div style="display:flex;align-items:center;gap:10px">
       <sc-if value="{{ t.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ t.src }}</div></sc-if>
       <sc-if value="{{ t.watch }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#1C3FCA;cursor:pointer;white-space:nowrap" style-hover="color:#1C6EF0" onClick="{{ t.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ t.watch }}</div></sc-if>
