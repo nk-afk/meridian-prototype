@@ -10,9 +10,9 @@
 <div ref="{{ rootRef }}" style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:45">
     <sc-if value="{{ showPl }}" hint-placeholder-val="{{ true }}">
-      <div style="display:inline-flex;background:#EEF2F6;border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ plSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;height:28px;padding:0 14px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+      <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ plSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;height:28px;padding:0 14px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
     </sc-if>
-    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="2"><div style="position:relative"><button class="dd-btn" style="height:34px;padding:0 9px 0 11px;border-radius:10px;border:1px solid #E5E7EB;background:#FFFFFF;color:#111827;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;font-family:inherit" style-hover="background:#F9FAFB" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;left:0;min-width:200px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:46"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;font-size:13px;font-weight:{{ o.fw }};cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for>
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="2"><div style="position:relative"><button class="dd-btn" style="font-family:inherit;white-space:nowrap" style-hover="background:#F9FAFB" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;left:0;min-width:200px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:46"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;font-size:13px;font-weight:{{ o.fw }};cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for>
   </div>
 
   <div style="display:grid;grid-template-columns:156px minmax(0,1fr);gap:20px;align-items:start">
@@ -24,9 +24,9 @@
 
     <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
-        <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ hd.eyebrow }}</div><div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;white-space:nowrap">{{ hd.title }}</div></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><div class="eyebrow">{{ hd.eyebrow }}</div><div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;white-space:nowrap">{{ hd.title }}</div></div>
         <div style="display:flex;align-items:flex-end;gap:28px">
-          <sc-if value="{{ isFat }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;background:#EEF2F6;border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ ovSegs }}" as="s" hint-placeholder-count="4"><button style="border:0;height:28px;padding:0 12px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div></sc-if>
+          <sc-if value="{{ isFat }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ ovSegs }}" as="s" hint-placeholder-count="4"><button style="border:0;height:28px;padding:0 12px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div></sc-if>
           <sc-for list="{{ hd.stats }}" as="x" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px"><div style="font-size:20px;font-weight:700;white-space:nowrap">{{ x.v }} <span style="font-size:13px;font-weight:500;color:#6B7280">{{ x.u }}</span></div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ x.l }}</div></div></sc-for>
         </div>
       </div>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}"><div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-            <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Effect on the shot</div>
+            <div class="eyebrow">Effect on the shot</div>
             <table class="dtable" style="width:100%"><tbody><sc-for list="{{ ef }}" as="r" hint-placeholder-count="3"><tr class="grp"><td colspan="4">{{ r.metric }}</td></tr><sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><tr class="prow" style="background:{{ d.bg }}" onClick="{{ d.open }}"><td>{{ d.label }}</td><td class="num" style="font-weight:700">{{ d.v }}</td><td class="num tdet">{{ d.n }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></sc-for></tbody></table>
           </div></sc-if>
         </div>
@@ -62,7 +62,7 @@
         <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
           <sc-if value="{{ hasPanels }}" hint-placeholder-val="{{ true }}">
             <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Weight transfer</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ wt.norm }}</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Weight transfer</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ wt.norm }}</div></div>
               <div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:22px;font-weight:700;white-space:nowrap;color:{{ wt.c }}">{{ wt.v }}</div><div style="font-size:12.5px;color:#6B7280;white-space:nowrap">{{ wt.sub }}</div></div>
               <svg viewBox="0 0 300 112" style="width:100%;height:auto;display:block">
                 <line x1="38" y1="10" x2="296" y2="10" stroke="#F1F5F9"></line>
@@ -77,7 +77,7 @@
             </div>
 
             <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Kinetic chain</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ ch.sub }}</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px"><div class="eyebrow">Kinetic chain</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ ch.sub }}</div></div>
               <sc-for list="{{ ch.rows }}" as="r" hint-placeholder-count="5">
                 <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 64px;align-items:center;gap:8px;height:34px">
                   <div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:12.5px;font-weight:600;white-space:nowrap;color:{{ r.lc }}">{{ r.label }}</div><div style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:{{ r.nc }}">{{ r.note }}</div></div>
@@ -93,7 +93,7 @@
             </div>
 
             <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column">
-              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280;margin-bottom:4px">{{ ka.title }}</div>
+              <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-bottom:4px">{{ ka.title }}</div>
               <sc-for list="{{ ka.rows }}" as="k" hint-placeholder-count="4">
                 <div style="display:flex;flex-direction:column;gap:5px;padding:8px 0;border-top:1px solid #F1F5F9">
                   <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ k.label }}</div><div style="font-size:15px;font-weight:700;white-space:nowrap;color:{{ k.c }}">{{ k.v }}</div></div>
@@ -108,12 +108,12 @@
 
           <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
             <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
-              <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">{{ ls.eyebrow }}</div>
+              <div class="eyebrow">{{ ls.eyebrow }}</div>
               <div style="font-size:15px;font-weight:600">{{ ls.match }}</div>
               <div style="font-size:12.5px;color:#6B7280">{{ ls.date }}</div>
               <div style="display:flex;align-items:baseline;gap:6px;margin-top:6px"><div style="font-size:22px;font-weight:700;color:{{ ls.c }}">{{ ls.v }}</div><div style="font-size:12.5px;color:#6B7280">{{ ls.norm }}</div></div>
               <div style="position:relative;height:6px;border-radius:3px;background:#F1F5F9"><div style="position:absolute;top:0;bottom:0;border-radius:3px;background:#D1D5DB;left:{{ ls.bl }}%;width:{{ ls.bw }}%"></div><div style="position:absolute;top:-3px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;left:{{ ls.ml }}%;background:{{ ls.c }}"></div></div>
-              <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-top:10px">Strokes behind it</div>
+              <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-top:10px">Strokes behind it</div>
               <div style="display:flex;flex-direction:column">
                 <sc-for list="{{ ls.rows }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ r.bg }}" onClick="{{ r.pick }}"><div style="font-size:13px;font-weight:600">{{ r.label }}</div><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ r.n }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
               </div>
@@ -125,7 +125,7 @@
       <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}">
         <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;align-items:start">
           <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Effect on the body</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">Own range 85–115</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Effect on the body</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">Own range 85–115</div></div>
             <div style="display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start">
               <svg viewBox="0 0 160 300" style="width:100%;height:auto;display:block">
                 <circle cx="80" cy="27" r="15" fill="#E5E7EB"></circle>
@@ -143,13 +143,13 @@
             </div>
             <sc-if value="{{ bm.hasSel }}" hint-placeholder-val="{{ false }}">
               <div style="display:flex;flex-direction:column;border-top:1px solid #F1F5F9;padding-top:8px">
-                <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ bm.selL }}</div>
+                <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ bm.selL }}</div>
                 <sc-for list="{{ bm.strokes }}" as="x" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ x.pick }}"><div style="font-size:13px;font-weight:600;white-space:nowrap">{{ x.label }}</div><div style="font-size:12px;white-space:nowrap;color:{{ x.c }}">{{ x.v }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
               </div>
             </sc-if>
           </div>
           <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Clips</div><div style="font-size:12px;color:#6B7280">Synced at contact</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Clips</div><div style="font-size:12px;color:#6B7280">Synced at contact</div></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
             <sc-for list="{{ clips }}" as="c" hint-placeholder-count="2">
               <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
@@ -167,7 +167,7 @@
               <div style="position:absolute;bottom:-12px;left:51%;transform:translateX(-50%);font-size:10.5px;color:#6B7280;white-space:nowrap">Contact</div>
               <div ref="{{ cheadRef }}" style="position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#1C3FCA;box-shadow:0 0 0 2px #FFFFFF;left:51%"></div>
             </div>
-            <button style="height:34px;padding:0 12px;border-radius:10px;border:1px solid #E5E7EB;background:#FFFFFF;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:#F9FAFB" onClick="{{ clipContact }}">Contact</button>
+            <button onClick="{{ clipContact }}" class="btn">Contact</button>
           </div>
         </div>
         </div>
@@ -176,7 +176,7 @@
       <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
         <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 12px">
           <div style="display:grid;column-gap:18px;row-gap:10px;align-items:center;grid-template-columns:{{ ld.cols }}">
-            <div style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#6B7280">Load per match</div>
+            <div class="eyebrow">Load per match</div>
             <sc-for list="{{ ld.heads }}" as="hn" hint-placeholder-count="2"><div style="font-size:13px;font-weight:600">{{ hn }}</div></sc-for>
             <sc-for list="{{ ld.rows }}" as="row" hint-placeholder-count="5">
               <div style="font-size:12.5px;font-weight:600;color:#4B5563">{{ row.label }}</div>
@@ -196,7 +196,7 @@
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;pa&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Iker Albón&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pb&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Dani Brey&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;init&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Albón Bandeja&quot;,&quot;Albón Smash&quot;,&quot;Brey Volley&quot;,&quot;Body load&quot;,&quot;Fatigue&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;pa&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Austin Varghese&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pb&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Manav Sreekumar&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;init&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Varghese Bandeja&quot;,&quot;Varghese Smash&quot;,&quot;Sreekumar Volley&quot;,&quot;Body load&quot;,&quot;Fatigue&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
 const D = Math.PI / 180;
 const PH = ['Preparation', 'Load', 'Contact', 'Follow-through', 'Recovery'];
 const KT = [.09, .3, .51, .71, .92], BD = [0, .19, .41, .61, .82, 1];
@@ -421,8 +421,8 @@ class Component extends DCLogic {
   componentDidUpdate(prev) { prev = prev || {}; if (prev.init !== this.props.init) this.applyInit(); if (prev.pid !== this.props.pid || prev.ws !== this.props.ws) { this._ld = null; if (this.props.solo) this.setState({pl: this.props.prof === 'b' ? 'b' : 'a', ldSel: null}); } this.paint(); }
   componentWillUnmount() { cancelAnimationFrame(this._raf); this._raf = null; if (this._ro) this._ro.disconnect(); }
   applyInit() { const s = this.props.init || ''; if (!s) return; const v = s.includes('Body load') ? 'Body load' : s.includes('Fatigue') ? 'Fatigue' : STK.find(x => s.includes(x)) || 'Bandeja';
-    const ph = v === 'Smash' ? 3 : 2; this.t = KT[ph]; this.setState({pl: this.props.solo ? (this.props.prof === 'b' ? 'b' : 'a') : /Brey/.test(s) ? 'b' : 'a', view: v, ph, playing: false, grp: null, reg: null, ldSel: null, ldStroke: null}); }
-  names() { const sh = n => n.split(' ').slice(-1)[0]; if (this.props.solo) { const f = this.props.pa || 'Iker Albón', k = this.props.prof === 'b' ? 'b' : 'a'; return {a: f, b: f, sa: sh(f), sb: sh(f), solo: k}; } const fa = this.props.pa || 'Iker Albón', fb = this.props.pb || 'Dani Brey'; return {a: fa, b: fb, sa: sh(fa), sb: sh(fb)}; }
+    const ph = v === 'Smash' ? 3 : 2; this.t = KT[ph]; this.setState({pl: this.props.solo ? (this.props.prof === 'b' ? 'b' : 'a') : /Sreekumar/.test(s) ? 'b' : 'a', view: v, ph, playing: false, grp: null, reg: null, ldSel: null, ldStroke: null}); }
+  names() { const sh = n => n.split(' ').slice(-1)[0]; if (this.props.solo) { const f = this.props.pa || 'Austin Varghese', k = this.props.prof === 'b' ? 'b' : 'a'; return {a: f, b: f, sa: sh(f), sb: sh(f), solo: k}; } const fa = this.props.pa || 'Austin Varghese', fb = this.props.pb || 'Manav Sreekumar'; return {a: fa, b: fb, sa: sh(fa), sb: sh(fb)}; }
   normPoses(pl, st) { return over(BASE[st], GEN[pl], true); }
   poses(pl, st) { return over(this.normPoses(pl, st), (FLAG[pl] || {})[st]); }
   norms(pl, st) { const P = this.normPoses(pl, st); return {wt: {m: Math.round(P[2].cx * 100), sd: 8}, sep: {m: Math.round(P[2].sep), sd: 5}, kn: {m: Math.round(P[1].kB), sd: 6}, arm: {m: Math.round(P[2].re), sd: 7}, elb: {m: Math.round(180 - P[2].rf), sd: 6}, rw: {m: Math.round(P[2].rw), sd: 6}}; }
