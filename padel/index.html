@@ -47,6 +47,12 @@ circle[fill="#111827"]{fill:#2B7FFF}rect[fill="#111827"],ellipse[fill="#111827"]
 [style*="background: rgb(17, 24, 39)"],[style*="background-color: rgb(17, 24, 39)"]{background-color:#A3C9FF!important}
 [data-col="1"] [data-el="topbar"]{margin-left:64px!important}
 [data-col="1"] [data-el="row"]{margin-left:64px!important}
+body.padel-standalone [data-el="topbar"]{display:none!important}
+/* app-wide tighter .dtable rows (loads after styles.css, so no !important needed; per-table inline padding still wins) */
+.dtable td{padding:4px 10px}
+.dtable th{padding:4px 10px 5px}
+/* chevron in dtable rows: keep the light disabled colour (beats the more-specific .dtable td colour) and push it to the far right, away from the content */
+.dtable td.chev{color:var(--color-text-disabled);padding-left:22px;width:1px;white-space:nowrap}
 </style>
 <script src="meridian-intel.js"></script>
 <script src="meridian-video.js"></script>
@@ -3489,7 +3495,7 @@ class Component extends DCLogic {
       title: M.A.name + ' vs ' + M.B.name, sub: M.event + ' · ' + mxScore(r), outcome: 'Point to ' + M[r.winner].name, oc: '#111827', exc: !!it.exc};
   }
   // ===== Players / Pairs insight pages =====
-  mxGo(patch) { cancelAnimationFrame(this._raf); this._pvKey = null; this.setState({drawer: 'none', mxMenu: null, rp: null, pvPlay: false, pvCur: 0, pvPage: 1, ptToast: '', deepStandalone: false, ...patch}); window.scrollTo(0, 0); }
+  mxGo(patch) { cancelAnimationFrame(this._raf); this._pvKey = null; try { document.body.classList.remove('padel-standalone'); } catch (e) {} this.setState({drawer: 'none', mxMenu: null, rp: null, pvPlay: false, pvCur: 0, pvPage: 1, ptToast: '', deepStandalone: false, ...patch}); window.scrollTo(0, 0); }
   openSubj(kind, id, tab, mf) { this.mxGo({screen: 'subj', mx: {kind, id, tab: tab || MX_TABS_FOR(kind, id, this.state.ws)[0]}, mf: mf || MF0}); }
   openSubjByName(n) { const MI = window.MI; if (!MI) return; const p = Object.values(MI.PLAYERS).find(x => x.short === n); if (!p) return; if (['alb', 'bre', 'cas'].includes(p.id)) this.openSubj('player', p.id); else { const pr = Object.values(MI.PAIRS).find(x => x.players.includes(p.id)); this.openSubj('pair', 'AB', 'Scouting', {...MF0, opp: pr.id}); } }
   openPat(id) { this.mxGo({screen: 'pat', mp: {id, grp: 'P', zone: null}}); }
@@ -3569,7 +3575,7 @@ class Component extends DCLogic {
       filters: isTeam ? [] : [menu('opp', 'Opponent', f.opp === 'all' ? 'All opponents' : MI.PAIRS[f.opp].name, [['All opponents', f.opp === 'all', {opp: 'all'}], ...oppIds.map(k => [MI.PAIRS[k].name, f.opp === k, {opp: k}])]),
         menu('per', 'Period', MX_PER[f.period], Object.keys(MX_PER).map(k => [MX_PER[k], f.period === k, {period: k}])),
         menu('set', 'Set', f.set === 'all' ? 'All sets' : 'Set ' + f.set, [['All sets', f.set === 'all', {set: 'all'}], ...['1', '2', '3'].map(k => ['Set ' + k, f.set === k, {set: k}])])],
-      isIns: !isTeam && mx.tab !== 'Matches' && mx.tab !== 'Biomechanics' && !MX_DEEP.includes(mx.tab), isBio: mx.tab === 'Biomechanics', bioA: isPair ? MI.PLAYERS[ent.players[0]].name : mx.kind === 'player' ? ent.name : '', bioB: isPair ? MI.PLAYERS[ent.players[1]].name : '', bioSolo: mx.kind === 'player', bioPid: mx.kind === 'player' ? mx.id : '', bioProf: mx.kind === 'player' ? (mx.id === 'alb' ? 'a' : mx.id === 'bre' ? 'b' : ent.side === 'Left' ? 'a' : 'b') : 'a', bioInit: s.bioInit || '', isMat: mx.tab === 'Matches', isDeep: MX_DEEP.includes(mx.tab), isLst: isTeam && (mx.tab === 'Pairs' || mx.tab === 'Players'), deepTab: mx.tab, kind: mx.kind, id: mx.id, ws: W, deepPlay: (ti, su, items) => this.playItems(ti, su, items), onPhys: !!s.deepStandalone, notPhys: !s.deepStandalone, setstd: (b) => this.setState({deepStandalone: b}), bbBack: () => { const el = document.getElementById('physBack'); if (el) el.click(); }, cards: [], pats: [], mats: [], groups: []};
+      isIns: !isTeam && mx.tab !== 'Matches' && mx.tab !== 'Biomechanics' && !MX_DEEP.includes(mx.tab), isBio: mx.tab === 'Biomechanics', bioA: isPair ? MI.PLAYERS[ent.players[0]].name : mx.kind === 'player' ? ent.name : '', bioB: isPair ? MI.PLAYERS[ent.players[1]].name : '', bioSolo: mx.kind === 'player', bioPid: mx.kind === 'player' ? mx.id : '', bioProf: mx.kind === 'player' ? (mx.id === 'alb' ? 'a' : mx.id === 'bre' ? 'b' : ent.side === 'Left' ? 'a' : 'b') : 'a', bioInit: s.bioInit || '', isMat: mx.tab === 'Matches', isDeep: MX_DEEP.includes(mx.tab), isLst: isTeam && (mx.tab === 'Pairs' || mx.tab === 'Players'), deepTab: mx.tab, kind: mx.kind, id: mx.id, ws: W, deepPlay: (ti, su, items) => this.playItems(ti, su, items), onPhys: !!s.deepStandalone, notPhys: !s.deepStandalone, setstd: (b) => { try { document.body.classList.toggle('padel-standalone', !!b); } catch (e) {} this.setState({deepStandalone: !!b}); }, bbBack: () => { const el = document.getElementById('physBack'); if (el) el.click(); }, cards: [], pats: [], mats: [], groups: []};
     if (out.mx.isDeep || out.mx.isBio) out.mx.filters = [];
     if (s.screen === 'subj') {
       out.isSubj = true;
