@@ -16,8 +16,8 @@
     </div>
   </div>
   <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ c.head }}</div>
-  <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;font-weight:600;color:#4B5563">
-    <sc-for list="{{ c.legend }}" as="lg" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:6px;white-space:nowrap"><div style="width:{{ lg.lw }}px;height:{{ lg.lh }}px;border-radius:2px;background:{{ lg.c }}"></div>{{ lg.label }}</div></sc-for>
+  <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;font-weight:600;color:#6B7280">
+    <sc-for list="{{ c.legend }}" as="lg" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:6px;white-space:nowrap"><div style="width:{{ lg.lw }}px;height:{{ lg.lh }}px;border-radius:50%;corner-shape:round;background:{{ lg.c }}"></div>{{ lg.label }}</div></sc-for>
   </div>
   <div style="position:relative;margin:6px 0 0 36px;padding-bottom:22px;margin-top:auto">
     <svg viewBox="{{ c.vb }}" preserveAspectRatio="none" style="width:100%;height:{{ c.h }}px;display:block;overflow:visible">
