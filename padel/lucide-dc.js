@@ -14,7 +14,19 @@
   function pascal(name) {
     return name.split('-').map(function (p) { return p.charAt(0).toUpperCase() + p.slice(1); }).join('');
   }
+  // Custom Meridian icons Lucide doesn't ship, in Lucide's IconNode shape (an array of
+  // [tag, attrs] children). createElement(children) wraps them in the stroke svg, exactly
+  // as for a built-in. We consult this map directly instead of writing into lucide.icons,
+  // which is a guarded object that silently drops added keys.
+  var CUSTOM = {
+    racket: [
+      ['ellipse', { cx: '9.5', cy: '9.5', rx: '5.5', ry: '6' }],
+      ['line', { x1: '9.5', y1: '15.5', x2: '13', y2: '20' }],
+      ['circle', { cx: '17.5', cy: '17.5', r: '1.8' }]
+    ]
+  };
   function iconNode(L, name) {
+    if (CUSTOM[name]) return CUSTOM[name];
     var key = pascal(name);
     return (L.icons && L.icons[key]) || L[key] || null;
   }
