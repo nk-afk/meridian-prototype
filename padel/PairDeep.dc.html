@@ -12,26 +12,29 @@
 <sc-if value="{{ isLM }}" hint-placeholder-val="{{ true }}">
   <div style="display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;margin-top:4px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between"><div class="eyebrow">Last match · {{ lm.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ lm.resBg }};border-radius:6px;padding:2px 7px">{{ lm.res }}</div></div>
-      <div style="font-size:15px;font-weight:600">{{ lm.event }}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between"><div class="eyebrow">Last match</div><div class="eyebrow">{{ lm.date }}</div></div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;align-items:center;gap:10px"><i data-lucide="trophy" width="24" height="24" style="flex:none;color:var(--color-primary-text)"></i><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;line-height:1.2">{{ lm.eventTitle }}</div></div>
+        <div style="font-size:13px;color:#6B7280">{{ lm.eventSub }}</div>
+        <div style="align-self:flex-start;margin-top:4px;background:#EEF1F4;border-radius:8px;padding:5px 12px;font-size:14px;font-weight:700;color:#111827">{{ lm.res }}</div>
+      </div>
       <div style="display:flex;flex-direction:column">
         <sc-for list="{{ lm.scoreRows }}" as="sr" hint-placeholder-count="2">
           <div style="display:grid;grid-template-columns:minmax(0,1fr) 30px 30px 30px;align-items:center;padding:9px 0;border-top:1px solid #F1F5F9">
-            <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;white-space:nowrap"><div style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ sr.dot }}"></div>{{ sr.name }}</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:{{ sr.nameW }};white-space:nowrap"><div style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ sr.dot }}"></div>{{ sr.name }}</div>
             <sc-for list="{{ sr.sets }}" as="x" hint-placeholder-count="3"><div style="text-align:center;font-size:17px;font-weight:{{ x.w }};color:{{ x.c }}">{{ x.v }}</div></sc-for>
           </div>
         </sc-for>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
-        <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ m.label }}</div><div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ m.v }}</div></div></sc-for>
+        <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><i data-lucide="{{ m.icon }}" width="15" height="15" style="flex:none"></i>{{ m.label }}</div><div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ m.v }}</div></div></sc-for>
       </div>
       <button class="btn primary" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</button>
     </div>
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
 
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding-bottom:10px;border-bottom:2px solid #111827"><div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827">Each partner <span style="color:#6B7280;font-weight:500;letter-spacing:0;text-transform:none">· {{ lm.na }} and {{ lm.nb }}, side by side</span></div><div style="display:flex;align-items:center;gap:16px;font-size:11px;font-weight:600;color:#6B7280;white-space:nowrap"><div style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.na }}</div><div style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.nb }}</div></div></div>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:22px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:16px">
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
@@ -78,14 +81,48 @@
     </div>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div></div>
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
-    <sc-for list="{{ lm.physT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,380px"></dc-import></sc-for>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px">
+    <div style="display:flex;align-items:baseline;gap:10px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest · Chest strap · Wrist wearable</div></div>
+    <div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.phys.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</div>
   </div>
-  <dc-import name="PairChart" c="{{ lm.hrChart }}" hint-size="100%,330px"></dc-import>
-  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
-    <dc-import name="PairChart" c="{{ lm.distChart }}" hint-size="100%,300px"></dc-import>
-    <dc-import name="PairTable" t="{{ lm.zones }}" hint-size="100%,300px"></dc-import>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.phys.cards }}" as="c" hint-placeholder-count="3">
+      <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px;display:flex;flex-direction:column;gap:14px;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ c.go }}">
+        <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9"><i data-lucide="{{ c.icon }}" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">{{ c.title }}</div><span class="chev" style="display:inline-grid;place-items:center"><i data-lucide="chevron-right"></i></span></div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:12.5px;color:#4B5563;font-weight:500">{{ c.metric }}</div>
+          <sc-if value="{{ c.two }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr">
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ c.ac }}"></span>{{ c.aName }}</div><div style="font-size:23px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ c.aVal }}<sc-if value="{{ c.unit }}"> <span style="font-size:13px;font-weight:500;color:#6B7280">{{ c.unit }}</span></sc-if></div></div>
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0;border-left:1px solid #F1F5F9;padding-left:16px"><div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ c.bc }}"></span>{{ c.bName }}</div><div style="font-size:23px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ c.bVal }}<sc-if value="{{ c.unit }}"> <span style="font-size:13px;font-weight:500;color:#6B7280">{{ c.unit }}</span></sc-if></div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ c.solo }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ c.ac }}"></span>{{ c.aName }}</div><div style="font-size:23px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ c.aVal }}<sc-if value="{{ c.unit }}"> <span style="font-size:13px;font-weight:500;color:#6B7280">{{ c.unit }}</span></sc-if></div></div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0"><div class="eyebrow" style="white-space:nowrap">Distance per game (m)</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">GPS vest</div></div>
+      <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ lm.distSeg }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 16px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+    </div>
+    <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ lm.distHead }}</div>
+    <div style="display:flex;align-items:center;gap:14px;font-size:11px;font-weight:600;color:#6B7280"><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.na }}</div><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.nb }}</div></div>
+    <div style="display:flex;align-items:flex-end;gap:8px;margin-top:6px">
+      <sc-for list="{{ lm.distGames }}" as="r" hint-placeholder-count="10">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;min-width:0" style-hover="opacity:.7" onClick="{{ r.open }}">
+          <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;width:100%">
+            <div style="flex:1;max-width:16px;height:150px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:9.5px;font-weight:700;line-height:1;margin-bottom:3px;font-variant-numeric:tabular-nums">{{ r.a }}</span><div style="width:100%;height:{{ r.ah }}%;min-height:1px;background:#A3C9FF;border-radius:2px 2px 0 0"></div></div>
+            <div style="flex:1;max-width:16px;height:150px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:9.5px;font-weight:700;line-height:1;margin-bottom:3px;font-variant-numeric:tabular-nums;color:#6B7280">{{ r.b }}</span><div style="width:100%;height:{{ r.bh }}%;min-height:1px;background:#BCE6A5;border-radius:2px 2px 0 0"></div></div>
+          </div>
+          <span style="font-size:10.5px;color:#6B7280;white-space:nowrap">{{ r.label }}</span>
+        </div>
+      </sc-for>
+    </div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
     <sc-for list="{{ lm.physT2 }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
@@ -168,6 +205,32 @@
     </div>
   </div>
 
+</sc-if>
+
+<!-- ===== PHYSICAL LOAD · METRIC DETAIL ===== -->
+<sc-if value="{{ isPhys }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
+    <a class="backlink" id="physBack" style="margin:0" onClick="{{ pp.back }}"><i data-lucide="arrow-left"></i>Physical load</a>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px"><i data-lucide="{{ pp.icon }}" width="26" height="26" style="flex:none;color:var(--color-primary-text)"></i><div style="display:flex;flex-direction:column;gap:3px"><div class="eyebrow">{{ pp.title }}</div><div style="font-size:13px;color:#6B7280">{{ pp.sub }}</div></div></div>
+      <sc-if value="{{ pp.hasToggle }}" hint-placeholder-val="{{ true }}"><div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ pp.toggle }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 16px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div></sc-if>
+    </div>
+    <div class="pcard" style="margin-top:0;padding:0;padding:4px 18px 8px">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 150px 150px;padding:12px 0;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9CA3AF"><div>Metric</div><div>This match</div><div>Season</div></div>
+      <sc-for list="{{ pp.rows }}" as="r" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 150px 150px;align-items:center;padding:14px 0;border-top:1px solid #F1F5F9;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ r.open }}"><div style="font-size:14px;color:#374151">{{ r.label }}</div><div style="font-size:14px;font-weight:700;color:#111827;white-space:nowrap">{{ r.matchV }}</div><div style="font-size:14px;color:#6B7280;white-space:nowrap">{{ r.seasonV }}</div></div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ pp.hasChart }}" hint-placeholder-val="{{ false }}">
+      <dc-import name="PairChart" c="{{ pp.chart }}" hint-size="100%,360px"></dc-import>
+      <div class="pcard" style="margin-top:0;padding:0;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Time in heart rate zones</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">Chest strap</div></div>
+        <sc-for list="{{ pp.zones }}" as="z" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 72px;align-items:center;gap:14px;padding:7px 0;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ z.open }}"><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><div style="font-size:13px;color:#374151">{{ z.label }}</div><div class="hbtrack" style="height:4px"><div class="hbfill" style="width:{{ z.w }}%;background:#A3C9FF"></div></div></div><div style="text-align:right;font-size:13.5px;font-weight:700;white-space:nowrap">{{ z.v }}</div></div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
 </sc-if>
 
 <!-- ===== SEASON TRENDS ===== -->
@@ -482,6 +545,39 @@ class Component extends DCLogic {
     const PA = F.p[a], PB = F.p[b], sAvg = (p, f) => { const l = prev.filter(x => x.p[p]).map(x => f(x.p[p], x)); return l.length ? avg(l) : null; }, sva = (p, f, fm) => { const v = sAvg(p, f); return v == null ? '' : 'Season ' + fm(v); };
     const mOpen = (p, lab) => W(nm(p) + ' · ' + lab, sub, this.all(M));
     const row = (label, fa, fb, sa, sb, oa, ob) => ({label, a: fa, b: fb, sa, sb, openA: oa, openB: ob});
+    // physical load — summary cards + detailed-metrics accordions (one headline metric per group)
+    const sNum = (p, f, u, rd) => { const v = sAvg(p, f); return v == null ? '—' : (rd ? rd(v) : fmt(v)) + (u || ''); };
+    const physG = [
+      {icon: 'footprints', title: 'Movement', src: 'GPS vest', metrics: [
+        {label: 'Distance', short: 'distance', m: P => fmt(P.dist) + ' m', s: p => sNum(p, x => x.dist, ' m'), open: p => mOpen(p, 'distance')},
+        {label: 'High-intensity distance', short: 'high-intensity distance', m: P => fmt(P.hi) + ' m', s: p => sNum(p, x => x.hi, ' m'), open: p => W(nm(p) + ' · sprints', sub, F.p[p].sprint)},
+        {label: 'Sprints over 16 km/h', short: 'sprints', m: P => '' + P.sprint.length, s: p => sNum(p, x => x.sprint.length), open: p => W(nm(p) + ' · sprints', sub, F.p[p].sprint)},
+        {label: 'Moves over 1.5 m', short: 'moves', m: P => '' + P.moves, s: p => sNum(p, x => x.moves), open: p => mOpen(p, 'moves')},
+        {label: 'Jumps (overheads)', short: 'jumps', m: P => '' + P.jumps.length, s: p => sNum(p, x => x.jumps.length), open: p => W(nm(p) + ' · overheads', sub, F.p[p].jumps)},
+        {label: 'Player load', short: 'player load', m: P => '' + fmt(sum(P.load)), s: p => sNum(p, x => sum(x.load)), open: p => mOpen(p, 'load')}],
+        card: {metric: 'Player load', val: P => '' + fmt(sum(P.load)), unit: ''}},
+      {icon: 'heart', title: 'Heart rate', src: 'Chest strap', metrics: [
+        {label: 'Average', short: 'average', m: P => P.hrAvg + ' bpm', s: p => sNum(p, x => x.hrAvg, ' bpm', Math.round), open: p => mOpen(p, 'heart rate')},
+        {label: 'Peak', short: 'peak', m: P => P.hrPeak + ' bpm', s: p => sNum(p, x => x.hrPeak, ' bpm', Math.round), open: p => mOpen(p, 'heart rate')},
+        {label: 'Post-point drop', short: 'post-point drop', m: P => P.dropAvg + ' bpm', s: p => sNum(p, x => x.dropAvg, ' bpm', r1), open: p => mOpen(p, 'recovery')},
+        {label: 'Energy', short: 'energy', m: P => fmt(P.kcal) + ' kcal', s: p => sNum(p, x => x.kcal, ' kcal'), open: p => mOpen(p, 'energy')}],
+        card: {metric: 'Average', val: P => '' + P.hrAvg, unit: 'bpm'}},
+      {icon: 'sunrise', title: 'Next morning', src: 'Wrist wearable', metrics: [
+        {label: 'Sleep', short: 'sleep', m: P => hm(P.am.sleep), s: p => { const v = sAvg(p, x => x.am.sleep); return v == null ? '—' : hm(v); }, open: p => mOpen(p, 'sleep')},
+        {label: 'HRV', short: 'HRV', m: P => P.am.hrv + ' ms', s: p => trait(p).hrv + ' ms', open: p => mOpen(p, 'HRV')},
+        {label: 'Resting HR', short: 'resting HR', m: P => P.am.rhr + ' bpm', s: p => trait(p).rest + ' bpm', open: p => mOpen(p, 'resting HR')},
+        {label: 'Readiness', short: 'readiness', m: P => '' + P.am.ready, s: p => '—', open: p => mOpen(p, 'readiness')}],
+        card: {metric: 'Readiness', val: P => '' + P.am.ready, unit: ''}}];
+    const physSel = this.state.physPlayer === b ? b : a, PS = F.p[physSel];
+    const phys = {onWatch: W('Match', sub, this.all(M)),
+      toggle: [a, b].map(p => ({label: nm(p), bg: p === physSel ? '#FFFFFF' : 'transparent', color: p === physSel ? '#111827' : '#6B7280', shadow: p === physSel ? '0 1px 2px rgba(15,23,42,.12)' : 'none', pick: () => this.setState({physPlayer: p})})),
+      cards: physG.map(g => { const solo = g.title === 'Heart rate' || g.title === 'Next morning'; return {icon: g.icon, title: g.title, metric: g.card.metric, unit: g.card.unit, solo, two: !solo, ac: '#A3C9FF', bc: CB, aName: na, bName: nb, aVal: g.card.val(PA), bVal: g.card.val(PB), go: () => { if (this.props.setstd) this.props.setstd(true); try { this._psY = window.scrollY; } catch (e) {} this.setState({physPage: g.title}, () => { try { window.scrollTo(0, 0); } catch (e) {} }); }}; }),
+      groups: physG.map((g, gi) => { const openG = this.state['physG' + gi] === undefined ? gi === 0 : this.state['physG' + gi];
+        return {icon: g.icon, title: g.title, src: g.src, count: g.metrics.length, open: openG, chevT: openG ? 'rotate(180deg)' : 'none',
+          sub: openG ? (g.src + ' · ' + g.metrics.length + ' metrics') : g.metrics.map(mt => mt.short).join(', ').replace(/^./, c => c.toUpperCase()),
+          toggle: () => this.setState({['physG' + gi]: !openG}),
+          rows: g.metrics.map(mt => ({label: mt.label, matchV: mt.m(PS), seasonV: mt.s(physSel), open: mt.open(physSel)})),
+          rowsA: g.metrics.map(mt => ({label: mt.label, matchV: mt.m(PA), seasonV: mt.s(a), open: mt.open(a)}))}; })};
     const physT = [
       {title: 'Movement', src: 'GPS vest', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), rows: [
         row('Distance', fmt(PA.dist) + ' m', fmt(PB.dist) + ' m', sva(a, x => x.dist, fmt), sva(b, x => x.dist, fmt), mOpen(a, 'distance'), mOpen(b, 'distance')),
@@ -507,9 +603,19 @@ class Component extends DCLogic {
     const dA = gs.map((g, i) => Math.round(PA.gd[i] || 0)), dB = gs.map((g, i) => Math.round(PB.gd[i] || 0)), moreB = dB.filter((v, i) => v > dA[i]).length, dR = nice([0, ...dA, ...dB], 50);
     const distChart = LC({n: gs.length, h: 160, ...dR, min: 0, fmt: v => Math.round(v), groups: [{vals: dA, c: CA}, {vals: dB, c: CB}], vlines: gVL, xl: gXL,
       title: 'Distance per game (m)', head: (moreB >= gs.length / 2 ? nb : na) + ' covered more ground in ' + Math.max(moreB, gs.length - moreB) + ' of ' + gs.length + ' games', src: 'GPS vest', legend: [lg(na, CA, 'bar'), lg(nb, CB, 'bar')]});
+    // Distance per game as a per-set toggle chart (same layout as the errors-by-game chart)
+    const _dsi = Math.max(0, _setNames.indexOf(this.state.distSet)), distSeg = this.seg(_setNames, _setNames[_dsi], 'distSet'), _dsG = setG(_dsi), _dgMax = Math.max(1, ...dA, ...dB);
+    const distGames = _dsG.map((gi, idx) => ({label: String(idx + 1), a: dA[gi], b: dB[gi], ah: Math.round(dA[gi] / _dgMax * 82), bh: Math.round(dB[gi] / _dgMax * 82), open: W('Distance · ' + _setNames[_dsi] + ' · game ' + (idx + 1), sub, this.all(M).filter(o => o.r.set === _dsi + 1))}));
+    const _dMoreB = _dsG.filter(i => dB[i] > dA[i]).length, _dMoreA = _dsG.length - _dMoreB, distHead = (_dMoreB > _dMoreA ? nb : na) + ' covered more ground in ' + Math.max(_dMoreA, _dMoreB) + ' of ' + _dsG.length + ' games';
     const ZL = ['Zone 1 · under 60 %', 'Zone 2 · 60–70 %', 'Zone 3 · 70–80 %', 'Zone 4 · 80–90 %', 'Zone 5 · over 90 %'], zmx = Math.max(1, ...PA.zones, ...PB.zones);
     const zones = {title: 'Time in heart rate zones', src: 'Chest strap', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (PB.zones[4] > PA.zones[4] ? nb : na) + ' spent ' + Math.abs(Math.round(PB.zones[4] - PA.zones[4])) + ' more minutes in zone 5',
       rows: ZL.map((l, i) => ({label: l, a: Math.round(PA.zones[i]) + ' min', b: Math.round(PB.zones[i]) + ' min', bars: true, aw: PA.zones[i] / zmx * 100, bw: PB.zones[i] / zmx * 100, openA: mOpen(a, 'heart rate'), openB: mOpen(b, 'heart rate')}))};
+    // single-player (subject only) heart-rate chart + zones for the Heart rate detail page
+    const hrHi = 1 + [0, 1, 2].slice(0, nS).map(k => avg(PA.hr.slice(pStart[k], pStart[k + 1] || N))).reduce((bi, v, i, arr) => v > arr[bi] ? i : bi, 0);
+    const hrChartSolo = LC({n: N, h: 230, ...hrR, bands: [{from: Math.round(trait(a).hrMax * .8), to: Math.round(trait(a).hrMax * .9), c: '#FEF3E2'}, {from: Math.round(trait(a).hrMax * .9), to: hrR.max, c: '#FDE8E8'}], series: [{vals: PA.hr, c: CA}], vlines: pStart.slice(1), xl: pXL,
+      title: 'Heart rate through the match', head: 'Average ' + PA.hrAvg + ' bpm; highest in set ' + hrHi, src: 'Chest strap', watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), legend: [lg(na, CA, 'line'), lg('Zone 4', '#FDE3B8', 'bar'), lg('Zone 5', '#FBCACA', 'bar')]});
+    const zmxA = Math.max(1, ...PA.zones);
+    const zonesSolo = ZL.map((l, i) => ({label: l, v: Math.round(PA.zones[i]) + ' min', w: PA.zones[i] / zmxA * 100, open: mOpen(a, 'heart rate')}));
     const SR = [0, 1, 2].slice(0, nS), bySet = (l, k) => l.filter(o => o.set === k + 1);
     const topMx = Math.max(1, ...PA.top, ...PB.top), ldMx = Math.max(1, ...PA.load, ...PB.load);
     const dirT = Object.keys(PA.dir).map(k => [k, pct(PA.dir[k], sum(Object.values(PA.dir))), pct(PB.dir[k], sum(Object.values(PB.dir)))]);
@@ -538,10 +644,12 @@ class Component extends DCLogic {
         row('Trunk rotation on the smash', PA.mq.trunk + '°', PB.mq.trunk + '°', sva(a, x => x.mq.trunk, v => Math.round(v) + '°'), sva(b, x => x.mq.trunk, v => Math.round(v) + '°'), W(na + ' · smashes', sub, PA.shots.Smash || []), W(nb + ' · smashes', sub, PB.shots.Smash || [])),
         row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]}];
     const won = M.winner === 'A', rl = F.N ? r1(avg(M.rallies.map(r => r.shots.length))) : 0, dur = Math.round(M.secs / 60);
-    return {date: M.date, event: mlab(M), res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
-      scoreRows: [{name: M.A.name, dot: CA, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#D9453B', sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
-      meta: [{label: 'Duration', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', v: F.won.length + ' of ' + N}, {label: 'Avg rally', v: rl + ' shots'}],
-      mom, ended, shotCards, shotSel, shotSeg, ueChart, errSeg, errGames, errHead, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
+    const evtFull = mlab(M), ci = evtFull.indexOf(' · '), evtTitle = ci >= 0 ? evtFull.slice(0, ci) : evtFull, evtSub = ci >= 0 ? evtFull.slice(ci + 3) : '';
+    const sa = sets.filter(x => x[0] > x[1]).length, sb = sets.filter(x => x[1] > x[0]).length;
+    return {date: M.date, event: evtFull, eventTitle: evtTitle, eventSub: evtSub, res: (won ? 'Win' : 'Loss') + ' · ' + sa + '–' + sb, resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
+      scoreRows: [{name: M.A.name, dot: CA, nameW: won ? 700 : 600, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#D9453B', nameW: won ? 600 : 700, sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
+      meta: [{label: 'Duration', icon: 'clock', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', icon: 'target', v: F.won.length + ' of ' + N}, {label: 'Avg rally', icon: 'racket', v: rl + ' shots'}],
+      mom, ended, shotCards, shotSel, shotSeg, ueChart, errSeg, errGames, errHead, distSeg, distGames, distHead, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
       coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
       netHead: 'Arriving within 0.2 s of each other: ' + pct(early.filter(o => o.ok).length, early.length) + ' % of points won; later, ' + pct(late.filter(o => o.ok).length, late.length) + ' %',
       mid: {total: F.mid.length, onWatch: W('Middle balls', sub, F.mid), na, nb, ta: midA.length, tb: midB.length, tn: midN.length, pa: pct(midA.length, F.mid.length), pb: pct(midB.length, F.mid.length),
@@ -549,7 +657,7 @@ class Component extends DCLogic {
         rows: [{name: na + ' took it', l: midA, c: CA}, {name: nb + ' took it', l: midB, c: CB}, {name: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
       gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'Won point' : 'Lost point', oc: o.ok ? '#111827' : CR, open: W('Gap over 4.5 m', sub, [o])})),
       gapHead: 'Lost ' + F.gaps.filter(o => !o.ok).length + ' of ' + F.gaps.length + ' points when the gap opened', onGaps: W('Gaps over 4.5 m', sub, F.gaps),
-      physT, hrChart, distChart, zones, physT2, shotT, chChart, bioT, na, nb};
+      phys, hrChartSolo, zonesSolo, hrChart, distChart, zones, physT2, shotT, chChart, bioT, na, nb};
   }
 
   // ---------- season (pair / player) ----------
@@ -689,16 +797,18 @@ class Component extends DCLogic {
   }
 
   componentDidMount() { if (!window.MI) { const w = () => window.MI ? this.forceUpdate() : setTimeout(w, 80); setTimeout(w, 80); } }
-  componentDidUpdate(prev) { if (prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind) { if (this.state.opp !== 'all' || this.state.acwr) this.setState({opp: 'all', acwr: null}); } }
+  componentDidUpdate(prev) { if (prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind) { if (this.state.opp !== 'all' || this.state.acwr) this.setState({opp: 'all', acwr: null}); } if ((prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind || prev.tab !== this.props.tab) && this.state.physPage) this.setState({physPage: null}); }
 
   renderVals() {
-    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, lm: {scoreRows: [], meta: [], shotCards: [], shotSel: {rows: []}, shotSeg: [], errSeg: [], errGames: [], errHead: '', press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], physT: [], physT2: [], bioT: []}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
+    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, isPhys: false, pp: {icon: '', title: '', sub: '', toggle: [], hasToggle: false, hasChart: false, chart: null, zones: [], rows: [], back: null}, lm: {scoreRows: [], meta: [], shotCards: [], shotSel: {rows: []}, shotSeg: [], errSeg: [], errGames: [], errHead: '', distSeg: [], distGames: [], distHead: '', press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], bioT: [], phys: {cards: [], groups: [], toggle: [], onWatch: null}}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
     if (!window.MI) return off;
     const S = this.subject(), tab = this.props.tab || 'Last match', team = S.kind === 'team';
     if (!S.ms.length) return {...off, isEmpty: true};
     if (team) return tab === 'Season trends' ? {...off, isTS: true, ts: this.teamSeason()} : {...off, isTL: true, tl: this.lastTie()};
     if (tab === 'Season trends') { const st = this.season(S); return st ? {...off, isST: true, st} : {...off, isEmpty: true}; }
-    return {...off, isLM: true, lm: this.lastMatch(S)};
+    const lmData = this.lastMatch(S);
+    if (this.state.physPage) { const g = lmData.phys.groups.find(x => x.title === this.state.physPage); if (g) { const isHR = g.title === 'Heart rate', isSolo = isHR || g.title === 'Next morning'; return {...off, isPhys: true, lm: lmData, pp: {icon: g.icon, title: g.title, sub: g.src + ' · ' + g.count + ' metrics', hasToggle: !isSolo, toggle: isSolo ? [] : lmData.phys.toggle, rows: isSolo ? g.rowsA : g.rows, hasChart: isHR, chart: isHR ? lmData.hrChartSolo : null, zones: isHR ? lmData.zonesSolo : [], back: () => { if (this.props.setstd) this.props.setstd(false); this.setState({physPage: null}, () => { const y = this._psY || 0, go = () => { try { window.scrollTo(0, y); } catch (e) {} }; go(); [30, 90, 180, 320, 500].forEach(d => setTimeout(go, d)); }); }}}; } }
+    return {...off, isLM: true, lm: lmData};
   }
 }
 
