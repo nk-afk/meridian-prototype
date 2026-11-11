@@ -30,31 +30,77 @@
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
 
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding-bottom:10px;border-bottom:2px solid #111827"><div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827">Each partner <span style="color:#6B7280;font-weight:500;letter-spacing:0;text-transform:none">· {{ lm.na }} and {{ lm.nb }}, side by side</span></div><div style="display:flex;align-items:center;gap:16px;font-size:11px;font-weight:600;color:#6B7280;white-space:nowrap"><div style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.na }}</div><div style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.nb }}</div></div></div>
   <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:16px">
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
-    <sc-for list="{{ lm.shotCards }}" as="sc" hint-placeholder-count="2">
-      <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ sc.watch }}</div></div>
-        <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ sc.head }}</div>
-        <div class="hbars hbwide" style="margin-top:2px">
-          <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="6">
-            <div class="hbrow" style="cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname">{{ r.label }}</span><div class="hbtrack" style="display:flex;gap:2px"><div class="hbfill" style="width:{{ r.aw }}%"></div><div class="hbfill" style="width:{{ r.bw }}%;background:var(--bar)"></div></div><span class="hbval" style="width:auto">{{ r.a }} <span style="color:var(--color-primary)">{{ r.b }}</span></span></div>
-          </sc-for>
-        </div>
+    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px">
+        <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ lm.shotSeg }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 16px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+        <div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.shotSel.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ lm.shotSel.watch }}</div>
       </div>
-    </sc-for>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ lm.shotSel.head }}</div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11px;font-weight:600;color:#6B7280"><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.na }}</div><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.nb }}</div></div>
+      <div style="display:flex;align-items:flex-end;gap:8px;margin-top:6px">
+        <sc-for list="{{ lm.shotSel.rows }}" as="r" hint-placeholder-count="6">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;min-width:0" style-hover="opacity:.7" onClick="{{ r.open }}">
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;width:100%">
+              <div style="flex:1;max-width:18px;height:116px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:11px;font-weight:700;line-height:1;margin-bottom:3px;font-variant-numeric:tabular-nums">{{ r.a }}</span><div style="width:100%;height:{{ r.ah }}%;min-height:1px;background:#A3C9FF;border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;max-width:18px;height:116px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:11px;font-weight:700;line-height:1;margin-bottom:3px;font-variant-numeric:tabular-nums;color:#6B7280">{{ r.b }}</span><div style="width:100%;height:{{ r.bh }}%;min-height:1px;background:#BCE6A5;border-radius:3px 3px 0 0"></div></div>
+            </div>
+            <span style="font-size:10.5px;color:#6B7280;white-space:nowrap;text-align:center">{{ r.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
   </div>
   <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
-    <dc-import name="PairChart" c="{{ lm.ueChart }}" hint-size="100%,300px"></dc-import>
+    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ lm.errSeg }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 16px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.ueChart.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ lm.ueChart.watch }}</div></div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ lm.errHead }}</div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11px;font-weight:600;color:#6B7280"><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.na }}</div><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.nb }}</div></div>
+      <div style="display:flex;align-items:flex-end;gap:6px;margin-top:6px">
+        <sc-for list="{{ lm.errGames }}" as="r" hint-placeholder-count="8">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;min-width:0" style-hover="opacity:.7" onClick="{{ r.open }}">
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:3px;width:100%">
+              <div style="flex:1;max-width:14px;height:110px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:10px;font-weight:700;line-height:1;margin-bottom:2px;font-variant-numeric:tabular-nums">{{ r.a }}</span><div style="width:100%;height:{{ r.ah }}%;min-height:1px;background:#A3C9FF;border-radius:2px 2px 0 0"></div></div>
+              <div style="flex:1;max-width:14px;height:110px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:10px;font-weight:700;line-height:1;margin-bottom:2px;font-variant-numeric:tabular-nums;color:#6B7280">{{ r.b }}</span><div style="width:100%;height:{{ r.bh }}%;min-height:1px;background:#BCE6A5;border-radius:2px 2px 0 0"></div></div>
+            </div>
+            <span style="font-size:10.5px;color:#6B7280;white-space:nowrap">{{ r.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px">
       <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;min-height:22px;display:flex;align-items:center">Pressure points</div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.pressHead }}</div>
-      <table class="ptable"><tbody><sc-for list="{{ lm.press }}" as="p" hint-placeholder-count="5"><tr class="prow" onClick="{{ p.open }}"><td>{{ p.label }}</td><td class="num">{{ p.v }}</td><td class="num tdet">{{ p.p }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
+      <table class="dtable"><tbody><sc-for list="{{ lm.press }}" as="p" hint-placeholder-count="5"><tr class="prow" onClick="{{ p.open }}"><td>{{ p.label }}</td><td class="num">{{ p.v }}</td><td class="num tdet">{{ p.p }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
     </div>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Coordination</div><div style="font-size:13px;color:#6B7280">Video tracking of both partners on every shot</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.physT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,380px"></dc-import></sc-for>
+  </div>
+  <dc-import name="PairChart" c="{{ lm.hrChart }}" hint-size="100%,330px"></dc-import>
+  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
+    <dc-import name="PairChart" c="{{ lm.distChart }}" hint-size="100%,300px"></dc-import>
+    <dc-import name="PairTable" t="{{ lm.zones }}" hint-size="100%,300px"></dc-import>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.physT2 }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
+    <dc-import name="PairTable" t="{{ lm.shotT }}" hint-size="100%,420px"></dc-import>
+    <dc-import name="PairChart" c="{{ lm.chChart }}" hint-size="100%,420px"></dc-import>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ lm.bioT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
+  </div>
+
+  <div style="margin-top:22px;padding-bottom:10px;border-bottom:2px solid #111827"><div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827">Together as a pair <span style="color:#6B7280;font-weight:500;letter-spacing:0;text-transform:none">· how {{ lm.na }} and {{ lm.nb }} moved and combined on every shot</span></div></div>
   <div class="pcard" style="margin-top:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
     <sc-for list="{{ lm.coK }}" as="k" hint-placeholder-count="5">
       <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-left:{{ k.bl }};cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
@@ -102,8 +148,8 @@
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch {{ lm.mid.total }}</div></div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
-      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#7FB2FF;width:{{ lm.mid.pb }}%"></div><div style="background:#E50C00;flex:1"></div></div>
-      <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E50C00">Neither {{ lm.mid.tn }}</div></div>
+      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#A3C9FF;width:{{ lm.mid.pa }}%"></div><div style="background:#BCE6A5;width:{{ lm.mid.pb }}%"></div><div style="background:#E50C00;flex:1"></div></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:600;color:#6B7280;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E50C00">Neither {{ lm.mid.tn }}</div></div>
       <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
         <sc-for list="{{ lm.mid.rows }}" as="c" hint-placeholder-count="3">
           <div style="display:flex;flex-direction:column;gap:5px;cursor:pointer" style-hover="opacity:.75" onClick="{{ c.open }}">
@@ -122,27 +168,6 @@
     </div>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div></div>
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
-    <sc-for list="{{ lm.physT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,380px"></dc-import></sc-for>
-  </div>
-  <dc-import name="PairChart" c="{{ lm.hrChart }}" hint-size="100%,330px"></dc-import>
-  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px">
-    <dc-import name="PairChart" c="{{ lm.distChart }}" hint-size="100%,300px"></dc-import>
-    <dc-import name="PairTable" t="{{ lm.zones }}" hint-size="100%,300px"></dc-import>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
-    <sc-for list="{{ lm.physT2 }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
-  </div>
-
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
-  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
-    <dc-import name="PairTable" t="{{ lm.shotT }}" hint-size="100%,420px"></dc-import>
-    <dc-import name="PairChart" c="{{ lm.chChart }}" hint-size="100%,420px"></dc-import>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
-    <sc-for list="{{ lm.bioT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
-  </div>
 </sc-if>
 
 <!-- ===== SEASON TRENDS ===== -->
@@ -270,7 +295,7 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1144},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Last match&quot;,&quot;Season trends&quot;,&quot;Last tie&quot;],&quot;default&quot;:&quot;Last match&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pair&quot;,&quot;player&quot;,&quot;team&quot;],&quot;default&quot;:&quot;pair&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;sid&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AB&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ws&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;PP&quot;,&quot;PPL&quot;],&quot;default&quot;:&quot;PP&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;play&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(title: string, sub: string, items: object[]) => void&quot;}}">
-const CA = '#111827', CB = '#A3C9FF', CG = '#AFAFBB', CR = '#E50C00', BAND = '#EEF5FF', CM = '#8B5CF6';
+const CA = '#A3C9FF', CB = '#BCE6A5', CG = '#AFAFBB', CR = '#E50C00', BAND = '#EEF5FF', CM = '#8B5CF6';
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const hs = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -278,7 +303,7 @@ const sum = a => a.reduce((s, x) => s + x, 0), avg = a => a.length ? sum(a) / a.
 const med = a => { if (!a.length) return 0; const b = a.slice().sort((x, y) => x - y), n = b.length; return n % 2 ? b[(n - 1) / 2] : (b[n / 2 - 1] + b[n / 2]) / 2; };
 const r1 = v => Math.round(v * 10) / 10, r2 = v => Math.round(v * 100) / 100, fmt = v => Math.round(v).toLocaleString('en-US'), pct = (a, b) => b ? Math.round(a / b * 100) : 0;
 const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
-const lg = (label, c, kind) => ({label, c, lw: kind === 'line' ? 16 : 10, lh: kind === 'line' ? 3 : 10});
+const lg = (label, c, kind) => ({label, c, lw: 8, lh: 8});
 const PTS = ['0', '15', '30', '40'];
 const OVER = ['Smash', 'Víbora', 'Bandeja'];
 const RS = {Serve: 92, Return: 68, Lob: 60, Chiquita: 52, Drive: 84, Volley: 74, Block: 50, Bandeja: 83, 'Víbora': 101, Smash: 122, Bajada: 99, Contrapared: 66};
@@ -373,7 +398,7 @@ const hm = h => Math.floor(h) + ' h ' + String(Math.round((h % 1) * 60)).padStar
 const occOf = (F, list) => list;
 
 class Component extends DCLogic {
-  state = {phase: 'Attack', period: 'Season', opp: 'all', oppOpen: false, acwr: null};
+  state = {phase: 'Attack', period: 'Season', opp: 'all', oppOpen: false, acwr: null, shot: 'Winners', errSet: 'Set 1'};
   seg(opts, cur, key) { return opts.map(l => ({label: l, bg: l === cur ? '#FFFFFF' : 'transparent', color: l === cur ? '#111827' : '#6B7280', shadow: l === cur ? '0 1px 2px rgba(15,23,42,.12)' : 'none', pick: () => this.setState({[key]: l})})); }
   play(title, sub, occ) {
     const seen = new Set(), items = []; (occ || []).forEach(o => { const k = o.r.id + '|' + (o.i || 0); if (seen.has(k)) return; seen.add(k); items.push({M: o.M, r: o.r, i: o.i || 0, exc: false}); });
@@ -405,7 +430,7 @@ class Component extends DCLogic {
       title: 'Point difference through the match', head: 'Broke ' + brkFor + (brkFor === 1 ? ' time' : ' times') + ', broken ' + brkAg + (brkAg === 1 ? ' time' : ' times'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W('Breaks', sub, [].concat(...bg.map(occG))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]});
     // winners and errors
     const E = F.end, wA = E[a].W, wB = E[b].W, eA = E[a].E, eB = E[b].E;
-    const ended = {title: 'How points ended', ca: na, cb: nb, cac: CA, cbc: CB, watch: 'Watch ' + (wA.length + wB.length + eA.length + eB.length), onWatch: W('Winners and errors', sub, [...wA, ...wB, ...eA, ...eB]),
+    const ended = {title: 'How points ended', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, watch: 'Watch ' + (wA.length + wB.length + eA.length + eB.length), onWatch: W('Winners and errors', sub, [...wA, ...wB, ...eA, ...eB]),
       head: eB.length > wB.length && wA.length >= eA.length ? nb + ' made more errors than winners; ' + na + ' did the opposite' : eA.length > wA.length && wB.length >= eB.length ? na + ' made more errors than winners; ' + nb + ' did the opposite' : 'Winners ' + (wA.length + wB.length) + ', errors ' + (eA.length + eB.length),
       rows: [{label: 'Winners', a: wA.length, b: wB.length, openA: W(na + ' · winners', sub, wA), openB: W(nb + ' · winners', sub, wB)},
         {label: 'Errors', a: eA.length, b: eB.length, openA: W(na + ' · errors', sub, eA), openB: W(nb + ' · errors', sub, eB)},
@@ -415,12 +440,23 @@ class Component extends DCLogic {
       const mxv = Math.max(1, ...ts.map(t => t[1].length + t[2].length)); return ts.map(t => ({label: t[0], a: t[1].length, b: t[2].length, aw: t[1].length / mxv * 100, bw: t[2].length / mxv * 100, open: W(t[0], sub, [...t[1], ...t[2]])})); };
     const topT = (la, lb) => { const r = byType(la, lb)[0]; return r ? r.label.toLowerCase() : '—'; };
     const shotCards = [
-      {title: 'Winners by shot', head: 'Most winners came from the ' + topT(wA, wB), watch: 'Watch ' + (wA.length + wB.length), onWatch: W('Winners', sub, [...wA, ...wB]), rows: byType(wA, wB)},
-      {title: 'Errors by shot', head: 'Most errors came on the ' + topT(eA, eB), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), rows: byType(eA, eB)}];
+      {title: 'Winners by shot', na, nb, head: 'Most winners came from the ' + topT(wA, wB), watch: 'Watch ' + (wA.length + wB.length), onWatch: W('Winners', sub, [...wA, ...wB]), rows: byType(wA, wB)},
+      {title: 'Errors by shot', na, nb, head: 'Most errors came on the ' + topT(eA, eB), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), rows: byType(eA, eB)}];
+    const shotMode = this.state.shot || 'Winners';
+    const shotBase = shotMode === 'Errors' ? shotCards[1] : shotCards[0];
+    const smax = Math.max(1, ...shotBase.rows.map(r => Math.max(r.a, r.b)));
+    const shotSel = {...shotBase, rows: shotBase.rows.map(r => ({...r, ah: Math.round(r.a / smax * 82), bh: Math.round(r.b / smax * 82)}))};
+    const shotSeg = this.seg(['Winners', 'Errors'], shotMode, 'shot');
     const ueG = p => gs.map((g, i) => E[p].E.filter(o => o.gi === i).length), uA = ueG(a), uB = ueG(b);
     const worstSet = [0, 1, 2].slice(0, nS).map(k => ({k, n: setG(k).reduce((s, i) => s + uA[i] + uB[i], 0)})).sort((x, y) => y.n - x.n)[0];
-    const ueChart = LC({n: gs.length, h: 170, min: 0, max: Math.max(2, ...uA.map((v, i) => v + uB[i])), step: 1, stacks: [{vals: uA, c: CA}, {vals: uB, c: CB}], vlines: gVL, xl: gXL,
-      title: 'Errors by game', head: worstSet.n + ' of ' + (eA.length + eB.length) + ' errors came in set ' + (worstSet.k + 1), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), legend: [lg(na, CA, 'bar'), lg(nb, CB, 'bar')]});
+    const ueChart = LC({n: gs.length, h: 170, min: 0, max: Math.max(2, ...uA.map((v, i) => v + uB[i])), step: 1, stacks: [{vals: uA, c: '#A3C9FF'}, {vals: uB, c: CB}], vlines: gVL, xl: gXL,
+      title: 'Errors by set', head: worstSet.n + ' of ' + (eA.length + eB.length) + ' errors came in set ' + (worstSet.k + 1), watch: 'Watch ' + (eA.length + eB.length), onWatch: W('Errors', sub, [...eA, ...eB]), legend: [lg(na, '#A3C9FF', 'bar'), lg(nb, CB, 'bar')]});
+    const _setNames = [0, 1, 2].slice(0, nS).map(k => 'Set ' + (k + 1));
+    const _esi = Math.max(0, _setNames.indexOf(this.state.errSet));
+    const errSeg = this.seg(_setNames, _setNames[_esi], 'errSet');
+    const _egMax = Math.max(1, ...uA, ...uB);
+    const errGames = setG(_esi).map((gi, idx) => ({label: String(idx + 1), a: uA[gi], b: uB[gi], ah: Math.round(uA[gi] / _egMax * 82), bh: Math.round(uB[gi] / _egMax * 82), open: W('Errors \u00b7 ' + _setNames[_esi] + ' \u00b7 game ' + (idx + 1), sub, [...eA.filter(o => o.gi === gi), ...eB.filter(o => o.gi === gi)])}));
+    const errHead = setG(_esi).reduce((s, i) => s + uA[i] + uB[i], 0) + ' of ' + (eA.length + eB.length) + ' errors came in ' + _setNames[_esi];
     const frac = (l, lab) => ({label: lab, v: l.filter(o => o.ok).length + ' of ' + l.length, p: pct(l.filter(o => o.ok).length, l.length) + ' %', open: W(lab, sub, l)});
     const press = [frac(F.bpC, 'Break points converted'), frac(F.bpS, 'Break points saved'), frac(F.gold, 'Golden points won'), frac(F.srv, 'Points won on serve'), frac(F.ret, 'Points won on return')];
     const gW = F.gold.filter(o => o.ok).length;
@@ -447,19 +483,19 @@ class Component extends DCLogic {
     const mOpen = (p, lab) => W(nm(p) + ' · ' + lab, sub, this.all(M));
     const row = (label, fa, fb, sa, sb, oa, ob) => ({label, a: fa, b: fb, sa, sb, openA: oa, openB: ob});
     const physT = [
-      {title: 'Movement', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), rows: [
+      {title: 'Movement', src: 'GPS vest', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, watch: 'Watch match', onWatch: W('Match', sub, this.all(M)), rows: [
         row('Distance', fmt(PA.dist) + ' m', fmt(PB.dist) + ' m', sva(a, x => x.dist, fmt), sva(b, x => x.dist, fmt), mOpen(a, 'distance'), mOpen(b, 'distance')),
         row('High-intensity distance', fmt(PA.hi) + ' m', fmt(PB.hi) + ' m', sva(a, x => x.hi, fmt), sva(b, x => x.hi, fmt), W(na + ' · sprints', sub, PA.sprint), W(nb + ' · sprints', sub, PB.sprint)),
         row('Sprints over 16 km/h', PA.sprint.length, PB.sprint.length, sva(a, x => x.sprint.length, fmt), sva(b, x => x.sprint.length, fmt), W(na + ' · sprints', sub, PA.sprint), W(nb + ' · sprints', sub, PB.sprint)),
         row('Moves over 1.5 m', PA.moves, PB.moves, sva(a, x => x.moves, fmt), sva(b, x => x.moves, fmt), mOpen(a, 'moves'), mOpen(b, 'moves')),
         row('Jumps (overheads)', PA.jumps.length, PB.jumps.length, sva(a, x => x.jumps.length, fmt), sva(b, x => x.jumps.length, fmt), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps)),
         row('Player load', fmt(sum(PA.load)), fmt(sum(PB.load)), sva(a, x => sum(x.load), fmt), sva(b, x => sum(x.load), fmt), mOpen(a, 'load'), mOpen(b, 'load'))]},
-      {title: 'Heart rate', src: 'Chest strap', ca: na, cb: nb, cac: CA, cbc: CB, rows: [
+      {title: 'Heart rate', src: 'Chest strap', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, rows: [
         row('Average', PA.hrAvg + ' bpm', PB.hrAvg + ' bpm', sva(a, x => x.hrAvg, Math.round), sva(b, x => x.hrAvg, Math.round), mOpen(a, 'heart rate'), mOpen(b, 'heart rate')),
         row('Peak', PA.hrPeak + ' bpm', PB.hrPeak + ' bpm', sva(a, x => x.hrPeak, Math.round), sva(b, x => x.hrPeak, Math.round), mOpen(a, 'heart rate'), mOpen(b, 'heart rate')),
         row('Drop 20 s after a point', PA.dropAvg + ' bpm', PB.dropAvg + ' bpm', sva(a, x => x.dropAvg, r1), sva(b, x => x.dropAvg, r1), mOpen(a, 'recovery'), mOpen(b, 'recovery')),
         row('Energy', fmt(PA.kcal) + ' kcal', fmt(PB.kcal) + ' kcal', sva(a, x => x.kcal, fmt), sva(b, x => x.kcal, fmt), mOpen(a, 'energy'), mOpen(b, 'energy'))]},
-      {title: 'Next morning', src: 'Wrist wearable', ca: na, cb: nb, cac: CA, cbc: CB, head: (PA.am.ready < PB.am.ready ? na : nb) + ' woke with the lower readiness score', rows: [
+      {title: 'Next morning', src: 'Wrist wearable', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (PA.am.ready < PB.am.ready ? na : nb) + ' woke with the lower readiness score', rows: [
         row('Sleep', hm(PA.am.sleep), hm(PB.am.sleep), sva(a, x => x.am.sleep, hm), sva(b, x => x.am.sleep, hm), mOpen(a, 'sleep'), mOpen(b, 'sleep')),
         row('HRV', PA.am.hrv + ' ms', PB.am.hrv + ' ms', 'Baseline ' + trait(a).hrv, 'Baseline ' + trait(b).hrv, mOpen(a, 'HRV'), mOpen(b, 'HRV')),
         row('Resting HR', PA.am.rhr + ' bpm', PB.am.rhr + ' bpm', 'Baseline ' + trait(a).rest, 'Baseline ' + trait(b).rest, mOpen(a, 'resting HR'), mOpen(b, 'resting HR')),
@@ -472,20 +508,20 @@ class Component extends DCLogic {
     const distChart = LC({n: gs.length, h: 160, ...dR, min: 0, fmt: v => Math.round(v), groups: [{vals: dA, c: CA}, {vals: dB, c: CB}], vlines: gVL, xl: gXL,
       title: 'Distance per game (m)', head: (moreB >= gs.length / 2 ? nb : na) + ' covered more ground in ' + Math.max(moreB, gs.length - moreB) + ' of ' + gs.length + ' games', src: 'GPS vest', legend: [lg(na, CA, 'bar'), lg(nb, CB, 'bar')]});
     const ZL = ['Zone 1 · under 60 %', 'Zone 2 · 60–70 %', 'Zone 3 · 70–80 %', 'Zone 4 · 80–90 %', 'Zone 5 · over 90 %'], zmx = Math.max(1, ...PA.zones, ...PB.zones);
-    const zones = {title: 'Time in heart rate zones', src: 'Chest strap', ca: na, cb: nb, cac: CA, cbc: CB, head: (PB.zones[4] > PA.zones[4] ? nb : na) + ' spent ' + Math.abs(Math.round(PB.zones[4] - PA.zones[4])) + ' more minutes in zone 5',
+    const zones = {title: 'Time in heart rate zones', src: 'Chest strap', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (PB.zones[4] > PA.zones[4] ? nb : na) + ' spent ' + Math.abs(Math.round(PB.zones[4] - PA.zones[4])) + ' more minutes in zone 5',
       rows: ZL.map((l, i) => ({label: l, a: Math.round(PA.zones[i]) + ' min', b: Math.round(PB.zones[i]) + ' min', bars: true, aw: PA.zones[i] / zmx * 100, bw: PB.zones[i] / zmx * 100, openA: mOpen(a, 'heart rate'), openB: mOpen(b, 'heart rate')}))};
     const SR = [0, 1, 2].slice(0, nS), bySet = (l, k) => l.filter(o => o.set === k + 1);
     const topMx = Math.max(1, ...PA.top, ...PB.top), ldMx = Math.max(1, ...PA.load, ...PB.load);
     const dirT = Object.keys(PA.dir).map(k => [k, pct(PA.dir[k], sum(Object.values(PA.dir))), pct(PB.dir[k], sum(Object.values(PB.dir)))]);
     const physT2 = [
-      {title: 'Top speed by set', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Top speed ' + r1(Math.max(...PA.top)) + ' km/h for ' + na + ', ' + r1(Math.max(...PB.top)) + ' for ' + nb, rows: SR.map(k => ({label: 'Set ' + (k + 1), a: r1(PA.top[k]) + ' km/h', b: r1(PB.top[k]) + ' km/h', bars: true, aw: PA.top[k] / topMx * 100, bw: PB.top[k] / topMx * 100, openA: W(na + ' · sprints · set ' + (k + 1), sub, bySet(PA.sprint, k)), openB: W(nb + ' · sprints · set ' + (k + 1), sub, bySet(PB.sprint, k))}))},
-      {title: 'Player load by set', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Load is distance plus overheads', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: Math.round(PA.load[k]), b: Math.round(PB.load[k]), bars: true, aw: PA.load[k] / ldMx * 100, bw: PB.load[k] / ldMx * 100, openA: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1)), openB: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1))}))},
-      {title: 'Movement direction', src: 'GPS vest', ca: na, cb: nb, cac: CA, cbc: CB, head: (dirT[2][2] > dirT[2][1] ? nb : na) + ' moved backwards more', rows: dirT.map(r => ({label: r[0], a: r[1] + ' %', b: r[2] + ' %', bars: true, aw: r[1] * 2, bw: r[2] * 2, openA: mOpen(a, 'movement'), openB: mOpen(b, 'movement')}))}];
+      {title: 'Top speed by set', src: 'GPS vest', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Top speed ' + r1(Math.max(...PA.top)) + ' km/h for ' + na + ', ' + r1(Math.max(...PB.top)) + ' for ' + nb, rows: SR.map(k => ({label: 'Set ' + (k + 1), a: r1(PA.top[k]) + ' km/h', b: r1(PB.top[k]) + ' km/h', bars: true, aw: PA.top[k] / topMx * 100, bw: PB.top[k] / topMx * 100, openA: W(na + ' · sprints · set ' + (k + 1), sub, bySet(PA.sprint, k)), openB: W(nb + ' · sprints · set ' + (k + 1), sub, bySet(PB.sprint, k))}))},
+      {title: 'Player load by set', src: 'GPS vest', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Load is distance plus overheads', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: Math.round(PA.load[k]), b: Math.round(PB.load[k]), bars: true, aw: PA.load[k] / ldMx * 100, bw: PB.load[k] / ldMx * 100, openA: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1)), openB: W('Set ' + (k + 1), sub, this.all(M).filter(o => o.r.set === k + 1))}))},
+      {title: 'Movement direction', src: 'GPS vest', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (dirT[2][2] > dirT[2][1] ? nb : na) + ' moved backwards more', rows: dirT.map(r => ({label: r[0], a: r[1] + ' %', b: r[2] + ' %', bars: true, aw: r[1] * 2, bw: r[2] * 2, openA: mOpen(a, 'movement'), openB: mOpen(b, 'movement')}))}];
     // biomechanics
     const sAvgSpd = (p, t) => { const l = [].concat(...prev.filter(x => x.p[p]).map(x => (x.p[p].shots[t] || []).map(o => o.v))); return l.length ? avg(l) : null; };
     const types = [...new Set([...Object.keys(PA.shots), ...Object.keys(PB.shots)])].filter(t => t !== 'Serve' && t !== 'Return').sort((x, y) => (RS[y] || 0) - (RS[x] || 0)).slice(0, 7);
     const spdCell = (p, t) => { const l = F.p[p].shots[t] || []; if (!l.length) return ['—', '']; const v = Math.round(avg(l.map(o => o.v))), s = sAvgSpd(p, t); return [v + ' km/h', l.length + ' shots' + (s != null ? ' · ' + sgn(v - Math.round(s)) + ' vs season' : '')]; };
-    const shotT = {title: 'Racket speed by shot', src: 'Racket sensor', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Average racket speed per shot type, against the season', rows: types.map(t => { const x = spdCell(a, t), y = spdCell(b, t); return {label: t, a: x[0], b: y[0], sa: x[1], sb: y[1], openA: W(na + ' · ' + t, sub, PA.shots[t] || []), openB: W(nb + ' · ' + t, sub, PB.shots[t] || [])}; })};
+    const shotT = {title: 'Racket speed by shot', src: 'Racket sensor', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Average racket speed per shot type, against the season', rows: types.map(t => { const x = spdCell(a, t), y = spdCell(b, t); return {label: t, a: x[0], b: y[0], sa: x[1], sb: y[1], openA: W(na + ' · ' + t, sub, PA.shots[t] || []), openB: W(nb + ' · ' + t, sub, PB.shots[t] || [])}; })};
     const ohIdx = o => o.k, setAvg = (l, k) => { const x = l.filter(o => o.set === k + 1); return x.length ? r2(avg(x.map(o => o.v))) : null; };
     const segS = (l, c) => SR.map(k => ({vals: Array.from({length: N}, (_, i) => i >= pStart[k] && i < (pStart[k + 1] || N) ? setAvg(l, k) : null), c, w: 2, dash: '6 4'}));
     const drop = setAvg(PA.oh, 0) != null && setAvg(PA.oh, nS - 1) != null ? Math.round((setAvg(PA.oh, 0) - setAvg(PA.oh, nS - 1)) * 100) : 0, chR = nice([...PA.oh, ...PB.oh].map(o => o.v), .1, .02);
@@ -495,9 +531,9 @@ class Component extends DCLogic {
     const spP = (P, k) => { const l = bySet(P.split, k); return pct(l.filter(o => o.ok).length, l.length); }, stP = (P, k) => Math.round(avg(bySet(P.step, k).map(o => o.v)));
     const wSet = P => SR.reduce((bi, k) => spP(P, k) < spP(P, bi) ? k : bi, 0);
     const bioT = [
-      {title: 'Split-step on opponent contact', src: 'Pose tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Lowest rate: ' + nb + ' in set ' + (wSet(PB) + 1) + ' (' + spP(PB, wSet(PB)) + ' %)', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: spP(PA, k) + ' %', b: spP(PB, k) + ' %', bars: true, aw: spP(PA, k), bw: spP(PB, k), openA: W(na + ' · no split-step · set ' + (k + 1), sub, bySet(PA.split, k).filter(o => !o.ok)), openB: W(nb + ' · no split-step · set ' + (k + 1), sub, bySet(PB.split, k).filter(o => !o.ok))}))},
-      {title: 'First step after opponent contact', src: 'Video tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: 'Median movement start from the tracked rallies', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: stP(PA, k) + ' ms', b: stP(PB, k) + ' ms', bars: true, aw: stP(PA, k) / 9, bw: stP(PB, k) / 9, openA: W(na + ' · slowest starts · set ' + (k + 1), sub, bySet(PA.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12)), openB: W(nb + ' · slowest starts · set ' + (k + 1), sub, bySet(PB.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12))}))},
-      {title: 'Movement quality', src: 'Pose tracking', ca: na, cb: nb, cac: CA, cbc: CB, head: (PA.mq.land > PB.mq.land ? na : nb) + ' lands less evenly after overheads', rows: [
+      {title: 'Split-step on opponent contact', src: 'Pose tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Lowest rate: ' + nb + ' in set ' + (wSet(PB) + 1) + ' (' + spP(PB, wSet(PB)) + ' %)', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: spP(PA, k) + ' %', b: spP(PB, k) + ' %', bars: true, aw: spP(PA, k), bw: spP(PB, k), openA: W(na + ' · no split-step · set ' + (k + 1), sub, bySet(PA.split, k).filter(o => !o.ok)), openB: W(nb + ' · no split-step · set ' + (k + 1), sub, bySet(PB.split, k).filter(o => !o.ok))}))},
+      {title: 'First step after opponent contact', src: 'Video tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Median movement start from the tracked rallies', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: stP(PA, k) + ' ms', b: stP(PB, k) + ' ms', bars: true, aw: stP(PA, k) / 9, bw: stP(PB, k) / 9, openA: W(na + ' · slowest starts · set ' + (k + 1), sub, bySet(PA.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12)), openB: W(nb + ' · slowest starts · set ' + (k + 1), sub, bySet(PB.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12))}))},
+      {title: 'Movement quality', src: 'Pose tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (PA.mq.land > PB.mq.land ? na : nb) + ' lands less evenly after overheads', rows: [
         row('Knee bend at the volley', PA.mq.knee + '°', PB.mq.knee + '°', sva(a, x => x.mq.knee, v => Math.round(v) + '°'), sva(b, x => x.mq.knee, v => Math.round(v) + '°'), W(na + ' · volleys', sub, PA.shots.Volley || []), W(nb + ' · volleys', sub, PB.shots.Volley || [])),
         row('Trunk rotation on the smash', PA.mq.trunk + '°', PB.mq.trunk + '°', sva(a, x => x.mq.trunk, v => Math.round(v) + '°'), sva(b, x => x.mq.trunk, v => Math.round(v) + '°'), W(na + ' · smashes', sub, PA.shots.Smash || []), W(nb + ' · smashes', sub, PB.shots.Smash || [])),
         row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]}];
@@ -505,7 +541,7 @@ class Component extends DCLogic {
     return {date: M.date, event: mlab(M), res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
       scoreRows: [{name: M.A.name, dot: CA, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#D9453B', sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
       meta: [{label: 'Duration', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', v: F.won.length + ' of ' + N}, {label: 'Avg rally', v: rl + ' shots'}],
-      mom, ended, shotCards, ueChart, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
+      mom, ended, shotCards, shotSel, shotSeg, ueChart, errSeg, errGames, errHead, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
       coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
       netHead: 'Arriving within 0.2 s of each other: ' + pct(early.filter(o => o.ok).length, early.length) + ' % of points won; later, ' + pct(late.filter(o => o.ok).length, late.length) + ' %',
       mid: {total: F.mid.length, onWatch: W('Middle balls', sub, F.mid), na, nb, ta: midA.length, tb: midB.length, tn: midN.length, pa: pct(midA.length, F.mid.length), pb: pct(midB.length, F.mid.length),
@@ -513,7 +549,7 @@ class Component extends DCLogic {
         rows: [{name: na + ' took it', l: midA, c: CA}, {name: nb + ' took it', l: midB, c: CB}, {name: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
       gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'Won point' : 'Lost point', oc: o.ok ? '#111827' : CR, open: W('Gap over 4.5 m', sub, [o])})),
       gapHead: 'Lost ' + F.gaps.filter(o => !o.ok).length + ' of ' + F.gaps.length + ' points when the gap opened', onGaps: W('Gaps over 4.5 m', sub, F.gaps),
-      physT, hrChart, distChart, zones, physT2, shotT, chChart, bioT};
+      physT, hrChart, distChart, zones, physT2, shotT, chChart, bioT, na, nb};
   }
 
   // ---------- season (pair / player) ----------
@@ -553,7 +589,7 @@ class Component extends DCLogic {
       [nm(p) + ' · top speed', k => F3.map(F => F.p[p] ? F.p[p].top[k - 1] : 0), v => r1(avg(v)) + ' km/h', k => [].concat(...F3.map(F => F.p[p] ? F.p[p].sprint.filter(o => o.set === k) : []))],
       [nm(p) + ' · smash speed', k => [].concat(...F3.map(F => F.p[p] ? (F.p[p].shots.Smash || []).filter(o => o.set === k).map(o => o.v) : [])), v => Math.round(avg(v)) + ' km/h', k => [].concat(...F3.map(F => F.p[p] ? (F.p[p].shots.Smash || []).filter(o => o.set === k) : []))],
       [nm(p) + ' · split-step', k => { const l = [].concat(...F3.map(F => F.p[p] ? F.p[p].split.filter(o => o.set === k) : [])); return [pct(l.filter(o => o.ok).length, l.length)]; }, v => v[0] + ' %', k => [].concat(...F3.map(F => F.p[p] ? F.p[p].split.filter(o => o.set === k && !o.ok) : []))]]));
-    const fade = {title: 'Set 1 vs set 3', ca: 'Set 1', cb: 'Set 3', cac: CA, cbc: CB, head: F3.length ? F3.length + ' three-set ' + (F3.length === 1 ? 'match' : 'matches') + ' in this selection' : 'No three-set matches in this selection',
+    const fade = {title: 'Set 1 vs set 3', ca: 'Set 1', cb: 'Set 3', cac: '#A3C9FF', cbc: CB, head: F3.length ? F3.length + ' three-set ' + (F3.length === 1 ? 'match' : 'matches') + ' in this selection' : 'No three-set matches in this selection',
       rows: F3.length ? FD.map(r => { const x = r[1](1), y = r[1](lastS), ax = avg(x), ay = avg(y); return {label: r[0], a: r[2](x), b: r[2](y), sb: ax ? sgn(Math.round((ay - ax) / ax * 100)) + ' %' : '', openA: W(r[0] + ' · set 1', sub, r[3](1)), openB: W(r[0] + ' · set 3', sub, r[3](lastS))}; }) : []};
     // errors and winners
     const ueS = pids.map(p => Fs.map(F => F.p[p] ? r1(F.end[p].E.length / F.M.nsets) : null)), ueR = nice([].concat(...ueS), 1, .5);
@@ -656,7 +692,7 @@ class Component extends DCLogic {
   componentDidUpdate(prev) { if (prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind) { if (this.state.opp !== 'all' || this.state.acwr) this.setState({opp: 'all', acwr: null}); } }
 
   renderVals() {
-    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, lm: {scoreRows: [], meta: [], shotCards: [], press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], physT: [], physT2: [], bioT: []}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
+    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, lm: {scoreRows: [], meta: [], shotCards: [], shotSel: {rows: []}, shotSeg: [], errSeg: [], errGames: [], errHead: '', press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], physT: [], physT2: [], bioT: []}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
     if (!window.MI) return off;
     const S = this.subject(), tab = this.props.tab || 'Last match', team = S.kind === 'team';
     if (!S.ms.length) return {...off, isEmpty: true};
