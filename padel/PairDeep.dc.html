@@ -12,7 +12,7 @@
 <sc-if value="{{ isLM }}" hint-placeholder-val="{{ true }}">
   <div style="display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;margin-top:4px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Last match · {{ lm.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ lm.resBg }};border-radius:6px;padding:2px 7px">{{ lm.res }}</div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between"><div class="eyebrow">Last match · {{ lm.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ lm.resBg }};border-radius:6px;padding:2px 7px">{{ lm.res }}</div></div>
       <div style="font-size:15px;font-weight:600">{{ lm.event }}</div>
       <div style="display:flex;flex-direction:column">
         <sc-for list="{{ lm.scoreRows }}" as="sr" hint-placeholder-count="2">
@@ -35,7 +35,7 @@
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
     <sc-for list="{{ lm.shotCards }}" as="sc" hint-placeholder-count="2">
       <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ sc.watch }}</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ sc.title }}</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ sc.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ sc.watch }}</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ sc.head }}</div>
         <div class="hbars hbwide" style="margin-top:2px">
           <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="6">
@@ -66,7 +66,7 @@
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:16px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Where they stood</div>
+        <div class="eyebrow">Where they stood</div>
         <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ lm.phaseSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
       </div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.court.head }}</div>
@@ -89,7 +89,7 @@
     <div style="display:flex;flex-direction:column;gap:16px">
       <dc-import name="PairChart" c="{{ lm.spChart }}" hint-size="100%,290px"></dc-import>
       <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px;flex:1">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Moving up to the net together</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px">Video tracking</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Moving up to the net together</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px">Video tracking</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.netHead }}</div>
         <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
         <sc-for list="{{ lm.net }}" as="r" hint-placeholder-count="5">
@@ -100,7 +100,7 @@
   </div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px">
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch {{ lm.mid.total }}</div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch {{ lm.mid.total }}</div></div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
       <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#111827;width:{{ lm.mid.pa }}%"></div><div style="background:#7FB2FF;width:{{ lm.mid.pb }}%"></div><div style="background:#E50C00;flex:1"></div></div>
       <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E50C00">Neither {{ lm.mid.tn }}</div></div>
@@ -108,14 +108,14 @@
         <sc-for list="{{ lm.mid.rows }}" as="c" hint-placeholder-count="3">
           <div style="display:flex;flex-direction:column;gap:5px;cursor:pointer" style-hover="opacity:.75" onClick="{{ c.open }}">
             <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;white-space:nowrap"><div style="color:#4B5563;font-weight:500">{{ c.name }}</div><div style="font-weight:700">{{ c.v }} % <span style="color:#6B7280;font-weight:500">· {{ c.w }}/{{ c.n }}</span></div></div>
-            <div style="height:8px;border-radius:4px;background:rgba(16,24,40,.06);overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ c.v }}%;background:{{ c.c }}"></div></div>
+            <div class="hbtrack"><div class="hbfill" style="width:{{ c.v }}%;background:{{ c.c }}"></div></div>
           </div>
         </sc-for>
       </div>
     </div>
     <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB">
-        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch all</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div class="eyebrow">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch all</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
       </div>
       <table class="dtable" style="width:100%"><thead><tr><th>Set · games</th><th>Point</th><th>Phase</th><th class="num">Gap</th><th>Point</th><th></th></tr></thead><tbody><sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8"><tr class="prow" onClick="{{ r.open }}"><td style="font-weight:600">{{ r.set }}</td><td class="tdet">{{ r.pt }}</td><td class="tdet">{{ r.phase }}</td><td class="num" style="font-weight:700">{{ r.gap }} <span style="color:var(--color-text-soft);font-weight:500">m</span></td><td style="font-weight:600;color:{{ r.oc }}">{{ r.out }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
@@ -195,7 +195,7 @@
 <!-- ===== TEAM · LAST TIE ===== -->
 <sc-if value="{{ isTL }}" hint-placeholder-val="{{ false }}">
   <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px;margin-top:4px">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">Last tie · {{ tl.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ tl.resBg }};border-radius:6px;padding:2px 7px">{{ tl.res }}</div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div class="eyebrow">Last tie · {{ tl.date }}</div><div style="font-size:12px;font-weight:700;color:#FFFFFF;background:{{ tl.resBg }};border-radius:6px;padding:2px 7px">{{ tl.res }}</div></div>
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap"><div style="font-size:15px;font-weight:600">{{ tl.event }}</div><div style="display:flex;align-items:baseline;gap:10px;font-size:15px;font-weight:600;white-space:nowrap">{{ tl.home }}<span style="font-size:22px;font-weight:700">{{ tl.score }}</span>{{ tl.away }}</div></div>
     <div style="display:flex;flex-direction:column">
       <sc-for list="{{ tl.ms }}" as="m" hint-placeholder-count="3">
@@ -213,7 +213,7 @@
   </div>
   <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Points by match</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
-      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ tl.pbm.title }}</div><sc-if value="{{ tl.pbm.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.pbm.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.pbm.head }}</div></div>
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ tl.pbm.title }}</div><sc-if value="{{ tl.pbm.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.pbm.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.pbm.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ tl.pbm.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.pbm.first }}</div><sc-for list="{{ tl.pbm.cols }}" as="h" hint-placeholder-count="3"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
       <sc-for list="{{ tl.pbm.rows }}" as="r" hint-placeholder-count="4">
         <div style="display:grid;grid-template-columns:{{ tl.pbm.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
@@ -228,7 +228,7 @@
   </div>
   <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
-      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ tl.squad.title }}</div><sc-if value="{{ tl.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.squad.head }}</div></div>
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ tl.squad.title }}</div><sc-if value="{{ tl.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.squad.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ tl.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.squad.first }}</div><sc-for list="{{ tl.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
       <sc-for list="{{ tl.squad.rows }}" as="r" hint-placeholder-count="4">
         <div style="display:grid;grid-template-columns:{{ tl.squad.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
@@ -245,7 +245,7 @@
   <dc-import name="PairChart" c="{{ ts.result }}" hint-size="100%,300px"></dc-import>
   <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Lineups</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
-      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ ts.lineups.title }}</div><sc-if value="{{ ts.lineups.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.lineups.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.lineups.head }}</div></div>
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ ts.lineups.title }}</div><sc-if value="{{ ts.lineups.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.lineups.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.lineups.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ ts.lineups.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.lineups.first }}</div><sc-for list="{{ ts.lineups.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
       <sc-for list="{{ ts.lineups.rows }}" as="r" hint-placeholder-count="4">
         <div style="display:grid;grid-template-columns:{{ ts.lineups.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
@@ -257,7 +257,7 @@
   <dc-import name="PairChart" c="{{ ts.byDraw }}" hint-size="100%,300px"></dc-import>
   <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Squad load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap · average per match</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
-      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280">{{ ts.squad.title }}</div><sc-if value="{{ ts.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.squad.head }}</div></div>
+      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ ts.squad.title }}</div><sc-if value="{{ ts.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.squad.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ ts.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.squad.first }}</div><sc-for list="{{ ts.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
       <sc-for list="{{ ts.squad.rows }}" as="r" hint-placeholder-count="4">
         <div style="display:grid;grid-template-columns:{{ ts.squad.gtc }};align-items:center;padding:0 6px;border-bottom:1px solid #F1F5F9">
@@ -610,7 +610,7 @@ class Component extends DCLogic {
       thumb: window.MV ? window.MV.still(M, M.rallies[Math.min(3, M.rallies.length - 1)], 2, {names: false, bug: false}) : '', play: W(M.A.name + ' vs ' + M.B.name, mlab(M) + ' · ' + M.date, this.all(M))}));
     const cell = (v, s, lab, occ) => ({v: String(v), s: s || '', open: W(lab, sub, occ)});
     const fr = (l, lab, M) => cell(l.filter(o => o.ok).length + ' of ' + l.length, pct(l.filter(o => o.ok).length, l.length) + ' %', M.draw + ' · ' + lab, l);
-    const pbm = this.tbl({title: 'How each match was won', head: 'Houston won ' + T.wA + ' of 3 matches', first: '', cols: T.ms.map(M => ({label: M.draw})), rows: [
+    const pbm = this.tbl({title: 'How each match was won', head: 'Mumbai won ' + T.wA + ' of 3 matches', first: '', cols: T.ms.map(M => ({label: M.draw})), rows: [
       {label: 'Points won', cells: Fs.map(F => cell(F.won.length + ' of ' + F.N, pct(F.won.length, F.N) + ' %', F.M.draw + ' · points won', F.won))},
       {label: 'Winners', cells: Fs.map(F => { const l = [].concat(...F.A.map(p => F.end[p].W)); return cell(l.length, '', F.M.draw + ' · winners', l); })},
       {label: 'Errors', cells: Fs.map(F => { const l = [].concat(...F.A.map(p => F.end[p].E)); return cell(l.length, '', F.M.draw + ' · errors', l); })},
@@ -623,20 +623,20 @@ class Component extends DCLogic {
         title: M.draw + ' · ' + M.A.name, head: (M.winner === 'A' ? 'Won ' : 'Lost ') + M.score.replace(/-/g, '–'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W(M.draw + ' · breaks', sub, [].concat(...bg.map(g => g.rs.map(r => ({M, r, i: 0}))))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]}); });
     const rows = []; Fs.forEach(F => F.A.forEach(p => { const P = F.p[p], M = F.M; rows.push({label: MI.PLAYERS[p].name, sub: M.draw + ' · ' + M.A.name, cells: [cell(fmt(P.dist) + ' m', '', nm(p) + ' · distance', this.all(M)), cell(P.sprint.length, '', nm(p) + ' · sprints', P.sprint), cell(P.hrAvg + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.hrPeak + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.jumps.length, '', nm(p) + ' · overheads', P.jumps)]}); }));
     const top = rows.slice().sort((x, y) => parseInt(y.cells[0].v.replace(/,/g, '')) - parseInt(x.cells[0].v.replace(/,/g, '')))[0];
-    const squad = this.tbl({title: 'Houston players', src: 'GPS vest · chest strap', head: top ? top.label + ' covered the most ground (' + top.cells[0].v + ')' : '', first: 'Player', cols: ['Distance', 'Sprints', 'Avg HR', 'Peak HR', 'Overheads'].map(l => ({label: l})), rows});
+    const squad = this.tbl({title: 'Mumbai players', src: 'GPS vest · chest strap', head: top ? top.label + ' covered the most ground (' + top.cells[0].v + ')' : '', first: 'Player', cols: ['Distance', 'Sprints', 'Avg HR', 'Peak HR', 'Overheads'].map(l => ({label: l})), rows});
     return {date: T.date, event: T.event + ' · ' + T.round, res: won ? 'W' : 'L', resBg: won ? '#111827' : '#9CA3AF', home: MI.TEAMS[T.A].name, away: MI.TEAMS[T.B].name, score: T.score, ms, pbm, mom, squad};
   }
   teamSeason() {
-    const MI = window.MI, W = this.op.bind(this), TS = MI.TIES, n = TS.length, all = [].concat(...TS.map(T => T.ms)), Fs = all.map(facts), sub = 'Houston Volts · ' + n + ' ties';
+    const MI = window.MI, W = this.op.bind(this), TS = MI.TIES, n = TS.length, all = [].concat(...TS.map(T => T.ms)), Fs = all.map(facts), sub = 'Mumbai Smashers · ' + n + ' ties';
     const tieOcc = T => [].concat(...T.ms.map(M => this.all(M)));
     const xl = []; TS.forEach((T, i) => { if (i === 0 || TS[i - 1].event !== T.event) xl.push({i, label: T.event.replace(" City's Cup", '').replace(' Finals', '')}); });
     const wonT = TS.filter(T => T.winner === 'A').length;
     const result = LC({n, h: 170, min: 0, max: 3, step: 1, series: [{vals: TS.map(T => T.wA), c: CA}], refs: [1.5], xl,
-      dots: TS.map((T, i) => ({i, v: T.wA, c: T.winner === 'A' ? CA : CG, sz: 11, title: T.event + ' · ' + T.round + ' · vs ' + MI.TEAMS[T.B].name + ' · ' + T.score, open: W('Houston Volts vs ' + MI.TEAMS[T.B].name, T.event + ' · ' + T.round + ' · ' + T.score, tieOcc(T))})),
-      title: 'Matches won per tie', head: 'Won ' + wonT + ' of ' + n + ' ties, ' + sum(TS.map(T => T.wA)) + ' of ' + n * 3 + ' matches', watch: 'Watch ' + n + ' ties', onWatch: W('Houston Volts', sub, [].concat(...TS.map(tieOcc))), legend: [lg('Tie won', CA, 'bar'), lg('Tie lost', CG, 'bar')]});
+      dots: TS.map((T, i) => ({i, v: T.wA, c: T.winner === 'A' ? CA : CG, sz: 11, title: T.event + ' · ' + T.round + ' · vs ' + MI.TEAMS[T.B].name + ' · ' + T.score, open: W('Mumbai Smashers vs ' + MI.TEAMS[T.B].name, T.event + ' · ' + T.round + ' · ' + T.score, tieOcc(T))})),
+      title: 'Matches won per tie', head: 'Won ' + wonT + ' of ' + n + ' ties, ' + sum(TS.map(T => T.wA)) + ' of ' + n * 3 + ' matches', watch: 'Watch ' + n + ' ties', onWatch: W('Mumbai Smashers', sub, [].concat(...TS.map(tieOcc))), legend: [lg('Tie won', CA, 'bar'), lg('Tie lost', CG, 'bar')]});
     const cell = (v, s, lab, occ) => ({v: String(v), s: s || '', open: W(lab, sub, occ)});
     const pairs = [...new Set(all.map(M => M.A.id))];
-    const lineups = this.tbl({title: 'Houston lineups', head: 'Record and points won by pair', first: 'Pair', cols: ['Matches', 'Record', 'Points won', 'Winners', 'Errors'].map(l => ({label: l})), rows: pairs.map(id => {
+    const lineups = this.tbl({title: 'Mumbai lineups', head: 'Record and points won by pair', first: 'Pair', cols: ['Matches', 'Record', 'Points won', 'Winners', 'Errors'].map(l => ({label: l})), rows: pairs.map(id => {
       const L = Fs.filter(F => F.M.A.id === id), w = L.filter(F => F.M.winner === 'A').length, nm2 = MI.PAIRS[id].name, pw = sum(L.map(F => F.won.length)), pn = sum(L.map(F => F.N));
       const wl = [].concat(...L.map(F => [].concat(...F.A.map(p => F.end[p].W)))), el = [].concat(...L.map(F => [].concat(...F.A.map(p => F.end[p].E))));
       return {label: nm2, sub: MI.PAIRS[id].draw, cells: [cell(L.length, '', nm2, [].concat(...L.map(F => this.all(F.M)))), cell(w + '–' + (L.length - w), '', nm2 + ' · wins', [].concat(...L.filter(F => F.M.winner === 'A').map(F => this.all(F.M)))), cell(pct(pw, pn) + ' %', pw + ' of ' + pn, nm2 + ' · points won', [].concat(...L.map(F => F.won))), cell(wl.length, r1(wl.length / L.length) + ' per match', nm2 + ' · winners', wl), cell(el.length, r1(el.length / L.length) + ' per match', nm2 + ' · errors', el)]}; })});
@@ -646,7 +646,7 @@ class Component extends DCLogic {
       dots: [].concat(...DR.map((d, k) => TS.map((T, i) => { const M = T.ms.find(x => x.draw === d); return {i, v: dS[k][i], c: DRAWC[d], sz: 8, title: d + ' · ' + T.event + ' · ' + dS[k][i] + ' %', open: M ? W(M.A.name + ' vs ' + M.B.name, mlab(M), this.all(M)) : null}; }))),
       title: 'Points won per tie by match (%)', head: best[0] + ' matches won the most points: ' + r1(best[1]) + ' % on average', legend: DR.map(d => lg(d, DRAWC[d], 'line'))});
     const pl = [...new Set([].concat(...all.map(M => M.A.players)))];
-    const squad = this.tbl({title: 'Houston players', src: 'GPS vest · chest strap', head: 'Average per match played', first: 'Player', cols: ['Matches', 'Distance', 'Avg HR', 'Sprints', 'Overheads'].map(l => ({label: l})), rows: pl.map(p => {
+    const squad = this.tbl({title: 'Mumbai players', src: 'GPS vest · chest strap', head: 'Average per match played', first: 'Player', cols: ['Matches', 'Distance', 'Avg HR', 'Sprints', 'Overheads'].map(l => ({label: l})), rows: pl.map(p => {
       const L = Fs.filter(F => F.p[p]), P = L.map(F => F.p[p]), nm3 = MI.PLAYERS[p].name;
       return {label: nm3, sub: [...new Set(L.map(F => F.M.draw))].join(' · '), cells: [cell(L.length, '', nm3, [].concat(...L.map(F => this.all(F.M)))), cell(fmt(avg(P.map(x => x.dist))) + ' m', '', nm3 + ' · distance', [].concat(...L.map(F => this.all(F.M)))), cell(Math.round(avg(P.map(x => x.hrAvg))) + ' bpm', '', nm3 + ' · heart rate', [].concat(...L.map(F => this.all(F.M)))), cell(r1(avg(P.map(x => x.sprint.length))), '', nm3 + ' · sprints', [].concat(...P.map(x => x.sprint))), cell(r1(avg(P.map(x => x.jumps.length))), '', nm3 + ' · overheads', [].concat(...P.map(x => x.jumps)))]}; })});
     return {count: n + ' ties · ' + TS[0].date.replace(' 2026', '') + ' – ' + TS[n - 1].date.replace(' 2026', ''), result, lineups, byDraw, squad};
