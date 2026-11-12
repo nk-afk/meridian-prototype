@@ -241,9 +241,9 @@
       <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 14px;display:flex;flex-direction:column;gap:10px;flex:1">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Moving up to the net together</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px">Video tracking</div></div>
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.netHead }}</div>
-        <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;padding:0 10px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
         <sc-for list="{{ lm.net }}" as="r" hint-placeholder-count="5">
-          <div class="hbrow" style="grid-template-columns:120px minmax(0,1fr) 92px 22px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname" style="color:var(--color-text);font-size:12.5px">{{ r.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ r.p }}%;background:{{ r.c }}"></div></div><span class="hbval" style="width:auto;font-size:12.5px;font-weight:700;color:var(--color-text)">{{ r.p }} % <span style="color:var(--color-text-soft);font-weight:500">· {{ r.w }}/{{ r.n }}</span></span><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div>
+          <div class="hbrow" style="grid-template-columns:120px minmax(0,1fr) 92px 22px;padding:0 10px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname" style="color:var(--color-text);font-size:12.5px;font-weight:400">{{ r.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ r.p }}%;background:{{ r.c }}"></div></div><span class="hbval" style="width:auto;font-size:12.5px;font-weight:700;color:var(--color-text)">{{ r.p }} % <span style="color:var(--color-text-soft);font-weight:500">· {{ r.w }}/{{ r.n }}</span></span><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div>
         </sc-for>
       </div>
     </div>
@@ -252,14 +252,13 @@
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Middle balls</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.mid.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch {{ lm.mid.total }}</div></div>
       <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.mid.head }}</div>
-      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px"><div style="background:#A3C9FF;width:{{ lm.mid.pa }}%"></div><div style="background:#BCE6A5;width:{{ lm.mid.pb }}%"></div><div style="background:#E50C00;flex:1"></div></div>
-      <div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:600;color:#6B7280;white-space:nowrap"><div>{{ lm.mid.na }} {{ lm.mid.ta }}</div><div>{{ lm.mid.nb }} {{ lm.mid.tb }}</div><div style="color:#E50C00">Neither {{ lm.mid.tn }}</div></div>
-      <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
+      <div style="display:flex;gap:28px;margin-top:2px">
+        <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ lm.mid.reachPct }} <span style="font-size:13px;font-weight:500;color:#6B7280">%</span></div><div style="font-size:12px;color:#6B7280;text-wrap:pretty">won when a partner reached it</div></div>
+        <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;color:#E5484D;white-space:nowrap">{{ lm.mid.neitherPct }} <span style="font-size:13px;font-weight:500;color:#6B7280">%</span></div><div style="font-size:12px;color:#6B7280;text-wrap:pretty">won when neither did ({{ lm.mid.neitherN }} balls)</div></div>
+      </div>
+      <div style="border-top:1px solid #E5E7EB;margin-top:2px">
         <sc-for list="{{ lm.mid.rows }}" as="c" hint-placeholder-count="3">
-          <div style="display:flex;flex-direction:column;gap:5px;cursor:pointer" style-hover="opacity:.75" onClick="{{ c.open }}">
-            <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;white-space:nowrap"><div style="color:#4B5563;font-weight:500">{{ c.name }}</div><div style="font-weight:700">{{ c.v }} % <span style="color:#6B7280;font-weight:500">· {{ c.w }}/{{ c.n }}</span></div></div>
-            <div class="hbtrack"><div class="hbfill" style="width:{{ c.v }}%;background:{{ c.c }}"></div></div>
-          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;padding:8px 0;border-bottom:1px solid #F1F5F9;cursor:pointer" style-hover="opacity:.72" onClick="{{ c.open }}"><div style="display:flex;align-items:center;gap:8px;color:#4B5563;font-weight:500;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ c.c }};flex:none"></span>{{ c.nm }}</div><div style="white-space:nowrap"><span style="font-weight:700">{{ c.v }} %</span> <span style="color:#6B7280;font-weight:500">· {{ c.w }}/{{ c.n }}</span></div></div>
         </sc-for>
       </div>
     </div>
@@ -609,7 +608,7 @@ class Component extends DCLogic {
     const mx = Math.max(6, Math.ceil((Math.max(...F.diff.map(Math.abs)) + 1) / 6) * 6), bg = gs.filter(g => g.brk || g.lost), occG = g => g.rs.map(r => ({M, r, i: 0}));
     const brkFor = gs.filter(g => g.brk).length, brkAg = gs.filter(g => g.lost).length;
     const mom = LC({n: N, h: 210, min: -mx, max: mx, step: mx / 2, fmt: v => v > 0 ? '+' + v : String(v), series: [{vals: F.diff, c: CA, w: 2}], refs: [0], vlines: pStart.slice(1).map(x => x - .5), xl: pXL,
-      dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? '#2563EB' : '#E5484D', sz: 11, title: (g.brk ? 'Break for · ' : 'Break against · ') + 'Set ' + g.set + ' · ' + g.before, open: W((g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, sub, occG(g))})),
+      dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? '#2563EB' : '#E5484D', sz: 8, title: (g.brk ? 'Break for · ' : 'Break against · ') + 'Set ' + g.set + ' · ' + g.before, open: W((g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, sub, occG(g))})),
       title: 'Point difference through the match', head: 'Broke ' + brkFor + (brkFor === 1 ? ' time' : ' times') + ', broken ' + brkAg + (brkAg === 1 ? ' time' : ' times'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W('Breaks', sub, [].concat(...bg.map(occG))), legend: [lg('Break for', '#2563EB', 'bar'), lg('Break against', '#E5484D', 'bar')]});
     // winners and errors
     const E = F.end, wA = E[a].W, wB = E[b].W, eA = E[a].E, eB = E[b].E;
@@ -790,8 +789,9 @@ class Component extends DCLogic {
       coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
       netHead: 'Arriving within 0.2 s of each other: ' + pct(early.filter(o => o.ok).length, early.length) + ' % of points won; later, ' + pct(late.filter(o => o.ok).length, late.length) + ' %',
       mid: {total: F.mid.length, onWatch: W('Middle balls', sub, F.mid), na, nb, ta: midA.length, tb: midB.length, tn: midN.length, pa: pct(midA.length, F.mid.length), pb: pct(midB.length, F.mid.length),
+        reachPct: pct(midA.filter(o => o.ok).length + midB.filter(o => o.ok).length, midA.length + midB.length), reachN: midA.length + midB.length, neitherPct: pct(midN.filter(o => o.ok).length, midN.length), neitherN: midN.length,
         head: (midA.length >= midB.length ? na : nb) + ' took most middle balls; ' + midN.length + ' fell between them',
-        rows: [{name: na + ' took it', l: midA, c: CA}, {name: nb + ' took it', l: midB, c: CB}, {name: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
+        rows: [{name: na + ' took it', nm: na, l: midA, c: CA}, {name: nb + ' took it', nm: nb, l: midB, c: CB}, {name: 'Neither', nm: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, nm: x.nm, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
       gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'check' : 'x', oc: o.ok ? '#16A34A' : '#E5484D', open: W('Gap over 4.5 m', sub, [o])})),
       gapHead: 'Lost ' + F.gaps.filter(o => !o.ok).length + ' of ' + F.gaps.length + ' points when the gap opened', onGaps: W('Gaps over 4.5 m', sub, F.gaps),
       phys, hrChartSolo, zonesSolo, moveDetail, hrChart, distChart, zones, physT2, shotT, chChart, splitChart, firstStep, moveQual, na, nb};
