@@ -8,23 +8,22 @@
 <body>
 <x-dc>
 <div ref="{{ rootRef }}" style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:45">
-    <sc-if value="{{ showPl }}" hint-placeholder-val="{{ true }}">
-      <div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ plSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;height:28px;padding:0 14px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
-    </sc-if>
-    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="2"><div style="position:relative"><button class="dd-btn" style="font-family:inherit;white-space:nowrap" style-hover="background:#F9FAFB" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;left:0;min-width:200px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:46"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;font-size:13px;font-weight:{{ o.fw }};cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for>
-  </div>
-
-  <div style="display:grid;grid-template-columns:156px minmax(0,1fr);gap:20px;align-items:start">
-    <div style="display:flex;flex-direction:column;gap:2px;position:sticky;top:16px">
-      <sc-for list="{{ navS }}" as="n" hint-placeholder-count="7"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
-      <div style="height:1px;background:#E5E7EB;margin:8px 4px"></div>
-      <sc-for list="{{ navX }}" as="n" hint-placeholder-count="2"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
+  <div style="display:grid;grid-template-columns:184px minmax(0,1fr);gap:20px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:12px;position:relative;z-index:45">
+      <sc-if value="{{ showPl }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ plSegs }}" as="s" hint-placeholder-count="2"><button style="flex:1;border:0;height:28px;padding:0 10px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch"><sc-for list="{{ filters }}" as="f" hint-placeholder-count="2"><div style="position:relative"><button class="dd-btn" style="font-family:inherit;white-space:nowrap;width:100%;justify-content:flex-start;gap:6px" style-hover="background:#F9FAFB" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none;margin-left:auto"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;left:0;min-width:200px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:46"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;font-size:13px;font-weight:{{ o.fw }};cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:2px;background:#F8FAFC;border:1px solid #EDF1F6;border-radius:14px;padding:8px">
+        <sc-for list="{{ navS }}" as="n" hint-placeholder-count="7"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
+        <div style="height:1px;background:#E5E7EB;margin:8px 4px"></div>
+        <sc-for list="{{ navX }}" as="n" hint-placeholder-count="2"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
+      </div>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
-        <div style="display:flex;flex-direction:column;gap:2px"><div class="eyebrow">{{ hd.eyebrow }}</div><div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;white-space:nowrap">{{ hd.title }}</div></div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;min-height:38px">
+        <div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;white-space:nowrap">{{ hd.title }}</div>
         <div style="display:flex;align-items:flex-end;gap:28px">
           <sc-if value="{{ isFat }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ ovSegs }}" as="s" hint-placeholder-count="4"><button style="border:0;height:28px;padding:0 12px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div></sc-if>
           <sc-for list="{{ hd.stats }}" as="x" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px"><div style="font-size:20px;font-weight:700;white-space:nowrap">{{ x.v }} <span style="font-size:13px;font-weight:500;color:#6B7280">{{ x.u }}</span></div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ x.l }}</div></div></sc-for>
@@ -490,7 +489,7 @@ class Component extends DCLogic {
     const menu = (key, label, value, items) => ({label, value, open: s.menu === key, toggle: () => this.setState({menu: s.menu === key ? null : key}), items: items.map(([l, act, patch]) => ({label: l, fw: act ? 700 : 500, bg: act ? '#F1F5F9' : 'transparent', pick: () => this.setState({menu: null, ...patch})}))});
     const filters = [menu('per', 'Period', PER[s.per][0], Object.keys(PER).map(k => [PER[k][0], s.per === k, {per: k}]))];
     if (isStroke) filters.push(menu('set', 'Set', s.set === 'all' ? 'All sets' : 'Set ' + s.set, [['All sets', s.set === 'all', {set: 'all'}], ...['1', '2', '3'].map(k => ['Set ' + k, s.set === k, {set: k}])]));
-    const phases = PH.map((l, i) => ({label: l, flex: ((BD[i + 1] - BD[i]) * 100).toFixed(1), ...(s.ph === i ? {bg: '#111827', color: '#FFFFFF', fw: 600, shadow: 'none'} : {bg: '#FFFFFF', color: '#4B5563', fw: 500, shadow: '0 1px 2px rgba(15,23,42,.06)'}), pick: () => { this.t = KT[i]; this.setState({ph: i, playing: false}); }}));
+    const phases = PH.map((l, i) => ({label: l, flex: ((BD[i + 1] - BD[i]) * 100).toFixed(1), bg: '#FFFFFF', color: '#4B5563', fw: 500, shadow: '0 1px 2px rgba(15,23,42,.06)', pick: () => { this.t = KT[i]; this.setState({ph: i, playing: false}); }}));
     const out = {rootRef: this.rootRef, heroRef: this.heroRef, headRef: this.headRef, cheadRef: this.cheadRef, isStroke, isLoad, isFat, hasPanels: isStroke || isFat, showPl: !isLoad && !this.props.solo,
       plSegs: [['a', nm.sa], ['b', nm.sb]].map(([k, l]) => ({label: l, ...seg(s.pl === k), pick: () => this.setState({pl: k, grp: null, gi: 0, reg: null, menu: null})})),
       filters, navS: STK.map(nav), navX: ['Body load', 'Fatigue'].map(nav), phases, playing: s.playing, paused: !s.playing,
