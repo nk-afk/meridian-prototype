@@ -32,7 +32,7 @@
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:22px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:34px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Winners and errors</div><div style="font-size:13px;color:#6B7280">How each point ended</div></div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:16px">
     <dc-import name="PairTable" t="{{ lm.ended }}" hint-size="100%,300px"></dc-import>
     <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
@@ -79,7 +79,7 @@
     </div>
   </div>
 
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:26px">
     <div style="display:flex;align-items:baseline;gap:10px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest · Chest strap · Wrist wearable</div></div>
     <div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.phys.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</div>
   </div>
@@ -160,7 +160,7 @@
     </div>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
     <dc-import name="PairTable" t="{{ lm.shotT }}" hint-size="100%,420px"></dc-import>
     <dc-import name="PairChart" c="{{ lm.chChart }}" hint-size="100%,420px"></dc-import>
@@ -204,7 +204,7 @@
     </div>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:22px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Together as a pair</div><div style="font-size:13px;color:#6B7280">How {{ lm.na }} and {{ lm.nb }} moved and combined on every shot</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:34px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Together as a pair</div><div style="font-size:13px;color:#6B7280">How {{ lm.na }} and {{ lm.nb }} moved and combined on every shot</div></div>
   <div class="pcard" style="margin-top:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
     <sc-for list="{{ lm.coK }}" as="k" hint-placeholder-count="5">
       <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-left:{{ k.bl }};cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
@@ -367,23 +367,23 @@
   </div>
   <dc-import name="PairChart" c="{{ st.result }}" hint-size="100%,320px"></dc-import>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">What separates wins from losses</div><div style="font-size:13px;color:#6B7280">Average per match</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">What separates wins from losses</div><div style="font-size:13px;color:#6B7280">Average per match</div></div>
   <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px">
     <dc-import name="PairTable" t="{{ st.wl }}" hint-size="100%,440px"></dc-import>
     <dc-import name="PairTable" t="{{ st.fade }}" hint-size="100%,440px"></dc-import>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Errors and winners</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Errors and winners</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
     <sc-for list="{{ st.err }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Coordination</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Coordination</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
     <sc-for list="{{ st.coord }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
   </div>
 
-  <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div>
+  <div style="display:flex;align-items:center;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest, chest strap and wrist wearable</div>
     <div style="margin-left:auto;display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px"><sc-for list="{{ st.acwrSegs }}" as="s" hint-placeholder-count="2"><button style="border:0;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
   </div>
   <dc-import name="PairChart" c="{{ st.acwr }}" hint-size="100%,300px"></dc-import>
@@ -391,7 +391,7 @@
     <sc-for list="{{ st.phys }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
   </div>
 
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Biomechanics</div><div style="font-size:13px;color:#6B7280">Racket sensor and pose tracking from video</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
     <sc-for list="{{ st.bio }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
   </div>
@@ -418,7 +418,7 @@
       </sc-for>
     </div>
   </div>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Points by match</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Points by match</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ tl.pbm.title }}</div><sc-if value="{{ tl.pbm.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.pbm.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.pbm.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ tl.pbm.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.pbm.first }}</div><sc-for list="{{ tl.pbm.cols }}" as="h" hint-placeholder-count="3"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
@@ -429,11 +429,11 @@
         </div>
       </sc-for>
     </div>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Momentum</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Momentum</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
     <sc-for list="{{ tl.mom }}" as="c" hint-placeholder-count="3"><dc-import name="PairChart" c="{{ c }}" hint-size="100%,300px"></dc-import></sc-for>
   </div>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Physical load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ tl.squad.title }}</div><sc-if value="{{ tl.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ tl.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ tl.squad.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ tl.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ tl.squad.first }}</div><sc-for list="{{ tl.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
@@ -450,7 +450,7 @@
 <sc-if value="{{ isTS }}" hint-placeholder-val="{{ false }}">
   <div style="display:flex;align-items:center;margin-top:4px"><div style="margin-left:auto;font-size:13px;color:#6B7280;white-space:nowrap">{{ ts.count }}</div></div>
   <dc-import name="PairChart" c="{{ ts.result }}" hint-size="100%,300px"></dc-import>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Lineups</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Lineups</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ ts.lineups.title }}</div><sc-if value="{{ ts.lineups.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.lineups.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.lineups.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ ts.lineups.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.lineups.first }}</div><sc-for list="{{ ts.lineups.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
@@ -462,7 +462,7 @@
       </sc-for>
     </div>
   <dc-import name="PairChart" c="{{ ts.byDraw }}" hint-size="100%,300px"></dc-import>
-  <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Squad load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap · average per match</div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:26px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Squad load</div><div style="font-size:13px;color:#6B7280">GPS vest and chest strap · average per match</div></div>
   <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
       <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ ts.squad.title }}</div><sc-if value="{{ ts.squad.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ ts.squad.src }}</div></sc-if></div><div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ ts.squad.head }}</div></div>
       <div style="display:grid;grid-template-columns:{{ ts.squad.gtc }};padding:0 6px;border-bottom:1px solid #E5E7EB"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px">{{ ts.squad.first }}</div><sc-for list="{{ ts.squad.cols }}" as="h" hint-placeholder-count="5"><div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;padding:10px 10px 8px;text-align:right;white-space:nowrap">{{ h.label }}</div></sc-for></div>
