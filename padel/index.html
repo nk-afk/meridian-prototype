@@ -22,6 +22,9 @@ i[data-lucide]{display:contents}
 /* styleguide spacing: table/stat cards get standard panel padding (compact .pcard=16 was too tight for tables) */
 .pcard:has(> table.dtable),.pcard:has(> table.ptable){padding:16px!important}
 .pcard:has(> table.dtable) > table,.pcard:has(> table.ptable) > table{margin:0}
+.dtable.stand-tbl td{padding-top:12px;padding-bottom:12px}
+.sticky-tabs{background:transparent;transition:background .15s}
+.sticky-tabs.stuck{background:#F2F5FF}
 button{font-family:inherit}
 a{color:#1C3FCA;text-decoration:none}a:hover{color:#1C6EF0}
 @keyframes iwBallX{from{opacity:1}to{opacity:1}}
@@ -49,7 +52,7 @@ circle[fill="#111827"]{fill:#2B7FFF}rect[fill="#111827"],ellipse[fill="#111827"]
 [data-col="1"] [data-el="row"]{margin-left:64px!important}
 body.padel-standalone [data-el="topbar"]{display:none!important}
 /* app-wide tighter .dtable rows (loads after styles.css, so no !important needed; per-table inline padding still wins) */
-.dtable td{padding:4px 10px}
+.dtable td{padding:6px 10px}
 .dtable th{padding:4px 10px 5px}
 /* chevron in dtable rows: keep the light disabled colour (beats the more-specific .dtable td colour) and push it to the far right, away from the content */
 .dtable td.chev{color:var(--color-text-disabled);padding-left:22px;width:1px;white-space:nowrap}
@@ -60,7 +63,7 @@ body.padel-standalone [data-el="topbar"]{display:none!important}
 <div data-col="{{ colCls }}" style="width:100%;min-width:0;min-height:100vh;background:repeating-radial-gradient(circle at 50% -8%, rgba(255,255,255,.26) 0 1px, transparent 1px 66px),linear-gradient(135deg,#EFF6FF 0%,#E6EDFF 52%,#FAF5FF 100%);background-attachment:fixed;background-color:#E9EEFF;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-feature-settings:'tnum' 1,'cv05' 1;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;position:relative">
 
 <!-- TOP BAR -->
-<div data-el="topbar" style="position:sticky;top:0;z-index:40;margin-left:240px;height:52px;background:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:0;display:flex;align-items:center;padding:0 28px 0 20px;gap:14px">
+<div data-el="topbar" style="position:sticky;top:0;z-index:40;margin-left:240px;height:52px;background:#F2F5FF;border-bottom:0;display:flex;align-items:center;padding:0 28px 0 20px;gap:14px">
   <div style="flex:1"></div>
   <div style="color:#6B7280;font-weight:600;font-size:13px;padding-right:14px;margin-right:2px;border-right:1px solid #E6EAF0">Indian Padel Tour</div>
   <div class="topsearch-gym"><i data-lucide="search" style="width:15px;height:15px;color:#9CA3AF;flex:none"></i><input placeholder="Search players"></div>
@@ -155,7 +158,7 @@ body.padel-standalone [data-el="topbar"]{display:none!important}
       <div style="display:flex;flex-direction:column;gap:10px">
         <div class="eyebrow">Standings</div>
         <div class="pcard" style="margin-top:0;padding:0;overflow:hidden">
-          <table class="dtable" style="width:100%"><thead><tr><th>#</th><th>Team</th><th class="num">Played</th><th class="num">Won</th><th class="num">Lost</th><th class="num">Points</th></tr></thead><tbody><sc-for list="{{ standings }}" as="t" hint-placeholder-count="8"><tr style-hover="background:#F9FAFB"><td class="tdet" style="font-weight:500">{{ t.rank }}</td><td style="font-weight:600">{{ t.team }}</td><td class="num">{{ t.p }}</td><td class="num">{{ t.w }}</td><td class="num">{{ t.l }}</td><td class="num" style="font-weight:700">{{ t.pts }}</td></tr></sc-for></tbody></table>
+          <table class="dtable stand-tbl" style="width:100%"><thead><tr><th>#</th><th>Team</th><th class="num">Played</th><th class="num">Won</th><th class="num">Lost</th><th class="num">Points</th></tr></thead><tbody><sc-for list="{{ standings }}" as="t" hint-placeholder-count="8"><tr style-hover="background:#F9FAFB"><td class="tdet" style="font-weight:500">{{ t.rank }}</td><td style="font-weight:600"><div style="display:flex;align-items:center;gap:10px"><span style="width:26px;height:26px;border-radius:50%;corner-shape:round;background:{{ t.lc }};color:#FFFFFF;font-size:10px;font-weight:700;letter-spacing:.02em;display:inline-flex;align-items:center;justify-content:center;flex:none">{{ t.logo }}</span>{{ t.team }}</div></td><td class="num">{{ t.p }}</td><td class="num">{{ t.w }}</td><td class="num">{{ t.l }}</td><td class="num" style="font-weight:700">{{ t.pts }}</td></tr></sc-for></tbody></table>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
@@ -327,8 +330,8 @@ body.padel-standalone [data-el="topbar"]{display:none!important}
 <sc-if value="{{ mx.notPhys }}" hint-placeholder-val="{{ true }}">
   <div class="crumb" style="display:flex;gap:8px;white-space:nowrap"><span style="color:#1C3FCA;cursor:pointer" onClick="{{ mx.goCrumb }}">{{ mx.crumb }}</span><span>/</span><span style="color:#111827">{{ mx.name }}</span></div>
   <div style="display:flex;align-items:center;gap:14px"><img src="https://i.pravatar.cc/120?u={{ mx.name }}" alt="" style="width:48px;height:48px;border-radius:50%;corner-shape:round;object-fit:cover;background:#F1F5F9;flex:none"><div style="display:flex;flex-direction:column;gap:3px"><div class="ptitle" style="white-space:nowrap;font-size:34px;letter-spacing:-0.68px">{{ mx.name }}</div><div style="font-size:13px;color:#6B7280">{{ mx.sub }}</div></div></div>
-  <div class="themetabs"><sc-for list="{{ mx.tabs }}" as="t" hint-placeholder-count="4"><button class="ttab" style="font-weight:{{ t.weight }};color:{{ t.color }};border-bottom-color:{{ t.border }}" onClick="{{ t.pick }}">{{ t.label }}</button></sc-for></div>
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:45"><sc-for list="{{ mx.filters }}" as="f" hint-placeholder-count="3"><div style="position:relative"><button class="dd-btn" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div class="dd-menu open" style="min-width:220px;max-height:340px;overflow:auto"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div class="dd-opt" style="background:{{ o.bg }};font-weight:{{ o.fw }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for></div>
+  <div class="themetabs sticky-tabs" style="margin-bottom:0;margin-left:-28px;margin-right:-28px;position:sticky;top:52px;z-index:30;padding:6px 28px 10px;border-bottom:0"><sc-for list="{{ mx.tabs }}" as="t" hint-placeholder-count="4"><button class="ttab" style="font-weight:{{ t.weight }};color:{{ t.color }};border-bottom-color:{{ t.border }}" onClick="{{ t.pick }}">{{ t.label }}</button></sc-for></div>
+  <sc-if value="{{ mx.isIns }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:45"><sc-for list="{{ mx.filters }}" as="f" hint-placeholder-count="3"><div style="position:relative"><button class="dd-btn" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div class="dd-menu open" style="min-width:220px;max-height:340px;overflow:auto"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div class="dd-opt" style="background:{{ o.bg }};font-weight:{{ o.fw }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for></div></sc-if>
 </sc-if>
   <sc-if value="{{ mx.isIns }}" hint-placeholder-val="{{ true }}">
     <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
@@ -1726,6 +1729,8 @@ const PPL_EVENTS = [E("Delhi City's Cup",'Delhi',5,5,7,5,'Cup'), E("Kolkata City
 const MEN = ['Varghese / Sreekumar','Kaul / Pillai','Bhatt / Shetty','Bose / Deshmukh','Chadha / Sen','Rao / Mehta','Ghosh / Sodhi','Dutta / Gill','Iyer / Nair','Sethi / Menon','Kaushal / Grewal','Bedi / Malhotra','Khanna / Shrivastav','Sumar / Kulkarni','Varma / Shanavas','Joshi / Thadani'];
 const WOMEN = ['Oberoi / Mathur','Puri / Tandon','Kakkar / Anand','Fernandes / Mirza','Kapadia / Trivedi','Hegde / Saxena','Chopra / Kamath','Prabhu / Wadia','Banerjee / Chauhan','Rathore / Sidhu','Bajaj / Lamba','Bhandari / Reddy'];
 const TEAMS = [['Pune Padel Club','Mehta / Sethi'],['Kochi Waves','Nair / Menon'],['Kolkata Tridents','Khanna / Malhotra'],['Delhi Smash','Thadani / Kaushal'],['Chandigarh Chargers','Bedi / Grewal'],['Hyderabad Matrix','Shanavas / Joshi'],['Chennai Stingers','Kulkarni / Varma'],['Mumbai Smashers','Shrivastav / Sumar']];
+const TEAM_COLOR = {'Mumbai Smashers':'#1E4FD8','Chennai Stingers':'#E0A100','Delhi Smash':'#E63946','Pune Padel Club':'#6A4C93','Kochi Waves':'#0FA3B1','Chandigarh Chargers':'#2A9D8F','Kolkata Tridents':'#7B2CBF','Hyderabad Matrix':'#F77F00'};
+const teamLogo = name => name.split(' ').slice(0, 2).map(w => w[0]).join('');
 const STANDINGS = [];
 let ALLP_G = null;
 const teamStrength = name => { if (!ALLP_G) ALLP_G = buildPlayers(); const ros = ROSTERS[name]; const ps = ros[0].map(n => ALLP_G.find(p => p.id === 'Men:' + n)).concat(ros[1].map(n => ALLP_G.find(p => p.id === 'Women:' + n))); return ps.reduce((a, p) => a + p.r, 0) / ps.length; };
@@ -1733,7 +1738,7 @@ function ensureStandings() {
   if (STANDINGS.length && (STANDINGS.mi || !window.MI)) return STANDINGS;
   STANDINGS.length = 0; STANDINGS.mi = !!window.MI; const rec = {}; TEAMS.forEach(t => { rec[t[0]] = {team: t[0], p: 0, w: 0, l: 0, str: teamStrength(t[0])}; });
   PPL_EVENTS.forEach((e, ei) => eventMatches('PPL', ei).fixtures.forEach(f => { rec[f.t1].p++; rec[f.t2].p++; if (f.aw) { rec[f.t1].w++; rec[f.t2].l++; } else { rec[f.t2].w++; rec[f.t1].l++; } }));
-  Object.values(rec).sort((a, b) => b.w * 3 - a.w * 3 || a.l - b.l || b.str - a.str).forEach((r, i) => STANDINGS.push({rank: i + 1, team: r.team, p: r.p, w: r.w, l: r.l, pts: r.w * 3}));
+  Object.values(rec).sort((a, b) => b.w * 3 - a.w * 3 || a.l - b.l || b.str - a.str).forEach((r, i) => STANDINGS.push({rank: i + 1, team: r.team, p: r.p, w: r.w, l: r.l, pts: r.w * 3, logo: teamLogo(r.team), lc: TEAM_COLOR[r.team] || '#64748B'}));
   return STANDINGS;
 }
 const ROUNDS = ['Quarter-final','Semi-final','Final'];
@@ -3678,6 +3683,19 @@ class Component extends DCLogic {
       prevRally: () => this.setState({selRally: Math.max(0, selIdx - 1), selShot:0}), nextRally: () => this.setState({selRally: Math.min(md.total - 1, selIdx + 1), selShot:0})};
   }
 }
+</script>
+<script>
+(function(){
+  function upd(){
+    var list = document.querySelectorAll('.sticky-tabs');
+    for (var i=0;i<list.length;i++){
+      list[i].classList.toggle('stuck', list[i].getBoundingClientRect().top <= 53);
+    }
+  }
+  window.addEventListener('scroll', upd, {passive:true});
+  window.addEventListener('resize', upd);
+  setInterval(upd, 200);
+})();
 </script>
 </body>
 </html>
