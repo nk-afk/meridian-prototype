@@ -10,26 +10,24 @@
 <div style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
 <!-- ===== LAST MATCH ===== -->
 <sc-if value="{{ isLM }}" hint-placeholder-val="{{ true }}">
-  <div style="display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;margin-top:4px">
-    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between"><div class="eyebrow">Last match</div><div class="eyebrow">{{ lm.date }}</div></div>
+  <div style="display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px">
+    <div class="pcard" style="margin-top:0;padding:0;padding:16px;display:flex;flex-direction:column;gap:12px;justify-content:space-between">
+      <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px;min-height:22px"><i data-lucide="history" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow">{{ lm.date }}</div></div>
       <div style="display:flex;flex-direction:column;gap:4px">
-        <div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:50%;corner-shape:round;background:#EEF1F4;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="swords" width="20" height="20" style="color:#6B7280"></i></div><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;line-height:1.2">{{ lm.eventTitle }}</div></div>
-        <div style="font-size:13px;color:#6B7280">{{ lm.eventSub }}</div>
-        <div style="align-self:flex-start;margin-top:4px;background:#EEF1F4;border-radius:8px;padding:5px 12px;font-size:14px;font-weight:700;color:#111827">{{ lm.res }}</div>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;line-height:1.2">{{ lm.eventTitle }}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="font-size:13px;color:#6B7280">{{ lm.eventSub }}</div><div style="background:{{ lm.resBg }};border-radius:6px;padding:2px 8px;font-size:13px;font-weight:600;color:{{ lm.resTx }};white-space:nowrap">{{ lm.res }}</div></div>
       </div>
-      <div style="display:flex;flex-direction:column">
-        <sc-for list="{{ lm.scoreRows }}" as="sr" hint-placeholder-count="2">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) 30px 30px 30px;align-items:center;padding:9px 0;border-top:1px solid #F1F5F9">
-            <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:{{ sr.nameW }};white-space:nowrap"><div style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:{{ sr.dot }}"></div>{{ sr.name }}</div>
-            <sc-for list="{{ sr.sets }}" as="x" hint-placeholder-count="3"><div style="text-align:center;font-size:17px;font-weight:{{ x.w }};color:{{ x.c }}">{{ x.v }}</div></sc-for>
-          </div>
-        </sc-for>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E7EB;padding-top:12px">
-        <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><i data-lucide="{{ m.icon }}" width="15" height="15" style="flex:none"></i>{{ m.label }}</div><div style="font-size:17px;font-weight:700;letter-spacing:-0.17px;white-space:nowrap">{{ m.v }}</div></div></sc-for>
+      <div style="background:#FFFFFF;border-radius:10px;padding:2px 12px">
+        <table class="dtable" style="width:100%">
+          <tbody><sc-for list="{{ lm.scoreRows }}" as="sr" hint-placeholder-count="2"><tr><td style="padding-left:0;border-bottom:0"><div style="display:flex;align-items:center;gap:8px;font-weight:{{ sr.nameW }};white-space:nowrap"><span style="width:18px;display:inline-flex;justify-content:center;font-size:14px;font-weight:700;color:#9CA3AF">{{ sr.mark }}</span>{{ sr.name }}</div></td><sc-for list="{{ sr.sets }}" as="x" hint-placeholder-count="3"><td class="num" style="font-weight:{{ x.w }};color:{{ x.c }};border-bottom:0">{{ x.v }}</td></sc-for></tr></sc-for></tbody>
+        </table>
       </div>
-      <button class="btn" style="margin-top:auto;justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:2px">
+        <sc-for list="{{ lm.meta }}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ m.label }}</div><div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ m.v }}<sc-if value="{{ m.u }}"> <span style="font-size:13px;font-weight:500;color:#6B7280">{{ m.u }}</span></sc-if><sc-if value="{{ m.v2 }}"> {{ m.v2 }}</sc-if></div></div></sc-for>
+      </div>
+      <button class="btn" style="justify-content:center;width:100%" onClick="{{ lm.watchMatch }}"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch match</button>
     </div>
     <dc-import name="PairChart" c="{{ lm.mom }}" hint-size="100%,330px"></dc-import>
   </div>
@@ -130,7 +128,7 @@
       <div>
         <table class="dtable" style="width:100%">
           <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ lm.moveDetail.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ lm.moveDetail.nb }}</span></th></tr></thead>
-          <tbody><sc-for list="{{ lm.moveDetail.top.sets }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:600">{{ l.a }}</td><td class="num" style="font-weight:600">{{ l.b }}</td></tr></sc-for></tbody>
+          <tbody><sc-for list="{{ lm.moveDetail.top.sets }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:{{ l.aWt }};color:{{ l.aCol }}">{{ l.a }}</td><td class="num" style="font-weight:{{ l.bWt }};color:{{ l.bCol }}">{{ l.b }}</td></tr></sc-for></tbody>
         </table>
       </div>
       <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;font-size:13px;color:#374151">{{ lm.moveDetail.top.note }}</div>
@@ -140,7 +138,7 @@
       <div>
         <table class="dtable" style="width:100%">
           <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ lm.moveDetail.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ lm.moveDetail.nb }}</span></th></tr></thead>
-          <tbody><sc-for list="{{ lm.moveDetail.load }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:600">{{ l.a }}</td><td class="num" style="font-weight:600">{{ l.b }}</td></tr></sc-for></tbody>
+          <tbody><sc-for list="{{ lm.moveDetail.load }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:{{ l.aWt }};color:{{ l.aCol }}">{{ l.a }}</td><td class="num" style="font-weight:{{ l.bWt }};color:{{ l.bCol }}">{{ l.b }}</td></tr></sc-for></tbody>
         </table>
       </div>
       <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#6B7280;cursor:pointer" style-hover="color:#374151" onClick="{{ lm.moveDetail.loadInfo }}"><i data-lucide="info" width="15" height="15" style="flex:none"></i>How load is calculated</div>
@@ -168,10 +166,45 @@
     <dc-import name="PairChart" c="{{ lm.chChart }}" hint-size="100%,420px"></dc-import>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
-    <sc-for list="{{ lm.bioT }}" as="t" hint-placeholder-count="3"><dc-import name="PairTable" t="{{ t }}" hint-size="100%,260px"></dc-import></sc-for>
+    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ lm.splitChart.title }}</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ lm.splitChart.src }}</div></div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ lm.splitChart.head }}</div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11px;font-weight:600;color:#6B7280"><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ lm.splitChart.na }}</div><div style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ lm.splitChart.nb }}</div></div>
+      <div style="display:flex;align-items:flex-end;justify-content:center;gap:40px;margin-top:6px;flex:1">
+        <sc-for list="{{ lm.splitChart.cards }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer" style-hover="opacity:.7" onClick="{{ r.open }}">
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px">
+              <div style="width:24px;height:110px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:10px;font-weight:700;line-height:1;margin-bottom:2px;font-variant-numeric:tabular-nums;white-space:nowrap">{{ r.a }}</span><div style="width:100%;height:{{ r.ah }}%;min-height:1px;background:#A3C9FF;border-radius:2px 2px 0 0"></div></div>
+              <div style="width:24px;height:110px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center"><span style="font-size:10px;font-weight:700;line-height:1;margin-bottom:2px;font-variant-numeric:tabular-nums;color:#6B7280;white-space:nowrap">{{ r.b }}</span><div style="width:100%;height:{{ r.bh }}%;min-height:1px;background:#BCE6A5;border-radius:2px 2px 0 0"></div></div>
+            </div>
+            <span style="font-size:10.5px;color:#6B7280;white-space:nowrap">{{ r.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9"><i data-lucide="{{ lm.firstStep.icon }}" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">{{ lm.firstStep.title }}</div></div>
+      <div>
+        <table class="dtable" style="width:100%">
+          <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ lm.firstStep.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ lm.firstStep.nb }}</span></th></tr></thead>
+          <tbody><sc-for list="{{ lm.firstStep.sets }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:{{ l.aWt }};color:{{ l.aCol }}">{{ l.a }}</td><td class="num" style="font-weight:{{ l.bWt }};color:{{ l.bCol }}">{{ l.b }}</td></tr></sc-for></tbody>
+        </table>
+      </div>
+      <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;font-size:13px;color:#374151">{{ lm.firstStep.note }}</div>
+    </div>
+    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">{{ lm.moveQual.title }}</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ lm.moveQual.src }}</div></div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ lm.moveQual.head }}</div>
+      <div>
+        <table class="dtable" style="width:100%">
+          <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ lm.moveQual.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ lm.moveQual.nb }}</span></th></tr></thead>
+          <tbody><sc-for list="{{ lm.moveQual.rows }}" as="r" hint-placeholder-count="3"><tr><td style="white-space:normal;vertical-align:top">{{ r.label }}</td><td class="num" onClick="{{ r.openA }}" style="cursor:pointer;vertical-align:top" style-hover="background:#F1F5F9"><div style="font-size:12.5px;white-space:nowrap">{{ r.a }}</div><sc-if value="{{ r.sa }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--color-text-soft);white-space:nowrap;font-weight:400">{{ r.sa }}</div></sc-if></td><td class="num" onClick="{{ r.openB }}" style="cursor:pointer;vertical-align:top" style-hover="background:#F1F5F9"><div style="font-size:12.5px;white-space:nowrap">{{ r.b }}</div><sc-if value="{{ r.sb }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--color-text-soft);white-space:nowrap;font-weight:400">{{ r.sb }}</div></sc-if></td></tr></sc-for></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <div style="margin-top:22px;padding-bottom:10px;border-bottom:2px solid #111827"><div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827">Together as a pair <span style="color:#6B7280;font-weight:500;letter-spacing:0;text-transform:none">· how {{ lm.na }} and {{ lm.nb }} moved and combined on every shot</span></div></div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-top:22px"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em">Together as a pair</div><div style="font-size:13px;color:#6B7280">How {{ lm.na }} and {{ lm.nb }} moved and combined on every shot</div></div>
   <div class="pcard" style="margin-top:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
     <sc-for list="{{ lm.coK }}" as="k" hint-placeholder-count="5">
       <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-left:{{ k.bl }};cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
@@ -210,7 +243,7 @@
         <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.netHead }}</div>
         <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 92px 22px;gap:8px 12px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280"><div>Arrival gap</div><div>Net points won</div><div style="text-align:right">Won</div><div></div></div>
         <sc-for list="{{ lm.net }}" as="r" hint-placeholder-count="5">
-          <div class="hbrow" style="grid-template-columns:120px minmax(0,1fr) 92px 22px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname" style="color:var(--color-text-muted);font-size:13px">{{ r.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ r.p }}%;background:{{ r.c }}"></div></div><span class="hbval" style="width:auto;font-size:13px;font-weight:700;color:var(--color-text)">{{ r.p }} % <span style="color:var(--color-text-soft);font-weight:500">· {{ r.w }}/{{ r.n }}</span></span><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div>
+          <div class="hbrow" style="grid-template-columns:120px minmax(0,1fr) 92px 22px;cursor:pointer" style-hover="opacity:.75" onClick="{{ r.open }}"><span class="hbname" style="color:var(--color-text);font-size:12.5px">{{ r.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ r.p }}%;background:{{ r.c }}"></div></div><span class="hbval" style="width:auto;font-size:12.5px;font-weight:700;color:var(--color-text)">{{ r.p }} % <span style="color:var(--color-text-soft);font-weight:500">· {{ r.w }}/{{ r.n }}</span></span><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div>
         </sc-for>
       </div>
     </div>
@@ -230,12 +263,10 @@
         </sc-for>
       </div>
     </div>
-    <div class="pcard" style="margin-top:0;padding:0;overflow:hidden;display:flex;flex-direction:column">
-      <div style="padding:14px 16px 10px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #E5E7EB">
-        <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div class="eyebrow">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch all</div></div>
-        <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
-      </div>
-      <table class="dtable" style="width:100%"><thead><tr><th>Set · games</th><th>Point</th><th>Phase</th><th class="num">Gap</th><th>Point</th><th></th></tr></thead><tbody><sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8"><tr class="prow" onClick="{{ r.open }}"><td style="font-weight:600">{{ r.set }}</td><td class="tdet">{{ r.pt }}</td><td class="tdet">{{ r.phase }}</td><td class="num" style="font-weight:700">{{ r.gap }} <span style="color:var(--color-text-soft);font-weight:500">m</span></td><td style="font-weight:600;color:{{ r.oc }}">{{ r.out }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
+    <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;min-height:22px"><div class="eyebrow">Gaps over 4.5 m between partners</div><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-primary-text);cursor:pointer;white-space:nowrap" onClick="{{ lm.onGaps }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>Watch all</div></div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em">{{ lm.gapHead }}</div>
+      <table class="dtable"><thead><tr><th style="border-bottom:0">Set · games</th><th style="border-bottom:0">Point</th><th style="border-bottom:0">Phase</th><th style="border-bottom:0">Gap</th><th style="border-bottom:0">Point</th><th style="border-bottom:0"></th></tr></thead><tbody><sc-for list="{{ lm.gaps }}" as="r" hint-placeholder-count="8"><tr class="prow" onClick="{{ r.open }}"><td>{{ r.set }}</td><td class="tdet">{{ r.pt }}</td><td class="tdet">{{ r.phase }}</td><td style="font-weight:600">{{ r.gap }} <span style="color:var(--color-text-soft);font-weight:500">m</span></td><td><i data-lucide="{{ r.out }}" width="16" height="16" style="color:{{ r.oc }};flex:none"></i></td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></tbody></table>
     </div>
   </div>
 
@@ -266,7 +297,7 @@
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px"><div class="eyebrow">Time in heart rate zones</div><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">Chest strap</div></div>
           <div class="hbars" style="row-gap:13px">
             <sc-for list="{{ pp.zones }}" as="z" hint-placeholder-count="5">
-              <div class="hbrow" style="cursor:pointer" style-hover="opacity:.72" onClick="{{ z.open }}"><span class="hbname" style="font-weight:400;color:var(--color-text);white-space:nowrap">{{ z.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ z.w }}%;background:{{ z.c }}"></div></div><span class="hbval" style="width:auto;white-space:nowrap">{{ z.v }}</span></div>
+              <div class="hbrow" style="cursor:pointer" style-hover="opacity:.72" onClick="{{ z.open }}"><span class="hbname" style="font-weight:400;color:var(--color-text);white-space:nowrap">{{ z.label }}</span><div class="hbtrack"><div class="hbfill" style="width:{{ z.w }}%;min-width:1px;background:{{ z.c }}"></div></div><span class="hbval" style="width:auto;white-space:nowrap">{{ z.v }}</span></div>
             </sc-for>
           </div>
         </div>
@@ -276,13 +307,13 @@
       <dc-import name="PairChart" c="{{ pp.chart }}" hint-size="100%,360px"></dc-import>
     </sc-if>
     <sc-if value="{{ pp.hasMove }}" hint-placeholder-val="{{ false }}">
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
         <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px">
           <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9"><i data-lucide="gauge" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">Top speed</div></div>
           <div>
             <table class="dtable" style="width:100%">
               <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ pp.move.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ pp.move.nb }}</span></th></tr></thead>
-              <tbody><sc-for list="{{ pp.move.top.sets }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:600">{{ l.a }}</td><td class="num" style="font-weight:600">{{ l.b }}</td></tr></sc-for></tbody>
+              <tbody><sc-for list="{{ pp.move.top.sets }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:{{ l.aWt }};color:{{ l.aCol }}">{{ l.a }}</td><td class="num" style="font-weight:{{ l.bWt }};color:{{ l.bCol }}">{{ l.b }}</td></tr></sc-for></tbody>
             </table>
           </div>
           <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;font-size:13px;color:#374151">{{ pp.move.top.note }}</div>
@@ -292,25 +323,30 @@
           <div>
             <table class="dtable" style="width:100%">
               <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ pp.move.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ pp.move.nb }}</span></th></tr></thead>
-              <tbody><sc-for list="{{ pp.move.load }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:600">{{ l.a }}</td><td class="num" style="font-weight:600">{{ l.b }}</td></tr></sc-for></tbody>
+              <tbody><sc-for list="{{ pp.move.load }}" as="l" hint-placeholder-count="2"><tr><td>{{ l.set }}</td><td class="num" style="font-weight:{{ l.aWt }};color:{{ l.aCol }}">{{ l.a }}</td><td class="num" style="font-weight:{{ l.bWt }};color:{{ l.bCol }}">{{ l.b }}</td></tr></sc-for></tbody>
             </table>
           </div>
           <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#6B7280;cursor:pointer" style-hover="color:#374151" onClick="{{ pp.move.loadInfo }}"><i data-lucide="info" width="15" height="15" style="flex:none"></i>How load is calculated</div>
         </div>
-        <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9;cursor:pointer" style-hover="opacity:.7" onClick="{{ pp.move.dir.toggle }}"><i data-lucide="move" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">Movement direction</div><span class="chev" style="display:inline-grid;place-items:center"><i data-lucide="chevron-right" style="transition:transform .15s;transform:{{ pp.move.dir.chevT }}"></i></span></div>
-          <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ pp.move.dir.insight }}</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr">
-            <div style="display:flex;flex-direction:column;gap:5px;min-width:0"><div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#A3C9FF"></span>{{ pp.move.na }}</div><div style="font-size:23px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ pp.move.dir.a }} <span style="font-size:13px;font-weight:500;color:#6B7280">%</span></div></div>
-            <div style="display:flex;flex-direction:column;gap:5px;min-width:0;border-left:1px solid #F1F5F9;padding-left:16px"><div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B7280;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;background:#BCE6A5"></span>{{ pp.move.nb }}</div><div style="font-size:23px;font-weight:700;letter-spacing:-0.02em;white-space:nowrap">{{ pp.move.dir.b }} <span style="font-size:13px;font-weight:500;color:#6B7280">%</span></div></div>
+        <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9"><i data-lucide="move" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">Movement direction</div></div>
+          <div>
+            <table class="dtable" style="width:100%">
+              <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ pp.move.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ pp.move.nb }}</span></th></tr></thead>
+              <tbody><sc-for list="{{ pp.move.dir.all }}" as="d" hint-placeholder-count="4"><tr><td>{{ d.label }}</td><td class="num" style="font-weight:600">{{ d.a }}</td><td class="num" style="font-weight:600">{{ d.b }}</td></tr></sc-for></tbody>
+            </table>
           </div>
-          <sc-if value="{{ pp.move.dir.open }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;border-top:1px solid #F1F5F9">
-              <sc-for list="{{ pp.move.dir.all }}" as="d" hint-placeholder-count="4">
-                <div style="display:grid;grid-template-columns:minmax(0,1fr) 1fr 1fr;align-items:center;padding:7px 0;font-size:12.5px"><div style="color:#374151">{{ d.label }}</div><div style="text-align:right;color:#6B7280">{{ d.a }}</div><div style="text-align:right;color:#6B7280">{{ d.b }}</div></div>
-              </sc-for>
-            </div>
-          </sc-if>
+          <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;font-size:13px;color:#374151">{{ pp.move.dir.insight }}</div>
+        </div>
+        <div class="pcard" style="margin-top:0;padding:0;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:8px;padding-bottom:13px;border-bottom:1px solid #F1F5F9"><i data-lucide="person-standing" width="14" height="14" style="flex:none;color:var(--color-text-soft)"></i><div class="eyebrow" style="flex:1;min-width:0">{{ pp.move.mq.title }}</div></div>
+          <div>
+            <table class="dtable" style="width:100%">
+              <thead><tr><th></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#A3C9FF"></span>{{ pp.move.na }}</span></th><th class="num" style="text-transform:none;letter-spacing:normal;font-weight:600;color:var(--color-text-soft)"><span style="display:inline-flex;align-items:center;gap:6px;justify-content:flex-end"><span style="width:8px;height:8px;border-radius:50%;corner-shape:round;display:inline-block;flex:none;background:#BCE6A5"></span>{{ pp.move.nb }}</span></th></tr></thead>
+              <tbody><sc-for list="{{ pp.move.mq.rows }}" as="r" hint-placeholder-count="3"><tr><td style="white-space:normal;vertical-align:top">{{ r.label }}</td><td class="num" onClick="{{ r.openA }}" style="cursor:pointer;vertical-align:top" style-hover="background:#F1F5F9"><div style="font-size:12.5px;white-space:nowrap">{{ r.a }}</div><sc-if value="{{ r.sa }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--color-text-soft);white-space:nowrap;font-weight:400">{{ r.sa }}</div></sc-if></td><td class="num" onClick="{{ r.openB }}" style="cursor:pointer;vertical-align:top" style-hover="background:#F1F5F9"><div style="font-size:12.5px;white-space:nowrap">{{ r.b }}</div><sc-if value="{{ r.sb }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--color-text-soft);white-space:nowrap;font-weight:400">{{ r.sb }}</div></sc-if></td></tr></sc-for></tbody>
+            </table>
+          </div>
+          <div style="margin-top:auto;border-top:1px solid #F1F5F9;padding-top:12px;font-size:13px;color:#374151">{{ pp.move.mq.head }}</div>
         </div>
       </div>
     </sc-if>
@@ -573,8 +609,8 @@ class Component extends DCLogic {
     const mx = Math.max(6, Math.ceil((Math.max(...F.diff.map(Math.abs)) + 1) / 6) * 6), bg = gs.filter(g => g.brk || g.lost), occG = g => g.rs.map(r => ({M, r, i: 0}));
     const brkFor = gs.filter(g => g.brk).length, brkAg = gs.filter(g => g.lost).length;
     const mom = LC({n: N, h: 210, min: -mx, max: mx, step: mx / 2, fmt: v => v > 0 ? '+' + v : String(v), series: [{vals: F.diff, c: CA, w: 2}], refs: [0], vlines: pStart.slice(1).map(x => x - .5), xl: pXL,
-      dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? CA : CG, sz: 11, title: (g.brk ? 'Break for · ' : 'Break against · ') + 'Set ' + g.set + ' · ' + g.before, open: W((g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, sub, occG(g))})),
-      title: 'Point difference through the match', head: 'Broke ' + brkFor + (brkFor === 1 ? ' time' : ' times') + ', broken ' + brkAg + (brkAg === 1 ? ' time' : ' times'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W('Breaks', sub, [].concat(...bg.map(occG))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]});
+      dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? '#2563EB' : '#E5484D', sz: 11, title: (g.brk ? 'Break for · ' : 'Break against · ') + 'Set ' + g.set + ' · ' + g.before, open: W((g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, sub, occG(g))})),
+      title: 'Point difference through the match', head: 'Broke ' + brkFor + (brkFor === 1 ? ' time' : ' times') + ', broken ' + brkAg + (brkAg === 1 ? ' time' : ' times'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W('Breaks', sub, [].concat(...bg.map(occG))), legend: [lg('Break for', '#2563EB', 'bar'), lg('Break against', '#E5484D', 'bar')]});
     // winners and errors
     const E = F.end, wA = E[a].W, wB = E[b].W, eA = E[a].E, eB = E[b].E;
     const ended = {title: 'How points ended', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, watch: 'Watch ' + (wA.length + wB.length + eA.length + eB.length), onWatch: W('Winners and errors', sub, [...wA, ...wB, ...eA, ...eB]),
@@ -621,7 +657,7 @@ class Component extends DCLogic {
       dots: gs.map((g, i) => g.lost && spG[i] != null ? {i, v: spG[i], c: CR, sz: 10, title: 'Broken · set ' + g.set + ' · ' + g.before, open: W('Broken · set ' + g.set, sub, F.att.filter(o => o.gi === i))} : null).filter(Boolean),
       title: 'Partner spacing in attack by game', head: lostSp.length ? 'Spacing ' + r1(avg(lostSp)).toFixed(1) + ' m in games they were broken, ' + r1(avg(okSp)).toFixed(1) + ' m in the rest' : 'Average spacing ' + r1(avg(okSp)).toFixed(1) + ' m', src: 'Video tracking',
       watch: 'Watch ' + F.att.length, onWatch: W('Spacing in attack', sub, F.att), legend: [lg('Average spacing', CA, 'line'), lg('Target 3–4 m', BAND, 'bar'), lg('Broken serve', CR, 'bar')]});
-    const NB = [['Under 0.1 s', 0, .1], ['0.1–0.2 s', .1, .2], ['0.2–0.3 s', .2, .3], ['0.3–0.4 s', .3, .4], ['Over 0.4 s', .4, 9]].map(([l, lo, hi], i) => { const xs = F.trans.filter(o => o.v >= lo && o.v < hi); return {label: l, n: xs.length, w: xs.filter(o => o.ok).length, p: pct(xs.filter(o => o.ok).length, xs.length), c: i < 2 ? CA : CG, open: W('Net arrival gap ' + l, sub, xs)}; });
+    const NB = [['Under 0.1 s', 0, .1], ['0.1–0.2 s', .1, .2], ['0.2–0.3 s', .2, .3], ['0.3–0.4 s', .3, .4], ['Over 0.4 s', .4, 9]].map(([l, lo, hi], i) => { const xs = F.trans.filter(o => o.v >= lo && o.v < hi); return {label: l, n: xs.length, w: xs.filter(o => o.ok).length, p: pct(xs.filter(o => o.ok).length, xs.length), c: CA, open: W('Net arrival gap ' + l, sub, xs)}; });
     const early = F.trans.filter(o => o.v < .2), late = F.trans.filter(o => o.v >= .2);
     const gapsL = F.gaps.slice().sort((x, y) => y.v - x.v).slice(0, 10).sort((x, y) => x.r.t0 - y.r.t0);
     const ptL = r => r.golden ? '40–40' : (PTS[r.pts.A] || '40') + '–' + (PTS[r.pts.B] || '40');
@@ -715,9 +751,10 @@ class Component extends DCLogic {
     // Movement detail cards (Top speed · Player load by set · Movement direction) for the Movement standalone page
     const _topS = SR.map(k => Math.max(PA.top[k], PB.top[k])), _topMax = Math.max(..._topS), _topSame = _topS.length > 1 && _topS.every(v => r1(v) === r1(_topS[0])), _topA = r1(Math.max(...PA.top)), _topB = r1(Math.max(...PB.top));
     const _bi = dirT.findIndex(r => r[0] === 'Backward'), _back = dirT[_bi >= 0 ? _bi : 0], _dOpen = !!this.state.moveDirOpen;
+    const emph = (va, vb, dir) => va === vb ? {aWt: '600', aCol: '#111827', bWt: '600', bCol: '#111827'} : ((dir === 'min' ? va < vb : va > vb) ? {aWt: '700', aCol: '#111827', bWt: '500', bCol: '#9CA3AF'} : {aWt: '500', aCol: '#9CA3AF', bWt: '700', bCol: '#111827'});
     const moveDetail = {na, nb,
-      top: {a: _topA, b: _topB, sets: SR.map(k => ({set: 'Set ' + (k + 1), a: r1(PA.top[k]) + ' km/h', b: r1(PB.top[k]) + ' km/h'})), note: _topA === _topB ? 'Matched top speed across the match.' : ((_topA > _topB ? na : nb) + ' reached the higher peak.')},
-      load: SR.map(k => ({set: 'Set ' + (k + 1), a: Math.round(PA.load[k]), b: Math.round(PB.load[k])})),
+      top: {a: _topA, b: _topB, sets: SR.map(k => { const va = r1(PA.top[k]), vb = r1(PB.top[k]); return {set: 'Set ' + (k + 1), a: va + ' km/h', b: vb + ' km/h', ...emph(va, vb, 'max')}; }), note: _topA === _topB ? 'Matched top speed across the match.' : ((_topA > _topB ? na : nb) + ' reached the higher peak.')},
+      load: SR.map(k => { const va = Math.round(PA.load[k]), vb = Math.round(PB.load[k]); return {set: 'Set ' + (k + 1), a: va, b: vb, ...emph(va, vb, 'max')}; }),
       loadInfo: W('How player load is calculated', sub, this.all(M)),
       dir: {name: _back[0] + ' movement', insight: (_back[2] > _back[1] ? nb : na) + ' moved backwards more', a: _back[1], b: _back[2], open: _dOpen, chevT: _dOpen ? 'rotate(90deg)' : 'none', toggle: () => this.setState({moveDirOpen: !_dOpen}), all: dirT.map(r => ({label: r[0], a: r[1] + ' %', b: r[2] + ' %'}))}};
     // biomechanics
@@ -733,28 +770,31 @@ class Component extends DCLogic {
       title: 'Overhead contact height (m)', head: na + "'s contact point " + (drop >= 0 ? 'dropped ' : 'rose ') + Math.abs(drop) + ' cm from set 1 to set ' + nS, src: 'Pose tracking', watch: 'Watch ' + (PA.oh.length + PB.oh.length), onWatch: W('Overheads', sub, [...PA.oh, ...PB.oh]), legend: [lg(na + ' overhead', CA, 'bar'), lg(nb + ' overhead', CB, 'bar'), lg('Set average', CG, 'line')]});
     const spP = (P, k) => { const l = bySet(P.split, k); return pct(l.filter(o => o.ok).length, l.length); }, stP = (P, k) => Math.round(avg(bySet(P.step, k).map(o => o.v)));
     const wSet = P => SR.reduce((bi, k) => spP(P, k) < spP(P, bi) ? k : bi, 0);
-    const bioT = [
-      {title: 'Split-step on opponent contact', src: 'Pose tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Lowest rate: ' + nb + ' in set ' + (wSet(PB) + 1) + ' (' + spP(PB, wSet(PB)) + ' %)', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: spP(PA, k) + ' %', b: spP(PB, k) + ' %', bars: true, aw: spP(PA, k), bw: spP(PB, k), openA: W(na + ' · no split-step · set ' + (k + 1), sub, bySet(PA.split, k).filter(o => !o.ok)), openB: W(nb + ' · no split-step · set ' + (k + 1), sub, bySet(PB.split, k).filter(o => !o.ok))}))},
-      {title: 'First step after opponent contact', src: 'Video tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: 'Median movement start from the tracked rallies', rows: SR.map(k => ({label: 'Set ' + (k + 1), a: stP(PA, k) + ' ms', b: stP(PB, k) + ' ms', bars: true, aw: stP(PA, k) / 9, bw: stP(PB, k) / 9, openA: W(na + ' · slowest starts · set ' + (k + 1), sub, bySet(PA.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12)), openB: W(nb + ' · slowest starts · set ' + (k + 1), sub, bySet(PB.step, k).slice().sort((x, y) => y.v - x.v).slice(0, 12))}))},
-      {title: 'Movement quality', src: 'Pose tracking', ca: na, cb: nb, cac: '#A3C9FF', cbc: CB, head: (PA.mq.land > PB.mq.land ? na : nb) + ' lands less evenly after overheads', rows: [
+    const splitChart = {title: 'Split-step on opponent contact', src: 'Pose tracking', na, nb,
+      head: 'Lowest rate: ' + nb + ' in set ' + (wSet(PB) + 1) + ' (' + spP(PB, wSet(PB)) + ' %)',
+      cards: SR.map(k => ({label: 'Set ' + (k + 1), a: spP(PA, k) + ' %', b: spP(PB, k) + ' %', ah: Math.round(spP(PA, k) * .82), bh: Math.round(spP(PB, k) * .82), open: W('No split-step · set ' + (k + 1), sub, [...bySet(PA.split, k).filter(o => !o.ok), ...bySet(PB.split, k).filter(o => !o.ok)])}))};
+    const firstStep = {title: 'First step after opponent contact', icon: 'timer', na, nb, note: 'Median movement start from the tracked rallies',
+      sets: SR.map(k => { const va = stP(PA, k), vb = stP(PB, k); return {set: 'Set ' + (k + 1), a: va + ' ms', b: vb + ' ms', ...emph(va, vb, 'min')}; })};
+    const moveQual = {title: 'Movement quality', src: 'Pose tracking', na, nb, head: (PA.mq.land > PB.mq.land ? na : nb) + ' lands less evenly after overheads', rows: [
         row('Knee bend at the volley', PA.mq.knee + '°', PB.mq.knee + '°', sva(a, x => x.mq.knee, v => Math.round(v) + '°'), sva(b, x => x.mq.knee, v => Math.round(v) + '°'), W(na + ' · volleys', sub, PA.shots.Volley || []), W(nb + ' · volleys', sub, PB.shots.Volley || [])),
         row('Trunk rotation on the smash', PA.mq.trunk + '°', PB.mq.trunk + '°', sva(a, x => x.mq.trunk, v => Math.round(v) + '°'), sva(b, x => x.mq.trunk, v => Math.round(v) + '°'), W(na + ' · smashes', sub, PA.shots.Smash || []), W(nb + ' · smashes', sub, PB.shots.Smash || [])),
-        row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]}];
+        row('Landing imbalance after overheads', PA.mq.land + ' %', PB.mq.land + ' %', sva(a, x => x.mq.land, v => Math.round(v) + ' %'), sva(b, x => x.mq.land, v => Math.round(v) + ' %'), W(na + ' · overheads', sub, PA.jumps), W(nb + ' · overheads', sub, PB.jumps))]};
+    moveDetail.mq = moveQual;
     const won = M.winner === 'A', rl = F.N ? r1(avg(M.rallies.map(r => r.shots.length))) : 0, dur = Math.round(M.secs / 60);
     const evtFull = mlab(M), ci = evtFull.indexOf(' · '), evtTitle = ci >= 0 ? evtFull.slice(0, ci) : evtFull, evtSub = ci >= 0 ? evtFull.slice(ci + 3) : '';
     const sa = sets.filter(x => x[0] > x[1]).length, sb = sets.filter(x => x[1] > x[0]).length;
-    return {date: M.date, event: evtFull, eventTitle: evtTitle, eventSub: evtSub, res: (won ? 'Win' : 'Loss') + ' · ' + sa + '–' + sb, resBg: won ? '#111827' : '#9CA3AF', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
-      scoreRows: [{name: M.A.name, dot: CA, nameW: won ? 700 : 600, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 500, c: x[0] > x[1] ? '#111827' : '#9CA3AF'}))}, {name: M.B.name, dot: '#D9453B', nameW: won ? 600 : 700, sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 500, c: x[1] > x[0] ? '#111827' : '#9CA3AF'}))}],
-      meta: [{label: 'Duration', icon: 'clock', v: Math.floor(dur / 60) + ' h ' + String(dur % 60).padStart(2, '0')}, {label: 'Points won', icon: 'target', v: F.won.length + ' of ' + N}, {label: 'Avg rally', icon: 'racket', v: rl + ' shots'}],
+    return {date: M.date, event: evtFull, eventTitle: evtTitle, eventSub: evtSub, res: (won ? 'Win' : 'Loss') + ' · ' + sa + '–' + sb, resBg: won ? '#DCFCE7' : '#FFE7E6', resTx: won ? '#15803D' : '#FF3E33', watchMatch: W(M.A.name + ' vs ' + M.B.name, sub, this.all(M)),
+      scoreRows: [{name: M.A.name, mark: won ? '🏆' : 'L', nameW: won ? 600 : 400, sets: sets.map(x => ({v: x[0], w: x[0] > x[1] ? 700 : 400, c: '#111827'}))}, {name: M.B.name, mark: won ? 'L' : '🏆', nameW: won ? 400 : 600, sets: sets.map(x => ({v: x[1], w: x[1] > x[0] ? 700 : 400, c: '#111827'}))}],
+      meta: [{label: 'Duration', v: '' + Math.floor(dur / 60), u: 'h', v2: String(dur % 60).padStart(2, '0')}, {label: 'Points won', v: '' + F.won.length, u: 'of ' + N, v2: ''}, {label: 'Avg rally', v: '' + rl, u: 'shots', v2: ''}],
       mom, ended, shotCards, shotSel, shotSeg, ueChart, errSeg, errGames, errHead, distSeg, distGames, distHead, press, pressHead: F.gold.length ? 'Won ' + gW + ' of ' + F.gold.length + ' golden points' : 'Break points converted: ' + F.bpC.filter(o => o.ok).length + ' of ' + F.bpC.length,
       coK, phaseSegs: this.seg(['Attack', 'Defence'], ph, 'phase'), court: {heat, a: pos(ma, na), b: pos(mb, nb), head: courtHead}, spChart, net: NB,
       netHead: 'Arriving within 0.2 s of each other: ' + pct(early.filter(o => o.ok).length, early.length) + ' % of points won; later, ' + pct(late.filter(o => o.ok).length, late.length) + ' %',
       mid: {total: F.mid.length, onWatch: W('Middle balls', sub, F.mid), na, nb, ta: midA.length, tb: midB.length, tn: midN.length, pa: pct(midA.length, F.mid.length), pb: pct(midB.length, F.mid.length),
         head: (midA.length >= midB.length ? na : nb) + ' took most middle balls; ' + midN.length + ' fell between them',
         rows: [{name: na + ' took it', l: midA, c: CA}, {name: nb + ' took it', l: midB, c: CB}, {name: 'Neither', l: midN, c: CR}].map(x => ({name: x.name, w: x.l.filter(o => o.ok).length, n: x.l.length, v: pct(x.l.filter(o => o.ok).length, x.l.length), c: x.c, open: W('Middle balls · ' + x.name, sub, x.l)}))},
-      gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'Won point' : 'Lost point', oc: o.ok ? '#111827' : CR, open: W('Gap over 4.5 m', sub, [o])})),
+      gaps: gapsL.map(o => ({set: 'Set ' + o.r.set + ' · ' + o.r.gamesBefore.A + '–' + o.r.gamesBefore.B, pt: ptL(o.r), phase: o.ph, gap: r1(o.v).toFixed(1), out: o.ok ? 'check' : 'x', oc: o.ok ? '#16A34A' : '#E5484D', open: W('Gap over 4.5 m', sub, [o])})),
       gapHead: 'Lost ' + F.gaps.filter(o => !o.ok).length + ' of ' + F.gaps.length + ' points when the gap opened', onGaps: W('Gaps over 4.5 m', sub, F.gaps),
-      phys, hrChartSolo, zonesSolo, moveDetail, hrChart, distChart, zones, physT2, shotT, chChart, bioT, na, nb};
+      phys, hrChartSolo, zonesSolo, moveDetail, hrChart, distChart, zones, physT2, shotT, chChart, splitChart, firstStep, moveQual, na, nb};
   }
 
   // ---------- season (pair / player) ----------
@@ -860,8 +900,8 @@ class Component extends DCLogic {
       {label: 'Golden points won', cells: Fs.map(F => fr(F.gold, 'golden points', F.M))}]});
     const mom = Fs.map(F => { const M = F.M, mx = Math.max(6, Math.ceil((Math.max(...F.diff.map(Math.abs)) + 1) / 6) * 6), bg = F.games.filter(g => g.brk || g.lost);
       return LC({n: F.N, h: 150, min: -mx, max: mx, step: mx / 2, fmt: v => v > 0 ? '+' + v : String(v), series: [{vals: F.diff, c: DRAWC[M.draw]}], refs: [0],
-        dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? CA : CG, sz: 10, title: (g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, open: W(M.draw + ' · ' + (g.brk ? 'break for' : 'break against'), sub, g.rs.map(r => ({M, r, i: 0})))})),
-        title: M.draw + ' · ' + M.A.name, head: (M.winner === 'A' ? 'Won ' : 'Lost ') + M.score.replace(/-/g, '–'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W(M.draw + ' · breaks', sub, [].concat(...bg.map(g => g.rs.map(r => ({M, r, i: 0}))))), legend: [lg('Break for', CA, 'bar'), lg('Break against', CG, 'bar')]}); });
+        dots: bg.map(g => ({i: g.idx, v: F.diff[g.idx], c: g.brk ? '#2563EB' : '#E5484D', sz: 10, title: (g.brk ? 'Break for' : 'Break against') + ' · set ' + g.set, open: W(M.draw + ' · ' + (g.brk ? 'break for' : 'break against'), sub, g.rs.map(r => ({M, r, i: 0})))})),
+        title: M.draw + ' · ' + M.A.name, head: (M.winner === 'A' ? 'Won ' : 'Lost ') + M.score.replace(/-/g, '–'), watch: 'Watch ' + bg.length + ' breaks', onWatch: W(M.draw + ' · breaks', sub, [].concat(...bg.map(g => g.rs.map(r => ({M, r, i: 0}))))), legend: [lg('Break for', '#2563EB', 'bar'), lg('Break against', '#E5484D', 'bar')]}); });
     const rows = []; Fs.forEach(F => F.A.forEach(p => { const P = F.p[p], M = F.M; rows.push({label: MI.PLAYERS[p].name, sub: M.draw + ' · ' + M.A.name, cells: [cell(fmt(P.dist) + ' m', '', nm(p) + ' · distance', this.all(M)), cell(P.sprint.length, '', nm(p) + ' · sprints', P.sprint), cell(P.hrAvg + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.hrPeak + ' bpm', '', nm(p) + ' · heart rate', this.all(M)), cell(P.jumps.length, '', nm(p) + ' · overheads', P.jumps)]}); }));
     const top = rows.slice().sort((x, y) => parseInt(y.cells[0].v.replace(/,/g, '')) - parseInt(x.cells[0].v.replace(/,/g, '')))[0];
     const squad = this.tbl({title: 'Mumbai players', src: 'GPS vest · chest strap', head: top ? top.label + ' covered the most ground (' + top.cells[0].v + ')' : '', first: 'Player', cols: ['Distance', 'Sprints', 'Avg HR', 'Peak HR', 'Overheads'].map(l => ({label: l})), rows});
@@ -897,7 +937,7 @@ class Component extends DCLogic {
   componentDidUpdate(prev) { if (prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind) { if (this.state.opp !== 'all' || this.state.acwr) this.setState({opp: 'all', acwr: null}); } if ((prev.sid !== this.props.sid || prev.ws !== this.props.ws || prev.kind !== this.props.kind || prev.tab !== this.props.tab) && this.state.physPage) this.setState({physPage: null}); }
 
   renderVals() {
-    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, isPhys: false, pp: {icon: '', title: '', sub: '', insight: '', toggle: [], hasToggle: false, hasChart: false, chart: null, zones: [], hasMove: false, move: null, rows: [], back: null}, lm: {scoreRows: [], meta: [], shotCards: [], shotSel: {rows: []}, shotSeg: [], errSeg: [], errGames: [], errHead: '', distSeg: [], distGames: [], distHead: '', press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], bioT: [], phys: {cards: [], groups: [], toggle: [], onWatch: null}}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
+    const off = {isLM: false, isST: false, isTL: false, isTS: false, isEmpty: false, isPhys: false, pp: {icon: '', title: '', sub: '', insight: '', toggle: [], hasToggle: false, hasChart: false, chart: null, zones: [], hasMove: false, move: null, rows: [], back: null}, lm: {scoreRows: [], meta: [], shotCards: [], shotSel: {rows: []}, shotSeg: [], errSeg: [], errGames: [], errHead: '', distSeg: [], distGames: [], distHead: '', press: [], coK: [], phaseSegs: [], court: {heat: [], a: {}, b: {}}, net: [], mid: {rows: []}, gaps: [], splitChart: {title: '', src: '', head: '', na: '', nb: '', cards: []}, firstStep: {title: '', icon: '', na: '', nb: '', note: '', sets: []}, moveQual: {title: '', src: '', head: '', na: '', nb: '', rows: []}, phys: {cards: [], groups: [], toggle: [], onWatch: null}}, st: {periodSegs: [], oppItems: [], err: [], coord: [], acwrSegs: [], phys: [], bio: []}, tl: {ms: [], mom: [], pbm: {cols: [], rows: []}, squad: {cols: [], rows: []}}, ts: {lineups: {cols: [], rows: []}, squad: {cols: [], rows: []}}};
     if (!window.MI) return off;
     const S = this.subject(), tab = this.props.tab || 'Last match', team = S.kind === 'team';
     if (!S.ms.length) return {...off, isEmpty: true};
