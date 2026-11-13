@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div ref="{{ rootRef }}" style="display:flex;flex-direction:column;gap:16px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;font-size:13.5px;line-height:1.4;font-variant-numeric:tabular-nums">
+  <div style="display:grid;grid-template-columns:184px minmax(0,1fr);gap:20px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:12px;position:relative;z-index:45">
+      <sc-if value="{{ showPl }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ plSegs }}" as="s" hint-placeholder-count="2"><button style="flex:1;border:0;height:28px;padding:0 10px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch"><sc-for list="{{ filters }}" as="f" hint-placeholder-count="2"><div style="position:relative"><button class="dd-btn" style="font-family:inherit;white-space:nowrap;width:100%;justify-content:flex-start;gap:6px" style-hover="background:#F9FAFB" onClick="{{ f.toggle }}"><span style="color:#6B7280;font-weight:500">{{ f.label }}</span>{{ f.value }}<i data-lucide="chevron-down" style="flex:none;margin-left:auto"></i></button><sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;left:0;min-width:200px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:6px;display:flex;flex-direction:column;gap:2px;z-index:46"><sc-for list="{{ f.items }}" as="o" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;font-size:13px;font-weight:{{ o.fw }};cursor:pointer;white-space:nowrap;background:{{ o.bg }}" style-hover="background:#F9FAFB" onClick="{{ o.pick }}">{{ o.label }}</div></sc-for></div></sc-if></div></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:2px;background:#F8FAFC;border:1px solid #EDF1F6;border-radius:14px;padding:8px">
+        <sc-for list="{{ navS }}" as="n" hint-placeholder-count="7"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
+        <div style="height:1px;background:#E5E7EB;margin:8px 4px"></div>
+        <sc-for list="{{ navX }}" as="n" hint-placeholder-count="2"><button style="text-align:left;border:0;height:34px;padding:0 12px;border-radius:9px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;background:{{ n.bg }};color:{{ n.color }};font-weight:{{ n.fw }};box-shadow:{{ n.shadow }}" onClick="{{ n.pick }}">{{ n.label }}</button></sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;min-height:38px">
+        <div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;white-space:nowrap">{{ hd.title }}</div>
+        <div style="display:flex;align-items:flex-end;gap:28px">
+          <sc-if value="{{ isFat }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;background:rgba(28,63,202,.08);border-radius:10px;padding:3px;gap:2px"><sc-for list="{{ ovSegs }}" as="s" hint-placeholder-count="4"><button style="border:0;height:28px;padding:0 12px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></div></sc-if>
+          <sc-for list="{{ hd.stats }}" as="x" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px"><div style="font-size:20px;font-weight:700;white-space:nowrap">{{ x.v }} <span style="font-size:13px;font-weight:500;color:#6B7280">{{ x.u }}</span></div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ x.l }}</div></div></sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="position:relative;aspect-ratio:16/9;background:#0B1322;border-radius:12px;overflow:hidden">
+            <canvas ref="{{ heroRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+            <div style="position:absolute;top:12px;right:12px;display:inline-flex;background:rgba(11,19,34,.72);border-radius:9px;padding:3px;gap:2px"><sc-for list="{{ camSegs }}" as="c" hint-placeholder-count="3"><button style="border:0;height:26px;padding:0 10px;border-radius:7px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;background:{{ c.bg }};color:{{ c.color }}" onClick="{{ c.pick }}">{{ c.label }}</button></sc-for></div>
+            <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;align-items:center"><sc-for list="{{ tags }}" as="g" hint-placeholder-count="0"><div style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:8px;background:rgba(11,19,34,.72);color:#FFFFFF;font-size:12px;font-weight:600;white-space:nowrap"><div style="width:9px;height:9px;border-radius:50%;background:{{ g.sw }};display:{{ g.swd }}"></div>{{ g.label }}</div></sc-for></div>
+            <sc-if value="{{ hasGrp }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:4px;height:30px;padding:0 3px 0 10px;border-radius:9px;background:rgba(11,19,34,.78);color:#FFFFFF;font-size:12px;font-weight:600;white-space:nowrap">
+                <span>{{ grp.label }}</span><span style="color:#A3C9FF;margin-left:6px">{{ grp.pos }}</span><span style="color:#FFFFFF;margin:0 6px 0 4px">{{ grp.v }}</span>
+                <button class="dp-arrow" style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.prev }}"><i data-lucide="chevron-left"></i></button>
+                <button class="dp-arrow" style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.next }}"><i data-lucide="chevron-right"></i></button>
+                <button style="width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#FFFFFF;cursor:pointer;display:grid;place-items:center" style-hover="background:rgba(255,255,255,.12)" onClick="{{ grp.close }}"><i data-lucide="x" style="width:13px;height:13px"></i></button>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ togglePlay }}"><sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></sc-if></button>
+            <div style="position:relative;flex:1;display:flex;gap:3px;height:34px">
+              <sc-for list="{{ phases }}" as="p" hint-placeholder-count="5"><button style="flex:{{ p.flex }};min-width:0;border:0;border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;background:{{ p.bg }};color:{{ p.color }};font-weight:{{ p.fw }};box-shadow:{{ p.shadow }}" onClick="{{ p.pick }}">{{ p.label }}</button></sc-for>
+              <div ref="{{ headRef }}" style="position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#1C3FCA;border-radius:1px;pointer-events:none;left:51%"></div>
+            </div>
+          </div>
+          <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}"><div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div class="eyebrow">Effect on the shot</div>
+            <table class="dtable" style="width:100%"><tbody><sc-for list="{{ ef }}" as="r" hint-placeholder-count="3"><tr class="grp"><td colspan="4">{{ r.metric }}</td></tr><sc-for list="{{ r.sides }}" as="d" hint-placeholder-count="2"><tr class="prow" style="background:{{ d.bg }}" onClick="{{ d.open }}"><td>{{ d.label }}</td><td class="num" style="font-weight:700">{{ d.v }}</td><td class="num tdet">{{ d.n }}</td><td class="chev"><i data-lucide="chevron-right"></i></td></tr></sc-for></sc-for></tbody></table>
+          </div></sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+          <sc-if value="{{ hasPanels }}" hint-placeholder-val="{{ true }}">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Weight transfer</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ wt.norm }}</div></div>
+              <div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:22px;font-weight:700;white-space:nowrap;color:{{ wt.c }}">{{ wt.v }}</div><div style="font-size:12.5px;color:#6B7280;white-space:nowrap">{{ wt.sub }}</div></div>
+              <svg viewBox="0 0 300 112" style="width:100%;height:auto;display:block">
+                <line x1="38" y1="10" x2="296" y2="10" stroke="#F1F5F9"></line>
+                <line x1="38" y1="98" x2="296" y2="98" stroke="#E5E7EB"></line>
+                <text x="0" y="13" font-size="10" fill="#6B7280">Front</text>
+                <text x="0" y="101" font-size="10" fill="#6B7280">Back</text>
+                <rect x="{{ wt.bx }}" y="{{ wt.by }}" width="10" height="{{ wt.bh }}" rx="3" fill="#E5E7EB"></rect>
+                <line x1="{{ wt.cx }}" y1="4" x2="{{ wt.cx }}" y2="98" stroke="#9CA3AF" stroke-dasharray="3 3"></line>
+                <sc-for list="{{ wt.lines }}" as="l" hint-placeholder-count="1"><polyline points="{{ l.pts }}" fill="none" stroke="{{ l.c }}" stroke-width="2" stroke-linejoin="round"></polyline><circle cx="{{ wt.cx }}" cy="{{ l.cy }}" r="4.5" fill="{{ l.c }}" stroke="#FFFFFF" stroke-width="2"></circle></sc-for>
+                <text x="{{ wt.cx }}" y="110" font-size="10" fill="#6B7280" text-anchor="middle">Contact</text>
+              </svg>
+            </div>
+
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px"><div class="eyebrow">Kinetic chain</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">{{ ch.sub }}</div></div>
+              <sc-for list="{{ ch.rows }}" as="r" hint-placeholder-count="5">
+                <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 64px;align-items:center;gap:8px;height:34px">
+                  <div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:12.5px;font-weight:600;white-space:nowrap;color:{{ r.lc }}">{{ r.label }}</div><div style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:{{ r.nc }}">{{ r.note }}</div></div>
+                  <div style="position:relative;height:100%">
+                    <div style="position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:#F1F5F9"></div>
+                    <div style="position:absolute;top:2px;bottom:2px;width:1px;background:#D1D5DB;left:{{ ch.zero }}%"></div>
+                    <sc-for list="{{ r.dots }}" as="d" hint-placeholder-count="1"><div style="position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;box-shadow:0 0 0 2px #FFFFFF;left:{{ d.l }}%;background:{{ d.c }}"></div></sc-for>
+                  </div>
+                  <div style="font-size:12px;text-align:right;white-space:nowrap;color:{{ r.lc }}">{{ r.ms }}</div>
+                </div>
+              </sc-for>
+              <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 64px;gap:8px"><div></div><div style="position:relative;height:14px"><div style="position:absolute;transform:translateX(-50%);font-size:10.5px;color:#6B7280;white-space:nowrap;left:{{ ch.zero }}%">Contact</div></div><div></div></div>
+            </div>
+
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 8px;display:flex;flex-direction:column">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-bottom:4px">{{ ka.title }}</div>
+              <sc-for list="{{ ka.rows }}" as="k" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:5px;padding:8px 0;border-top:1px solid #F1F5F9">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ k.label }}</div><div style="font-size:15px;font-weight:700;white-space:nowrap;color:{{ k.c }}">{{ k.v }}</div></div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center">
+                    <div style="position:relative;height:6px;border-radius:3px;background:#F1F5F9"><div style="position:absolute;top:0;bottom:0;border-radius:3px;background:#D1D5DB;left:{{ k.bl }}%;width:{{ k.bw }}%"></div><div style="position:absolute;top:-3px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;left:{{ k.ml }}%;background:{{ k.c }}"></div></div>
+                    <div style="font-size:11.5px;color:#6B7280;white-space:nowrap">{{ k.norm }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
+            <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+              <div class="eyebrow">{{ ls.eyebrow }}</div>
+              <div style="font-size:15px;font-weight:600">{{ ls.match }}</div>
+              <div style="font-size:12.5px;color:#6B7280">{{ ls.date }}</div>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-top:6px"><div style="font-size:22px;font-weight:700;color:{{ ls.c }}">{{ ls.v }}</div><div style="font-size:12.5px;color:#6B7280">{{ ls.norm }}</div></div>
+              <div style="position:relative;height:6px;border-radius:3px;background:#F1F5F9"><div style="position:absolute;top:0;bottom:0;border-radius:3px;background:#D1D5DB;left:{{ ls.bl }}%;width:{{ ls.bw }}%"></div><div style="position:absolute;top:-3px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;left:{{ ls.ml }}%;background:{{ ls.c }}"></div></div>
+              <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-top:10px">Strokes behind it</div>
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ ls.rows }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ r.bg }}" onClick="{{ r.pick }}"><div style="font-size:13px;font-weight:600">{{ r.label }}</div><div style="font-size:12.5px;color:#4B5563;white-space:nowrap">{{ r.n }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ isStroke }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;align-items:start">
+          <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Effect on the body</div><div style="font-size:12px;color:#6B7280;white-space:nowrap">Own range 85–115</div></div>
+            <div style="display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start">
+              <svg viewBox="0 0 160 300" style="width:100%;height:auto;display:block">
+                <circle cx="80" cy="27" r="15" fill="#E5E7EB"></circle>
+                <rect x="74" y="40" width="12" height="12" fill="#E5E7EB"></rect>
+                <rect x="55" y="50" width="50" height="92" rx="18" fill="#E5E7EB"></rect>
+                <polyline points="57,62 40,112 33,164" fill="none" stroke="#E5E7EB" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polyline points="103,62 120,112 127,164" fill="none" stroke="#E5E7EB" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polyline points="68,136 66,206 63,284" fill="none" stroke="#E5E7EB" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polyline points="92,136 94,206 97,284" fill="none" stroke="#E5E7EB" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <sc-for list="{{ bm.shapes }}" as="s" hint-placeholder-count="0"><ellipse cx="{{ s.cx }}" cy="{{ s.cy }}" rx="{{ s.rx }}" ry="{{ s.ry }}" fill="{{ s.fill }}" stroke="{{ s.stroke }}" stroke-width="{{ s.sw }}" style="cursor:pointer" onClick="{{ s.pick }}"></ellipse></sc-for>
+              </svg>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <sc-for list="{{ bm.rows }}" as="r" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;background:{{ r.bg }}" onClick="{{ r.pick }}"><div style="display:flex;align-items:center;gap:7px;min-width:0"><div style="width:9px;height:9px;border-radius:3px;flex:none;background:{{ r.sw }};box-shadow:inset 0 0 0 1px {{ r.swb }}"></div><div style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</div></div><div style="font-size:12.5px;font-weight:700;color:{{ r.c }}">{{ r.v }}</div></div></sc-for>
+              </div>
+            </div>
+            <sc-if value="{{ bm.hasSel }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;border-top:1px solid #F1F5F9;padding-top:8px">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;margin-bottom:2px">{{ bm.selL }}</div>
+                <sc-for list="{{ bm.strokes }}" as="x" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:10px;align-items:center;padding:7px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F9FAFB" onClick="{{ x.pick }}"><div style="font-size:13px;font-weight:600;white-space:nowrap">{{ x.label }}</div><div style="font-size:12px;white-space:nowrap;color:{{ x.c }}">{{ x.v }}</div><div class="chev" style="display:grid;place-items:center"><i data-lucide="chevron-right"></i></div></div></sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="eyebrow">Clips</div><div style="font-size:12px;color:#6B7280">Synced at contact</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ clips }}" as="c" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <div style="position:relative;aspect-ratio:16/9;background:#0B1322;border-radius:10px;overflow:hidden"><canvas ref="{{ c.ref }}" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas><div style="position:absolute;top:10px;left:10px;height:24px;padding:0 9px;border-radius:7px;display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;color:#FFFFFF;background:rgba(11,19,34,.72)">{{ c.tag }}</div></div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.label }}</div><div style="font-size:14px;font-weight:700;white-space:nowrap">{{ c.v }}</div></div>
+                <div style="font-size:12px;color:#6B7280">{{ c.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button style="width:34px;height:34px;border-radius:10px;border:0;background:#1C3FCA;color:#FFFFFF;display:grid;place-items:center;cursor:pointer;flex:none" onClick="{{ toggleClip }}"><sc-if value="{{ cplay }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg></sc-if><sc-if value="{{ cpaused }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></sc-if></button>
+            <div style="position:relative;flex:1;height:34px;cursor:pointer" onClick="{{ clipSeek }}">
+              <div style="position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:#E5E7EB"></div>
+              <div style="position:absolute;top:6px;bottom:6px;width:2px;margin-left:-1px;background:#9CA3AF;left:51%"></div>
+              <div style="position:absolute;bottom:-12px;left:51%;transform:translateX(-50%);font-size:10.5px;color:#6B7280;white-space:nowrap">Contact</div>
+              <div ref="{{ cheadRef }}" style="position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#1C3FCA;box-shadow:0 0 0 2px #FFFFFF;left:51%"></div>
+            </div>
+            <button onClick="{{ clipContact }}" class="btn">Contact</button>
+          </div>
+        </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLoad }}" hint-placeholder-val="{{ false }}">
+        <div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 12px">
+          <div style="display:grid;column-gap:18px;row-gap:10px;align-items:center;grid-template-columns:{{ ld.cols }}">
+            <div class="eyebrow">Load per match</div>
+            <sc-for list="{{ ld.heads }}" as="hn" hint-placeholder-count="2"><div style="font-size:13px;font-weight:600">{{ hn }}</div></sc-for>
+            <sc-for list="{{ ld.rows }}" as="row" hint-placeholder-count="5">
+              <div style="font-size:12.5px;font-weight:600;color:#4B5563">{{ row.label }}</div>
+              <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="2">
+                <div style="position:relative;height:56px;display:flex;align-items:stretch;border-bottom:1px solid #E5E7EB">
+                  <div style="position:absolute;left:0;right:0;border-top:1px dashed #D1D5DB;border-bottom:1px dashed #D1D5DB;background:#F6F8FA;bottom:{{ ld.bandB }}%;height:{{ ld.bandH }}%"></div>
+                  <sc-for list="{{ cell.groups }}" as="g" hint-placeholder-count="6"><div style="position:relative;display:flex;gap:2px;align-items:flex-end;justify-content:center;padding:0 2px;border-radius:4px 4px 0 0;min-width:0;flex:{{ g.f }};background:{{ g.bg }}"><sc-for list="{{ g.bars }}" as="b" hint-placeholder-count="3"><div title="{{ b.t }}" style="flex:1;max-width:11px;border-radius:2px 2px 0 0;cursor:pointer;outline-offset:1px;height:{{ b.h }}%;background:{{ b.c }};outline:{{ b.ol }}" onClick="{{ b.pick }}"></div></sc-for></div></sc-for>
+                </div>
+              </sc-for>
+            </sc-for>
+            <div></div>
+            <sc-for list="{{ ld.axes }}" as="ax" hint-placeholder-count="2"><div style="display:flex;align-items:flex-start;margin-top:-4px"><sc-for list="{{ ax }}" as="g" hint-placeholder-count="6"><div style="display:flex;flex-direction:column;align-items:center;min-width:0;flex:{{ g.f }}"><div style="font-size:10.5px;font-weight:600;color:#4B5563;white-space:nowrap">{{ g.l1 }}</div><div style="font-size:10px;color:#6B7280;white-space:nowrap">{{ g.l2 }}</div></div></sc-for></div></sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;pa&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Austin Varghese&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pb&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Manav Sreekumar&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;init&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Varghese Bandeja&quot;,&quot;Varghese Smash&quot;,&quot;Sreekumar Volley&quot;,&quot;Body load&quot;,&quot;Fatigue&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+const D = Math.PI / 180;
+const PH = ['Preparation', 'Load', 'Contact', 'Follow-through', 'Recovery'];
+const KT = [.09, .3, .51, .71, .92], BD = [0, .19, .41, .61, .82, 1];
+const STK = ['Bandeja', 'Víbora', 'Smash', 'Bajada', 'Volley', 'Serve', 'Lateral movement'];
+const RG = [['sh', 'Shoulder'], ['el', 'Elbow'], ['lb', 'Lower back'], ['kn', 'Knee'], ['ca', 'Calf / Achilles']];
+const NETX = {Bandeja: 5.5, 'Víbora': 5.5, Smash: 4.5, Bajada: 8, Volley: 2.4, Serve: 7.6, 'Lateral movement': 3};
+const WARN = '#E58600', WTXT = '#B45309';
+const DEF = {cx: .5, kF: 20, kB: 20, yp: -30, sep: 0, lean: 0, side: 0, vg: 0, fzF: 0, fzB: 0, re: 40, raz: 20, rf: 60, rw: 10, rbh: [1, 0, .5], le: 30, laz: 10, lf: 60, ff: [.38, .14], bf: [-.38, -.12]};
+const build = tpl => { const out = []; let prev = {...DEF}; tpl.forEach(k => { prev = {...prev, ...k}; out.push(prev); }); return out; };
+const over = (P, o, add) => P.map((p, i) => { const q = o && o[i]; if (!q) return p; const r = {...p}; Object.keys(q).forEach(k => { r[k] = add ? r[k] + q[k] : q[k]; }); return r; });
+const OVH = build([
+  {cx: .42, kF: 14, kB: 22, yp: -78, sep: 8, lean: 4, side: -4, re: 92, raz: 72, rf: 105, rw: 35, rbh: [-1, 0, .4], le: 140, laz: -5, lf: 20},
+  {cx: .24, kF: 16, kB: 40, yp: -86, sep: 26, lean: 14, side: -10, re: 104, raz: 80, rf: 122, rw: 55, rbh: [-1, 0, .2], le: 158, laz: 0, lf: 10},
+  {cx: .66, kF: 24, kB: 14, yp: -40, sep: 16, lean: -2, side: 14, re: 126, raz: 12, rf: 20, rw: 12, rbh: [.2, 0, 1], le: 70, laz: -45, lf: 60},
+  {cx: .82, kF: 30, kB: 10, yp: -10, sep: -10, lean: -12, side: 4, re: 72, raz: -40, rf: 32, rw: 20, rbh: [1, 0, -.3], le: 35, laz: -30, lf: 70},
+  {cx: .56, kF: 20, kB: 20, yp: -24, sep: 0, lean: 0, side: 0, re: 40, raz: 20, rf: 75, rw: 10, rbh: [1, 0, .5], le: 30, laz: 10, lf: 65}]);
+const BASE = {
+  Bandeja: OVH,
+  'Víbora': over(OVH, {1: {sep: 32}, 2: {yp: -28, sep: 20, re: 132, raz: -6, rw: 34}, 3: {raz: -70, yp: 0}}),
+  Smash: over(OVH, {1: {cx: .32, kF: 46, kB: 50, sep: 30, lean: 20, re: 110, rf: 132}, 2: {cx: .6, kF: 78, kB: 8, fzF: .5, fzB: .28, yp: -22, sep: 12, lean: -6, side: 18, re: 162, raz: 0, rf: 8, rw: 22, rbh: [.6, 0, 1]}, 3: {cx: .92, kF: 46, kB: 24, fzB: .18, yp: 6, sep: -18, lean: -18, re: 60, raz: -60, rf: 40}, 4: {cx: .84, kF: 52, kB: 26, yp: -6, re: 35, lean: -8}}),
+  Bajada: over(OVH, {0: {cx: .32, kB: 30, yp: -70, re: 85, raz: 82, rf: 95}, 1: {cx: .2, kB: 44, sep: 22, lean: 8, re: 95, rf: 115}, 2: {cx: .68, kF: 26, kB: 12, yp: -34, sep: 14, lean: 0, side: 8, re: 112, raz: 10, rf: 22}}),
+  Volley: build([
+    {cx: .5, kF: 30, kB: 30, yp: -18, sep: 0, lean: -8, re: 40, raz: 30, rf: 90, rw: 40, rbh: [0, 0, 1], le: 35, laz: -25, lf: 85, ff: [.25, .2], bf: [-.25, -.2]},
+    {cx: .42, kF: 36, kB: 34, yp: -46, sep: 16, re: 56, raz: 72, rf: 96, rw: 48},
+    {cx: .62, kF: 34, kB: 26, yp: -30, sep: 10, lean: -10, re: 62, raz: 28, rf: 30, rw: 20},
+    {cx: .7, kF: 32, kB: 24, yp: -20, sep: 2, re: 58, raz: -12, rf: 36, rw: 18},
+    {cx: .5, kF: 30, kB: 30, yp: -18, sep: 0, lean: -8, re: 42, raz: 26, rf: 88, rw: 36}]),
+  Serve: build([
+    {cx: .46, kF: 20, kB: 22, yp: -72, sep: 4, lean: -8, re: 30, raz: 60, rf: 30, rw: 20, rbh: [1, 0, 0], le: 55, laz: -20, lf: 40},
+    {cx: .26, kB: 38, sep: 20, re: 56, raz: 112, rf: 26},
+    {cx: .68, kF: 30, kB: 16, yp: -40, sep: 6, lean: -14, re: 26, raz: 12, rf: 20, rw: 14, le: 30, lf: 60},
+    {cx: .84, kF: 26, re: 72, raz: -40, rf: 42, lean: -10},
+    {cx: .55, kF: 22, kB: 22, yp: -30, re: 40, raz: 20, rf: 70, lean: -4}]),
+  'Lateral movement': build([
+    {cx: .5, kF: 30, kB: 30, yp: -5, sep: 0, lean: -10, re: 35, raz: 25, rf: 85, rw: 30, rbh: [0, 0, 1], le: 35, laz: -20, lf: 85, ff: [.05, .24], bf: [-.05, -.24]},
+    {cx: .28, kF: 24, kB: 50, lean: -14, side: -6, sep: 6, ff: [.05, .4], bf: [-.05, -.25]},
+    {cx: .72, kF: 46, kB: 20, side: 8, sep: 12, lean: -12, ff: [.1, .95], bf: [-.05, .05]},
+    {cx: .85, kF: 40, kB: 16, side: 4, ff: [.1, 1], bf: [0, .3]},
+    {cx: .5, kF: 30, kB: 30, side: 0, sep: 0, ff: [.1, 1.05], bf: [0, .55]}])};
+const GEN = {a: null, b: {1: {kB: 3}, 2: {re: -3, sep: 2}}};
+const FLAG = {a: {Bandeja: {2: {cx: .38, re: 148, side: 18, lean: -5}, 3: {cx: .6}}, Smash: {3: {kF: 34, vg: 11}, 4: {kF: 40, vg: 9}}}, b: {Volley: {2: {rf: 16, rw: 38}}}};
+const NS = {a: {Bandeja: 212, 'Víbora': 168, Smash: 94, Bajada: 61, Volley: 260, Serve: 140, 'Lateral movement': 1240}, b: {Bandeja: 154, 'Víbora': 121, Smash: 66, Bajada: 88, Volley: 412, Serve: 138, 'Lateral movement': 1310}};
+const SPD = {a: {Bandeja: 88, 'Víbora': 91, Smash: 117, Bajada: 87, Volley: 64, Serve: 62, 'Lateral movement': 4.2}, b: {Bandeja: 84, 'Víbora': 89, Smash: 112, Bajada: 91, Volley: 67, Serve: 60, 'Lateral movement': 4.5}};
+const CHL = ['Pelvis', 'Trunk', 'Shoulder', 'Elbow', 'Wrist'], CHL_LAT = ['Ankle', 'Knee', 'Hip', 'Pelvis', 'Trunk'];
+const CHT = {Volley: [-150, -110, -70, -35, -10], Serve: [-260, -190, -120, -60, -20], 'Lateral movement': [-210, -160, -120, -80, -40]};
+const CHT0 = [-230, -165, -100, -50, -15], CHOVR = {a: {Smash: [-215, -105, -150, -62, -18]}};
+const CHS0 = [560, 820, 1300, 1650, 1900], CHM = {Bandeja: 1, 'Víbora': 1.12, Smash: 1.3, Bajada: 1.08, Volley: .55, Serve: .68};
+// [aLabel, bLabel, metric, unit, aV, bV, aN, bN, aMod, bMod]
+const EF = {
+  Bandeja: [['Weight forward at contact', 'Weight on back foot', 'Ball speed', 'km/h', 98, 81, 46, 29, {2: {cx: .72}}, {2: {cx: .32}}],
+    ['Arm elevation in range', 'Arm elevation above range', 'Bounce distance from back glass', 'm', 1.9, 3.1, 96, 71, {2: {re: 128}}, {2: {re: 150}}],
+    ['Hip–shoulder separation 15° or more', 'Separation under 15°', 'Errors', '%', 6, 14, 118, 94, {2: {sep: 19}}, {2: {sep: 8}}]],
+  'Víbora': [['Trunk peaks before arm', 'Arm peaks with trunk', 'Ball speed', 'km/h', 96, 84, 102, 66, {1: {sep: 36}}, {1: {sep: 18}}],
+    ['Weight forward at contact', 'Weight on back foot', 'Reaches side glass', '%', 64, 41, 88, 52, {2: {cx: .74}}, {2: {cx: .36}}],
+    ['Contact in front of body', 'Contact beside body', 'Errors', '%', 8, 17, 110, 58, {2: {raz: -12}}, {2: {raz: 34}}]],
+  Smash: [['Chain in order', 'Arm before trunk', 'Ball speed', 'km/h', 124, 109, 51, 43, {2: {sep: 14}}, {2: {sep: 2}}],
+    ['Jump 30 cm or more', 'Jump under 30 cm', 'Out of court', '%', 31, 12, 40, 54, {2: {fzB: .34, fzF: .56}}, {2: {fzB: .16, fzF: .36}}],
+    ['Landing knee 45° or more', 'Landing knee under 45°', 'Time to ready position', 's', 1.1, 1.5, 37, 57, {3: {kF: 50, vg: 2}, 4: {kF: 54, vg: 1}}, {3: {kF: 32, vg: 11}, 4: {kF: 38, vg: 9}}]],
+  Bajada: [['Weight forward at contact', 'Weight on back foot', 'Ball speed', 'km/h', 94, 79, 34, 22, {2: {cx: .74}}, {2: {cx: .36}}],
+    ['Contact at shoulder height or above', 'Contact below shoulder', 'Errors', '%', 9, 19, 38, 23, {2: {re: 116}}, {2: {re: 92}}],
+    ['Hip–shoulder separation 15° or more', 'Separation under 15°', 'Bounce distance from back glass', 'm', 2.2, 3, 33, 28, {2: {sep: 18}}, {2: {sep: 8}}]],
+  Volley: [['Elbow extension in range', 'Elbow extension above range', 'Errors', '%', 7, 12, 201, 59, {2: {rf: 30}}, {2: {rf: 14}}],
+    ['Wrist firm at contact', 'Wrist laid back', 'Bounce distance from back glass', 'm', 2.8, 4.1, 188, 72, {2: {rw: 18}}, {2: {rw: 40}}],
+    ['Split step before contact', 'No split step', 'Ball speed', 'km/h', 68, 59, 164, 96, {1: {kF: 40, kB: 38}}, {1: {kF: 22, kB: 22}}]],
+  Serve: [['Weight forward at contact', 'Weight on back foot', 'Ball speed', 'km/h', 66, 55, 92, 48, {2: {cx: .74}}, {2: {cx: .38}}],
+    ['Knee flexion 30° or more', 'Knee flexion under 30°', 'Bounce distance from back glass', 'm', 1.6, 2.4, 77, 63, {1: {kB: 40}}, {1: {kB: 24}}],
+    ['Trunk forward at contact', 'Trunk upright', 'Faults', '%', 2, 6, 101, 39, {2: {lean: -16}}, {2: {lean: -2}}]],
+  'Lateral movement': [['Push-off knee 40° or more', 'Push-off knee under 40°', 'Time to ball', 's', .82, .95, 702, 538, {1: {kB: 52}}, {1: {kB: 32}}],
+    ['Plant foot outside hip', 'Plant foot under hip', 'Recovery time', 's', .71, .88, 655, 585, {2: {ff: [.1, 1.05]}}, {2: {ff: [.1, .75]}}],
+    ['Crossover step', 'Shuffle step', 'Contact in front of body', '%', 72, 58, 488, 752, {1: {sep: 14}}, {1: {sep: 2}}]]};
+const EF_B = {Volley: [[6, 13, 248, 164], [2.7, 4, 279, 133], [69, 60, 266, 146]]};
+const RL_FLAG = {a: {Bandeja: {sh: 128}, Smash: {kn: 131, sh: 121}}, b: {Volley: {el: 126}}};
+const LB = {sh: ['Bandeja', 'Smash', 'Víbora'], el: ['Volley', 'Bandeja', 'Víbora'], lb: ['Víbora', 'Bajada', 'Serve'], kn: ['Smash', 'Lateral movement', 'Volley'], ca: ['Lateral movement', 'Smash', 'Bajada']};
+const FT = {a: {wt: [61, 44], kn: [41, 29], c1: [-225, -160, -100, -50, -15], c3: [-205, -112, -128, -56, -16], n: [96, 41]},
+  b: {wt: [63, 57], kn: [40, 36], c1: [-228, -162, -98, -49, -15], c3: [-220, -150, -94, -47, -14], n: [88, 37]}};
+const FTT = {'All overheads': [0, 0, 1], Bandeja: [0, 0, .46], 'Víbora': [-2, 1, .34], Smash: [3, 5, .2]};
+const PER = {all: ['All season', 1], last3: ['Last 3 matches', .17], h1: ['Jan – May', .47], h2: ['Jun – Oct', .53]};
+const SETF = {all: 1, '1': .38, '2': .36, '3': .26};
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], CUM = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+
+const h32 = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
+const V = {a: (p, q) => [p[0] + q[0], p[1] + q[1], p[2] + q[2]], s: (p, q) => [p[0] - q[0], p[1] - q[1], p[2] - q[2]], m: (p, k) => [p[0] * k, p[1] * k, p[2] * k], d: (p, q) => p[0] * q[0] + p[1] * q[1] + p[2] * q[2],
+  x: (p, q) => [p[1] * q[2] - p[2] * q[1], p[2] * q[0] - p[0] * q[2], p[0] * q[1] - p[1] * q[0]], l: p => Math.hypot(p[0], p[1], p[2]), n: p => { const l = Math.hypot(p[0], p[1], p[2]) || 1; return [p[0] / l, p[1] / l, p[2] / l]; }};
+const sm = u => u * u * (3 - 2 * u);
+const lerpP = (a, b, u) => { const o = {}; Object.keys(a).forEach(k => { const x = a[k], y = b[k]; o[k] = Array.isArray(x) ? x.map((v, i) => v + (y[i] - v) * u) : x + (y - x) * u; }); return o; };
+const poseAt = (P, t) => { const w = 1 + KT[0] - KT[4];
+  if (t >= KT[4]) return lerpP(P[4], P[0], sm((t - KT[4]) / w)); if (t < KT[0]) return lerpP(P[4], P[0], sm((t + 1 - KT[4]) / w));
+  let i = 0; while (i < 3 && t >= KT[i + 1]) i++; return lerpP(P[i], P[i + 1], sm((t - KT[i]) / (KT[i + 1] - KT[i]))); };
+const phaseOf = t => { for (let i = 0; i < 5; i++) if (t < BD[i + 1]) return i; return 4; };
+
+function skel(p) {
+  const L = .46, ff = [p.ff[0], p.ff[1], p.fzF], bf = [p.bf[0], p.bf[1], p.fzB];
+  const pc = [bf[0] + (ff[0] - bf[0]) * p.cx, bf[1] + (ff[1] - bf[1]) * p.cx];
+  const yp = p.yp * D, fP = [Math.cos(yp), Math.sin(yp), 0], lP = [-Math.sin(yp), Math.cos(yp), 0];
+  const hL = [pc[0] + lP[0] * .14, pc[1] + lP[1] * .14], hR = [pc[0] - lP[0] * .14, pc[1] - lP[1] * .14];
+  const loadF = p.cx >= .5, hx = loadF ? hL : hR, ft = loadF ? ff : bf, k = (loadF ? p.kF : p.kB) * D;
+  const dh = Math.hypot(hx[0] - ft[0], hx[1] - ft[1]), ln = 2 * L * Math.cos(k / 2), hz = ft[2] + Math.sqrt(Math.max(.04, ln * ln - dh * dh));
+  const hipL = [hL[0], hL[1], hz], hipR = [hR[0], hR[1], hz], pel = [pc[0], pc[1], hz];
+  const leg = (H, F, vg) => { let d = V.s(F, H), dl = V.l(d); if (dl > 2 * L - .002) { F = V.a(H, V.m(V.n(d), 2 * L - .002)); d = V.s(F, H); dl = 2 * L - .002; }
+    const dn = V.n(d); let kd = V.n(V.s(fP, V.m(dn, V.d(fP, dn))));
+    if (vg) { let md = V.s(pel, H); md = V.n(V.s(md, V.m(dn, V.d(md, dn)))); kd = V.n(V.a(V.m(kd, Math.cos(vg * D)), V.m(md, Math.sin(vg * D)))); }
+    const a = Math.sqrt(Math.max(0, L * L - (dl / 2) * (dl / 2))); return {K: V.a(V.a(H, V.m(d, .5)), V.m(kd, a)), F}; };
+  const lL = leg(hipL, ff, p.vg), lR = leg(hipR, bf, 0), td = V.n([fP[0] + .5, fP[1], 0]);
+  const ty = (p.yp - p.sep) * D, fT = [Math.cos(ty), Math.sin(ty), 0], lT = [-Math.sin(ty), Math.cos(ty), 0];
+  const ax = V.n(V.a(V.a([0, 0, Math.cos(p.lean * D) * Math.cos(p.side * D)], V.m(fT, -Math.sin(p.lean * D))), V.m(lT, Math.sin(p.side * D))));
+  const l2 = V.n(V.s(lT, V.m(ax, V.d(lT, ax)))), f2 = V.x(l2, ax);
+  const neck = V.a(pel, V.m(ax, .52)), head = V.a(neck, V.a(V.m(ax, .2), V.m(f2, .03)));
+  const shR = V.a(neck, V.a(V.m(ax, -.04), V.m(l2, -.19))), shL = V.a(neck, V.a(V.m(ax, -.04), V.m(l2, .19)));
+  const arm = (S, e, az, f, bh, w, right) => { e *= D; az *= D; f *= D; w *= D; const out = right ? V.m(l2, -1) : l2;
+    const u = V.n(V.a(V.m(ax, -Math.cos(e)), V.m(V.a(V.m(f2, Math.cos(az)), V.m(out, Math.sin(az))), Math.sin(e))));
+    let b = V.a(V.a(V.m(f2, bh[0]), V.m(l2, bh[1])), V.m(ax, bh[2])); b = V.s(b, V.m(u, V.d(b, u))); b = V.l(b) < 1e-3 ? f2 : V.n(b);
+    const E = V.a(S, V.m(u, .3)), v = V.a(V.m(u, Math.cos(f)), V.m(b, Math.sin(f))), W = V.a(E, V.m(v, .27));
+    const b2 = V.a(V.m(u, -Math.sin(f)), V.m(b, Math.cos(f))), r = V.n(V.a(V.m(v, Math.cos(w)), V.m(b2, Math.sin(w))));
+    const nn = V.n(V.s(b2, V.m(r, V.d(b2, r)))); return {E, W, r, s: V.x(r, nn)}; };
+  const aR = arm(shR, p.re, p.raz, p.rf, p.rbh, p.rw, true), aL = arm(shL, p.le, p.laz, p.lf, [.3, 0, 1], 0, false);
+  return {pel, hipL, hipR, kL: lL.K, fL: lL.F, kR: lR.K, fR: lR.F, tL: V.a(lL.F, V.m(td, .17)), tR: V.a(lR.F, V.m(td, .17)), neck, head, shL, shR, ax,
+    eR: aR.E, wR: aR.W, eL: aL.E, wL: aL.W, rk: {C: V.a(aR.W, V.m(aR.r, .4)), r: aR.r, s: aR.s}, com: V.a(pel, V.m(ax, .1)), loadF};
+}
+
+function mkCam(mode, W, H) {
+  const C = mode === 'Video' ? {az: -112, el: 11, dist: 12, tg: [0, 0, 1.2], k: 3} : mode === '3D side' ? {az: -90, el: 7, dist: 40, tg: [0, 0, 1.2], k: 3.05} : {az: 0, el: 7, dist: 40, tg: [0, 0, 1.2], k: 3.05};
+  const a = C.az * D, e = C.el * D, pos = V.a(C.tg, V.m([Math.cos(e) * Math.cos(a), Math.cos(e) * Math.sin(a), Math.sin(e)], C.dist));
+  const fw = V.n(V.s(C.tg, pos)), rt = V.n(V.x(fw, [0, 0, 1])), up = V.x(rt, fw), F = H / C.k * C.dist, cx = W / 2, cy = H * .53;
+  const cam = p => { const d = V.s(p, pos); return [V.d(d, rt), V.d(d, up), V.d(d, fw)]; };
+  const pr = c => [cx + c[0] / c[2] * F, cy - c[1] / c[2] * F];
+  return {cam, pr, P: p => pr(cam(p)), F, z: p => cam(p)[2]};
+}
+const clipZ = (c, zn) => { const out = []; for (let i = 0; i < c.length; i++) { const A = c[i], B = c[(i + 1) % c.length], ia = A[2] >= zn, ib = B[2] >= zn; if (ia) out.push(A); if (ia !== ib) { const u = (zn - A[2]) / (B[2] - A[2]); out.push([A[0] + (B[0] - A[0]) * u, A[1] + (B[1] - A[1]) * u, zn]); } } return out; };
+function poly3(g, cm, pts, fill, stroke, lw) { const c = clipZ(pts.map(cm.cam), .3); if (c.length < 3) return; g.beginPath(); c.forEach((q, i) => { const p = cm.pr(q); if (i) g.lineTo(p[0], p[1]); else g.moveTo(p[0], p[1]); }); g.closePath(); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw || 1; g.stroke(); } }
+function line3(g, cm, a, b, col, lw, dash) { let A = cm.cam(a), B = cm.cam(b); if (A[2] < .3 && B[2] < .3) return;
+  const cl = (P, Q) => { const u = (.3 - P[2]) / (Q[2] - P[2]); return [P[0] + (Q[0] - P[0]) * u, P[1] + (Q[1] - P[1]) * u, .3]; };
+  if (A[2] < .3) A = cl(A, B); if (B[2] < .3) B = cl(B, A); const p = cm.pr(A), q = cm.pr(B);
+  g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.strokeStyle = col; g.lineWidth = lw; g.setLineDash(dash || []); g.stroke(); g.setLineDash([]); }
+function drawCourt(g, cm, W, H, st, side) {
+  g.fillStyle = '#0B1322'; g.fillRect(0, 0, W, H);
+  const nx = NETX[st] || 5, bx = nx - 10, wy = side === 'a' ? 2.5 : -2.5, oy = side === 'a' ? -7.5 : 7.5, cy0 = (wy + oy) / 2;
+  poly3(g, cm, [[bx - 4, -12, 0], [nx + 12, -12, 0], [nx + 12, 12, 0], [bx - 4, 12, 0]], '#16243A');
+  poly3(g, cm, [[bx, wy, 0], [nx + 10, wy, 0], [nx + 10, oy, 0], [bx, oy, 0]], '#2C5E9E');
+  const L = 'rgba(255,255,255,.85)';
+  line3(g, cm, [bx, wy, 0], [nx + 10, wy, 0], L, 2); line3(g, cm, [bx, oy, 0], [nx + 10, oy, 0], L, 2); line3(g, cm, [bx, wy, 0], [bx, oy, 0], L, 2);
+  [nx - 6.95, nx + 6.95].forEach(x => line3(g, cm, [x, wy, 0], [x, oy, 0], L, 1.6)); line3(g, cm, [nx - 6.95, cy0, 0], [nx + 6.95, cy0, 0], L, 1.6);
+  const G = 'rgba(214,230,255,.06)', GS = 'rgba(214,230,255,.32)';
+  poly3(g, cm, [[bx, wy, 0], [bx, oy, 0], [bx, oy, 3], [bx, wy, 3]], G, GS, 1.2);
+  [wy, oy].forEach(y => { poly3(g, cm, [[bx, y, 0], [bx + 4, y, 0], [bx + 4, y, 3], [bx, y, 3]], G, GS, 1); poly3(g, cm, [[bx + 4, y, 0], [bx + 6, y, 0], [bx + 6, y, 2], [bx + 4, y, 2]], G, GS, 1); });
+  poly3(g, cm, [[nx, wy, 0], [nx, oy, 0], [nx, oy, .88], [nx, wy, .88]], 'rgba(11,19,34,.45)'); line3(g, cm, [nx, wy, .88], [nx, oy, .88], 'rgba(255,255,255,.95)', 2);
+}
+function drawGrid(g, cm, W, H) { g.fillStyle = '#0E1726'; g.fillRect(0, 0, W, H); for (let i = -3; i <= 3.001; i += .5) { line3(g, cm, [i, -3, 0], [i, 3, 0], 'rgba(163,201,255,.10)', 1); line3(g, cm, [-3, i, 0], [3, i, 0], 'rgba(163,201,255,.10)', 1); } }
+function drawBody(g, cm, J) {
+  const P = cm.P, w = p => cm.F / Math.max(.3, cm.z(p));
+  const limb = (a, b, r, col) => { const A = P(a), B = P(b); g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.lineCap = 'round'; g.strokeStyle = col; g.lineWidth = Math.max(2, r * w(a)); g.stroke(); };
+  const shirt = '#111827', skin = '#3A4456', shorts = '#1F2937';
+  limb(J.hipL, J.kL, .15, shorts); limb(J.kL, J.fL, .11, skin); limb(J.fL, J.tL, .08, '#E5E7EB'); limb(J.hipR, J.kR, .15, shorts); limb(J.kR, J.fR, .11, skin); limb(J.fR, J.tR, .08, '#E5E7EB');
+  const q = [J.shL, J.shR, J.hipR, J.hipL].map(P); g.beginPath(); q.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath(); g.fillStyle = shirt; g.fill(); g.lineJoin = 'round'; g.strokeStyle = shirt; g.lineWidth = .12 * w(J.pel); g.stroke();
+  limb(J.shL, J.eL, .1, shirt); limb(J.eL, J.wL, .08, skin); limb(J.shR, J.eR, .1, shirt); limb(J.eR, J.wR, .08, skin);
+  const h = P(J.head); g.beginPath(); g.arc(h[0], h[1], .12 * w(J.head), 0, 7); g.fillStyle = skin; g.fill();
+}
+function drawSkel(g, cm, J, col, video) {
+  const P = cm.P, zp = cm.z(J.pel);
+  const bones = [[J.hipL, J.hipR], [J.hipL, J.kL], [J.kL, J.fL], [J.fL, J.tL], [J.hipR, J.kR], [J.kR, J.fR], [J.fR, J.tR], [J.pel, J.neck], [J.shL, J.shR], [J.shR, J.eR], [J.eR, J.wR], [J.shL, J.eL], [J.eL, J.wL], [J.neck, J.head]];
+  g.lineCap = 'round';
+  bones.forEach(([a, b]) => { const A = P(a), B = P(b), far = (cm.z(a) + cm.z(b)) / 2 > zp + .06; g.globalAlpha = far ? .55 : 1; g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.strokeStyle = col; g.lineWidth = video ? 2.2 : 3.4; g.stroke(); });
+  g.globalAlpha = 1;
+  const rk = J.rk, hs = [], C0 = V.a(rk.C, V.m(rk.r, -.14));
+  for (let i = 0; i <= 20; i++) { const a = i / 20 * Math.PI * 2; hs.push(P(V.a(rk.C, V.a(V.m(rk.r, Math.cos(a) * .14), V.m(rk.s, Math.sin(a) * .12))))); }
+  const W0 = P(J.wR), C1 = P(C0); g.beginPath(); g.moveTo(W0[0], W0[1]); g.lineTo(C1[0], C1[1]); g.strokeStyle = '#E5E7EB'; g.lineWidth = 2.4; g.stroke();
+  g.beginPath(); hs.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.fillStyle = 'rgba(229,231,235,.14)'; g.fill(); g.strokeStyle = '#E5E7EB'; g.lineWidth = 2; g.stroke();
+  [J.hipL, J.hipR, J.kL, J.kR, J.fL, J.fR, J.shL, J.shR, J.eR, J.eL, J.wR, J.wL, J.neck, J.pel].forEach(j => { const p = P(j); g.beginPath(); g.arc(p[0], p[1], video ? 3.4 : 4.2, 0, 7); g.fillStyle = video ? '#A3C9FF' : col; g.fill(); g.lineWidth = 1.5; g.strokeStyle = '#0B1322'; g.stroke(); });
+  const h = P(J.head); g.beginPath(); g.arc(h[0], h[1], .1 * cm.F / Math.max(.3, cm.z(J.head)), 0, 7); g.strokeStyle = col; g.lineWidth = video ? 1.8 : 2.6; g.stroke();
+}
+function drawCom(g, cm, J, col) { const c = cm.P(J.com), f = cm.P([J.com[0], J.com[1], 0]); g.setLineDash([3, 3]); g.beginPath(); g.moveTo(c[0], c[1]); g.lineTo(f[0], f[1]); g.strokeStyle = col; g.globalAlpha = .7; g.lineWidth = 1.2; g.stroke(); g.setLineDash([]); g.globalAlpha = 1;
+  g.beginPath(); g.arc(f[0], f[1], 4, 0, 7); g.fillStyle = col; g.fill(); g.beginPath(); g.moveTo(c[0], c[1] - 6); g.lineTo(c[0] + 6, c[1]); g.lineTo(c[0], c[1] + 6); g.lineTo(c[0] - 6, c[1]); g.closePath(); g.fillStyle = col; g.fill(); g.strokeStyle = '#0B1322'; g.lineWidth = 1.5; g.stroke(); }
+const BIN = {Volley: [1, 0, .12], Serve: [0, 0, 1], Bajada: [-1, 0, .35], 'Lateral movement': null}, BOUT = {Smash: [1, 0, -.45], Bandeja: [1, 0, -.08], 'Víbora': [1, -.25, -.12], Bajada: [1, 0, -.1], Volley: [1, 0, 0], Serve: [1, 0, .12]};
+function drawBall(g, cm, st, P, t) {
+  if (st === 'Lateral movement') return; const C = skel(poseAt(P, KT[2])).rk.C, IN = V.n(BIN[st] || [.55, 0, .85]), OUT = V.n(BOUT[st] || [1, 0, 0]);
+  const at = tt => { const dt = tt - KT[2]; return dt < 0 ? V.a(C, V.m(IN, -dt * 9)) : V.a(C, V.m(OUT, dt * (st === 'Smash' ? 26 : 18))); };
+  if (Math.abs(t - KT[2]) > .22) return;
+  for (let i = 5; i >= 0; i--) { const tt = t - i * .012; if (Math.abs(tt - KT[2]) > .22) continue; const q = at(tt), p = cm.P(q), r = Math.max(3.5, .045 * cm.F / Math.max(.3, cm.z(q)));
+    g.globalAlpha = i ? .14 * (6 - i) / 2 : 1; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fillStyle = '#F5B700'; g.fill(); }
+  g.globalAlpha = 1;
+}
+const PILL = {n: ['rgba(255,255,255,.96)', '#111827', null], w: ['#FEF3E2', WTXT, WARN], s1: ['#E8F1FF', '#1C6EF0', '#A3C9FF'], s3: ['#FEF3E2', WTXT, WARN]};
+function drawLabels(g, cm, W, H, list, center) {
+  const P = cm.P; g.font = "600 11.5px 'Inter Display', Inter, system-ui, sans-serif"; const pills = [];
+  list.forEach(x => { const j = P(x.j); const st = PILL[x.st || 'n'], arcCol = x.st === 'w' || x.st === 's3' ? WARN : x.st === 's1' ? '#A3C9FF' : '#F5B700';
+    if (x.a && x.b) { const A = P(x.a), B = P(x.b); let a1 = Math.atan2(A[1] - j[1], A[0] - j[0]), a2 = Math.atan2(B[1] - j[1], B[0] - j[0]); let d = a2 - a1; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI;
+      g.beginPath(); g.arc(j[0], j[1], 17, a1, a1 + d, d < 0); g.strokeStyle = arcCol; g.lineWidth = 2.5; g.stroke(); }
+    if (x.line) { const A = P(x.line[0]), B = P(x.line[1]); g.setLineDash([4, 3]); g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.strokeStyle = arcCol; g.lineWidth = 1.8; g.stroke(); g.setLineDash([]); }
+    if (x.lines) x.lines.forEach(([a, b]) => { const A = P(a), B = P(b), dx = B[0] - A[0], dy = B[1] - A[1]; g.beginPath(); g.moveTo(A[0] - dx * .35, A[1] - dy * .35); g.lineTo(B[0] + dx * .35, B[1] + dy * .35); g.strokeStyle = arcCol; g.lineWidth = 2; g.stroke(); });
+    let dx = j[0] - center[0], dy = j[1] - center[1], dl = Math.hypot(dx, dy); if (dl < 12) { dx = x.dir || -1; dy = 0; dl = 1; } dx /= dl; dy /= dl;
+    const tw = g.measureText(x.text).width + 18, ax = j[0] + dx * 52, ay = j[1] + dy * 30;
+    pills.push({j, x: dx >= 0 ? ax : ax - tw, y: ay - 11, w: tw, h: 22, text: x.text, st}); });
+  pills.sort((a, b) => a.y - b.y);
+  pills.forEach((p, i) => { p.x = Math.max(8, Math.min(W - p.w - 8, p.x)); p.y = Math.max(48, Math.min(H - p.h - 8, p.y));
+    for (let k = 0; k < i; k++) { const q = pills[k]; if (p.x < q.x + q.w + 4 && p.x + p.w + 4 > q.x && p.y < q.y + q.h + 4 && p.y + p.h + 4 > q.y) p.y = q.y + q.h + 5; } });
+  pills.forEach(p => { if (p.y + p.h > H - 6) p.y = H - 6 - p.h; });
+  pills.forEach(p => { const tx = Math.max(p.x, Math.min(p.x + p.w, p.j[0])), ty = Math.max(p.y, Math.min(p.y + p.h, p.j[1]));
+    g.beginPath(); g.moveTo(p.j[0], p.j[1]); g.lineTo(tx, ty); g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 1; g.stroke();
+    g.beginPath(); g.roundRect(p.x, p.y, p.w, p.h, 6); g.fillStyle = p.st[0]; g.fill(); if (p.st[2]) { g.strokeStyle = p.st[2]; g.lineWidth = 1; g.stroke(); }
+    g.fillStyle = p.st[1]; g.textBaseline = 'middle'; g.fillText(p.text, p.x + 9, p.y + p.h / 2 + .5); });
+}
+const out1 = (v, n) => Math.abs(v - n.m) > n.sd;
+function labelSpec(st, ph, p, J, N) {
+  const L = [], R = Math.round, lat = st === 'Lateral movement';
+  const knee = (lbl, warnable) => { const v = R(J.loadF ? p.kF : p.kB); L.push({j: J.loadF ? J.kL : J.kR, a: J.loadF ? J.hipL : J.hipR, b: J.loadF ? J.fL : J.fR, text: lbl + ' ' + v + '°', st: warnable && out1(v, N.kn) ? 'w' : 'n'}); };
+  const armE = w => { const v = R(p.re); L.push({j: J.shR, a: V.a(J.shR, V.m(J.ax, -.3)), b: J.eR, text: 'Arm elevation ' + v + '°', st: w && out1(v, N.arm) ? 'w' : 'n'}); };
+  const elb = w => { const v = R(180 - p.rf); L.push({j: J.eR, a: J.shR, b: J.wR, text: 'Elbow extension ' + v + '°', st: w && out1(v, N.elb) ? 'w' : 'n'}); };
+  const sepL = w => { const v = R(p.sep); L.push({j: V.a(J.pel, V.m(J.ax, .26)), lines: [[J.hipL, J.hipR], [J.shL, J.shR]], dir: -1, text: 'Hip–shoulder ' + v + '°', st: w && out1(v, N.sep) ? 'w' : 'n'}); };
+  if (lat) { knee(ph === 1 ? 'Push-off knee' : 'Knee flexion', ph === 1); L.push({j: J.neck, text: 'Trunk lean ' + R(Math.abs(p.lean)) + '°', st: 'n'}); if (ph === 2) sepL(false); return L; }
+  if (ph === 0) { armE(false); elb(false); sepL(false); }
+  else if (ph === 1) { knee('Knee flexion', true); sepL(false); elb(false); }
+  else if (ph === 2) { armE(true); elb(true); sepL(true); knee('Knee flexion', false); if (st === 'Volley') { const v = R(p.rw); L.push({j: J.wR, a: J.eR, b: J.rk.C, text: 'Wrist ' + v + '°', st: out1(v, N.rw) ? 'w' : 'n'}); } }
+  else if (st === 'Smash') { const v = R(p.kF), g = R(p.vg); L.push({j: J.kL, a: J.hipL, b: J.fL, text: 'Landing knee ' + v + '°', st: v < 42 ? 'w' : 'n'}); L.push({j: V.a(J.kL, [0, 0, -.12]), line: [J.hipL, J.fL], dir: 1, text: 'Knee inward ' + g + '°', st: g > 6 ? 'w' : 'n'}); armE(false); }
+  else { knee('Knee flexion', false); armE(false); }
+  return L;
+}
+
+class Component extends DCLogic {
+  state = {pl: this.props.prof === 'b' ? 'b' : 'a', view: 'Bandeja', per: 'all', set: 'all', menu: null, cam: 'Video', ph: 2, playing: false, grp: null, gi: 0, reg: null, cplay: false, ldSel: null, ldStroke: null, ovT: 'All overheads'};
+  rootRef = React.createRef(); heroRef = React.createRef(); headRef = React.createRef(); cheadRef = React.createRef(); clipRefs = [React.createRef(), React.createRef()];
+  t = KT[2]; ct = KT[2];
+  componentDidMount() { this.applyInit(); if (window.ResizeObserver && this.rootRef.current) { this._ro = new ResizeObserver(() => this.paint()); this._ro.observe(this.rootRef.current); } setTimeout(() => this.paint(), 60); }
+  componentDidUpdate(prev) { prev = prev || {}; if (prev.init !== this.props.init) this.applyInit(); if (prev.pid !== this.props.pid || prev.ws !== this.props.ws) { this._ld = null; if (this.props.solo) this.setState({pl: this.props.prof === 'b' ? 'b' : 'a', ldSel: null}); } this.paint(); }
+  componentWillUnmount() { cancelAnimationFrame(this._raf); this._raf = null; if (this._ro) this._ro.disconnect(); }
+  applyInit() { const s = this.props.init || ''; if (!s) return; const v = s.includes('Body load') ? 'Body load' : s.includes('Fatigue') ? 'Fatigue' : STK.find(x => s.includes(x)) || 'Bandeja';
+    const ph = v === 'Smash' ? 3 : 2; this.t = KT[ph]; this.setState({pl: this.props.solo ? (this.props.prof === 'b' ? 'b' : 'a') : /Sreekumar/.test(s) ? 'b' : 'a', view: v, ph, playing: false, grp: null, reg: null, ldSel: null, ldStroke: null}); }
+  names() { const sh = n => n.split(' ').slice(-1)[0]; if (this.props.solo) { const f = this.props.pa || 'Austin Varghese', k = this.props.prof === 'b' ? 'b' : 'a'; return {a: f, b: f, sa: sh(f), sb: sh(f), solo: k}; } const fa = this.props.pa || 'Austin Varghese', fb = this.props.pb || 'Manav Sreekumar'; return {a: fa, b: fb, sa: sh(fa), sb: sh(fb)}; }
+  normPoses(pl, st) { return over(BASE[st], GEN[pl], true); }
+  poses(pl, st) { return over(this.normPoses(pl, st), (FLAG[pl] || {})[st]); }
+  norms(pl, st) { const P = this.normPoses(pl, st); return {wt: {m: Math.round(P[2].cx * 100), sd: 8}, sep: {m: Math.round(P[2].sep), sd: 5}, kn: {m: Math.round(P[1].kB), sd: 6}, arm: {m: Math.round(P[2].re), sd: 7}, elb: {m: Math.round(180 - P[2].rf), sd: 6}, rw: {m: Math.round(P[2].rw), sd: 6}}; }
+  modPoses(P, mod, gi) { let Q = over(P, mod); if (gi != null) { const j = k => (h32(k + gi) - .5); Q = Q.map((p, i) => i === 2 ? {...p, re: p.re + j('re') * 6, sep: p.sep + j('sp') * 5, cx: Math.max(.05, Math.min(.95, p.cx + j('cx') * .06))} : p); } return Q; }
+  nF() { return PER[this.state.per][1] * (SETF[this.state.set] || 1); }
+  chain(pl, st) { const t = (CHOVR[pl] || {})[st] || CHT[st] || CHT0, lat = st === 'Lateral movement', sp = lat ? [480, 620, 540, 360, 280] : CHS0.map(v => Math.round(v * (CHM[st] || 1) / 10) * 10); return {t, sp, lab: lat ? CHL_LAT : CHL}; }
+  efRows(pl, st) { return (EF[st] || []).map((r, i) => { if (pl === 'a') return r; const o = (EF_B[st] || [])[i]; const ratio = NS.b[st] / NS.a[st], jj = h32('b' + st + i) * .06 - .03;
+    if (o) return [r[0], r[1], r[2], r[3], o[0], o[1], o[2], o[3], r[8], r[9]];
+    const fx = v => r[3] === 'km/h' || r[3] === '%' ? Math.round(v * (1 + jj)) : Math.round(v * (1 + jj) * 100) / 100; return [r[0], r[1], r[2], r[3], fx(r[4]), fx(r[5]), Math.round(r[6] * ratio), Math.round(r[7] * ratio), r[8], r[9]]; }); }
+  regLoad(pl, st, rg) { const f = ((RL_FLAG[pl] || {})[st] || {})[rg]; return f || Math.round(90 + h32(pl + st + rg) * 20); }
+  fmtV(v, u) { return u === '%' ? v + '%' : (u === 'm' || u === 's' ? (Math.round(v * 100) / 100) + ' ' + u : v + ' ' + u); }
+  fat() { const s = this.state, F = FT[s.pl], d = FTT[s.ovT], st = s.ovT === 'All overheads' ? 'Bandeja' : s.ovT, nf = PER[s.per][1];
+    const wt = [F.wt[0] + d[0], F.wt[1] + d[0] - (s.ovT === 'Smash' ? 2 : 0)], kn = [F.kn[0] + d[1], F.kn[1] + d[1]], N = this.norms(s.pl, st), B = this.normPoses(s.pl, st);
+    const P1 = over(B, {1: {kB: kn[0]}, 2: {cx: wt[0] / 100}}), P3 = over(B, {1: {kB: kn[1]}, 2: {cx: wt[1] / 100, lean: B[2].lean + 4, re: B[2].re - 6}, 3: {cx: B[3].cx - .14}});
+    return {st, wt, kn, N, P1, P3, c1: F.c1, c3: F.c3, n: F.n.map(v => Math.max(1, Math.round(v * d[2] * nf)))}; }
+  loadData() { if (this._ld) return this._ld; const MI = window.MI; let ms = [];
+    if (MI && MI.MATCHES) ms = MI.MATCHES.filter(M => this.props.ws === 'PPL' ? M.ws === 'PPL' && M.A && M.A.players.includes(this.props.pid) : M.ws === 'PP' && M.A && M.A.id === 'AB').map(M => ({ev: M.event, rd: M.round, date: M.date}));
+    if (!ms.length) ms = [['Qatar Major', 8, 2], ['Santiago P1', 3, 4], ['Italy Major', 14, 5], ['Mallorca P2', 26, 6], ['Düsseldorf P2', 6, 8], ['Newgiza P2', 25, 9]].flatMap(([e, d, m]) => ['Quarter-final', 'Semi-final', 'Final'].map((rd, i) => ({ev: e, rd, date: (d - 2 + i) + ' ' + MON[m] + ' 2026'})));
+    ms.forEach(m => { const p = String(m.date).split(' '), mi = MON.indexOf(p[1]); m.day = (CUM[mi] || 0) + (+p[0] || 1); m.wk = Math.ceil(m.day / 7); });
+    ms.sort((a, b) => a.day - b.day); const evs = []; ms.forEach(m => { if (!evs.length || evs[evs.length - 1].ev !== m.ev) evs.push({ev: m.ev, wk: m.wk, ms: []}); evs[evs.length - 1].ms.push(m); m.ei = evs.length - 1; });
+    const N = ms.length, ser = {}; ['a', 'b'].forEach(pl => { ser[pl] = {}; RG.forEach(([rg]) => { ser[pl][rg] = ms.map((m, i) => { let v = 100 + (h32(pl + rg + i) - .5) * 16;
+      if (pl === 'a' && rg === 'sh') v += -12 + 30 * i / Math.max(1, N - 1); if (pl === 'a' && rg === 'kn') v += m.rd === 'Final' ? 22 : m.rd === 'Semi-final' ? 9 : -4; if (pl === 'b' && rg === 'el') v += (m.ei === 2 || m.ei === 3) ? 19 : 0;
+      return Math.round(Math.max(72, Math.min(145, v))); }); }); });
+    return (this._ld = {ms, evs, ser}); }
+
+  tick = ts => { this._raf = null; const s = this.state, dt = this._last ? Math.min(.05, (ts - this._last) / 1000) : 0; this._last = ts;
+    if (s.playing) { this.t = (this.t + dt / 2.8) % 1; const ph = phaseOf(this.t); if (ph !== s.ph) this.setState({ph}); }
+    if (s.cplay) this.ct = (this.ct + dt / 2.8) % 1;
+    this.paint(); if (s.playing || s.cplay) this._raf = requestAnimationFrame(this.tick); else this._last = 0; };
+  startLoop() { if (!this._raf) { this._last = 0; this._raf = requestAnimationFrame(this.tick); } }
+
+  scene() { const s = this.state, nm = this.names();
+    if (s.view === 'Fatigue') { const F = this.fat(); return {st: F.st, side: s.pl, fat: true, skels: [{P: F.P1, col: '#A3C9FF', tag: 'Set 1', ps: 's1'}, {P: F.P3, col: WARN, tag: 'Set 3', ps: 's3'}], N: F.N}; }
+    if (s.view === 'Body load') { const sel = this.ldSel(), st = s.ldStroke || LB[sel.rg][0]; return {st, side: sel.pl, skels: [{P: this.poses(sel.pl, st), col: '#FFFFFF'}], N: this.norms(sel.pl, st)}; }
+    let P = this.poses(s.pl, s.view); if (s.grp) P = this.modPoses(P, s.grp.mod, s.gi);
+    return {st: s.view, side: s.pl, skels: [{P, col: '#FFFFFF'}], N: this.norms(s.pl, s.view)}; }
+  ldSel() { if (this.state.ldSel) return this.state.ldSel; const L = this.loadData(), pl = this.props.solo ? this.state.pl : 'a', rg = pl === 'b' ? 'el' : 'sh', arr = L.ser[pl][rg]; let mi = arr.length - 1; for (let i = arr.length - 1; i >= 0; i--) if (arr[i] > 115) { mi = i; break; } return {pl, rg, mi}; }
+  drawTo(c, sc, t, mode, labels) {
+    if (!c) return; const r = c.getBoundingClientRect(); if (!r.width) return; const dpr = window.devicePixelRatio || 1, W = r.width, H = r.height;
+    if (c.width !== Math.round(W * dpr) || c.height !== Math.round(H * dpr)) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+    const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); const cm = mkCam(mode, W, H), video = mode === 'Video';
+    if (video) drawCourt(g, cm, W, H, sc.st, sc.side); else drawGrid(g, cm, W, H);
+    const items = sc.skels.map(k => { const p = poseAt(k.P, t); return {k, p, J: skel(p)}; });
+    drawBall(g, cm, sc.st, sc.skels[0].P, t);
+    if (video && !sc.fat) drawBody(g, cm, items[0].J);
+    items.forEach(it => { if (!video || sc.fat) drawCom(g, cm, it.J, sc.fat ? it.k.col : '#F5B700'); drawSkel(g, cm, it.J, it.k.col, video && !sc.fat); });
+    if (!labels) return; const ph = phaseOf(t), center = cm.P(items[0].J.pel); let list = [];
+    if (sc.fat) items.forEach((it, i) => { const J = it.J, p = it.p;
+      if (ph === 2) list.push({j: J.com, text: it.k.tag + ' · weight ' + Math.round(p.cx * 100) + '%', st: it.k.ps, dir: i ? 1 : -1});
+      else { const v = Math.round(J.loadF ? p.kF : p.kB); list.push({j: J.loadF ? J.kL : J.kR, a: J.loadF ? J.hipL : J.hipR, b: J.loadF ? J.fL : J.fR, text: it.k.tag + ' · knee ' + v + '°', st: it.k.ps, dir: i ? 1 : -1}); } });
+    else list = labelSpec(sc.st, ph, items[0].p, items[0].J, sc.N);
+    drawLabels(g, cm, W, H, list, center); }
+  paint() { const s = this.state; this.drawTo(this.heroRef.current, this.scene(), this.t, s.cam, true);
+    if (this.headRef.current) this.headRef.current.style.left = (this.t * 100).toFixed(2) + '%';
+    if (STK.includes(s.view)) { const cl = this.clipScenes(); cl.forEach((sc, i) => this.drawTo(this.clipRefs[i].current, sc, this.ct, 'Video', false)); if (this.cheadRef.current) this.cheadRef.current.style.left = (this.ct * 100).toFixed(2) + '%'; } }
+  clipScenes() { const s = this.state, P = this.poses(s.pl, s.view), r = this.efRows(s.pl, s.view)[0], N = this.norms(s.pl, s.view);
+    return [{st: s.view, side: s.pl, skels: [{P: this.modPoses(P, r[8], 1), col: '#FFFFFF'}], N}, {st: s.view, side: s.pl, skels: [{P: this.modPoses(P, r[9], 7), col: '#FFFFFF'}], N}]; }
+
+  renderVals() {
+    const s = this.state, nm = this.names(), isStroke = STK.includes(s.view), isLoad = s.view === 'Body load', isFat = s.view === 'Fatigue', R = Math.round;
+    const seg = (on) => ({bg: on ? '#FFFFFF' : 'transparent', color: on ? '#111827' : '#6B7280', shadow: on ? '0 1px 2px rgba(15,23,42,.08)' : 'none'});
+    const reset = {grp: null, gi: 0, reg: null, menu: null};
+    const go = patch => { this.setState({...reset, ...patch}); };
+    const nav = v => ({label: v, ...{bg: s.view === v ? '#FFFFFF' : 'transparent', color: s.view === v ? '#111827' : '#4B5563', fw: s.view === v ? 600 : 500, shadow: s.view === v ? '0 1px 2px rgba(15,23,42,.06)' : 'none'}, pick: () => { const ph = v === 'Smash' && s.pl === 'a' ? 3 : 2; this.t = KT[ph]; go({view: v, ph, playing: false, ldStroke: null}); }});
+    const menu = (key, label, value, items) => ({label, value, open: s.menu === key, toggle: () => this.setState({menu: s.menu === key ? null : key}), items: items.map(([l, act, patch]) => ({label: l, fw: act ? 700 : 500, bg: act ? '#F1F5F9' : 'transparent', pick: () => this.setState({menu: null, ...patch})}))});
+    const filters = [menu('per', 'Period', PER[s.per][0], Object.keys(PER).map(k => [PER[k][0], s.per === k, {per: k}]))];
+    if (isStroke) filters.push(menu('set', 'Set', s.set === 'all' ? 'All sets' : 'Set ' + s.set, [['All sets', s.set === 'all', {set: 'all'}], ...['1', '2', '3'].map(k => ['Set ' + k, s.set === k, {set: k}])]));
+    const phases = PH.map((l, i) => ({label: l, flex: ((BD[i + 1] - BD[i]) * 100).toFixed(1), bg: '#FFFFFF', color: '#4B5563', fw: 500, shadow: '0 1px 2px rgba(15,23,42,.06)', pick: () => { this.t = KT[i]; this.setState({ph: i, playing: false}); }}));
+    const out = {rootRef: this.rootRef, heroRef: this.heroRef, headRef: this.headRef, cheadRef: this.cheadRef, isStroke, isLoad, isFat, hasPanels: isStroke || isFat, showPl: !isLoad && !this.props.solo,
+      plSegs: [['a', nm.sa], ['b', nm.sb]].map(([k, l]) => ({label: l, ...seg(s.pl === k), pick: () => this.setState({pl: k, grp: null, gi: 0, reg: null, menu: null})})),
+      filters, navS: STK.map(nav), navX: ['Body load', 'Fatigue'].map(nav), phases, playing: s.playing, paused: !s.playing,
+      togglePlay: () => { if (s.playing) this.setState({playing: false}); else this.setState({playing: true}, () => this.startLoop()); },
+      camSegs: ['Video', '3D side', '3D front'].map(c => ({label: c, bg: s.cam === c ? '#FFFFFF' : 'transparent', color: s.cam === c ? '#111827' : 'rgba(255,255,255,.78)', pick: () => this.setState({cam: c})})),
+      tags: [], hasGrp: false, grp: {}, ovSegs: [], wt: {lines: []}, ch: {rows: []}, ka: {rows: []}, ef: [], bm: {shapes: [], rows: [], strokes: []}, clips: [], ls: {rows: []}, ld: {rows: [], axes: []},
+      cplay: s.cplay, cpaused: !s.cplay, toggleClip: () => { if (s.cplay) this.setState({cplay: false}); else this.setState({cplay: true}, () => this.startLoop()); },
+      clipContact: () => { this.ct = KT[2]; this.setState({cplay: false}); this.paint(); },
+      clipSeek: e => { const r = e.currentTarget.getBoundingClientRect(); this.ct = Math.max(0, Math.min(.999, (e.clientX - r.left) / r.width)); this.paint(); }};
+    const wtX = t => 38 + (t - KT[0]) / (KT[4] - KT[0]) * 258, wtY = v => 98 - v * 88;
+    const wtLine = (P, c) => { const pts = []; for (let i = 0; i <= 48; i++) { const t = KT[0] + (KT[4] - KT[0]) * i / 48; pts.push(wtX(t).toFixed(1) + ',' + wtY(poseAt(P, t).cx).toFixed(1)); } return {pts: pts.join(' '), c, cy: wtY(P[2].cx).toFixed(1)}; };
+    const wtBand = n => ({bx: (wtX(KT[2]) - 5).toFixed(1), by: wtY((n.m + n.sd) / 100).toFixed(1), bh: ((n.sd * 2) / 100 * 88).toFixed(1), cx: wtX(KT[2]).toFixed(1)});
+    const chDom = [-300, 40], chL = ms => ((ms - chDom[0]) / (chDom[1] - chDom[0]) * 100).toFixed(1), zero = chL(0);
+    const ooo = t => t.map((v, i) => { if (!i) return -1; let k = -1; for (let j = 0; j < i; j++) if (t[j] > v && (k < 0 || t[j] > t[k])) k = j; return k; });
+    const kaRow = (label, v, n, u) => { const lo = n.m - 4 * n.sd, warn = out1(v, n); return {label, v: v + u, c: warn ? WARN : '#111827', bl: 37.5, bw: 25, ml: Math.max(0, Math.min(100, (v - lo) / (8 * n.sd) * 100)).toFixed(1), norm: 'Normal ' + n.m + ' ± ' + n.sd + u}; };
+
+    if (isStroke) {
+      const st = s.view, P = this.poses(s.pl, st), N = this.norms(s.pl, st), lat = st === 'Lateral movement', full = s.pl === 'a' ? nm.a : nm.b, nF = this.nF(), n = Math.max(1, R(NS[s.pl][st] * nF));
+      out.hd = {eyebrow: full, title: st, stats: [{v: n.toLocaleString('en-US'), u: '', l: lat ? 'Movements analysed' : 'Shots analysed'}, {v: SPD[s.pl][st], u: lat ? 'm/s' : 'km/h', l: lat ? 'Average lateral speed' : 'Average ball speed'}]};
+      const wv = R(P[2].cx * 100); out.wt = {...wtBand(N.wt), lines: [wtLine(P, '#111827')], v: wv + '%', sub: 'by contact', c: out1(wv, N.wt) ? WARN : '#111827', norm: 'Normal ' + N.wt.m + ' ± ' + N.wt.sd + '%'};
+      const C = this.chain(s.pl, st), bad = ooo(C.t);
+      out.ch = {sub: 'Peak rotation speed', zero, rows: C.lab.map((l, i) => { const w = bad[i] >= 0; return {label: l, note: w ? 'Before ' + C.lab[bad[i]].toLowerCase() : C.sp[i].toLocaleString('en-US') + '°/s', nc: w ? WTXT : '#6B7280', lc: w ? WTXT : '#111827', ms: C.t[i] + ' ms', dots: [{l: chL(C.t[i]), c: w ? WARN : '#111827'}]}; })};
+      out.ka = {title: lat ? 'Key angles at plant' : 'Key angles at contact', rows: lat
+        ? [kaRow('Hip–shoulder separation', R(P[2].sep), N.sep, '°'), kaRow('Knee flexion at push-off', R(P[1].kB), N.kn, '°'), kaRow('Plant knee flexion', R(P[2].kF), {m: R(this.normPoses(s.pl, st)[2].kF), sd: 6}, '°'), kaRow('Trunk lean', R(Math.abs(P[2].lean)), {m: R(Math.abs(this.normPoses(s.pl, st)[2].lean)), sd: 4}, '°')]
+        : [kaRow('Hip–shoulder separation', R(P[2].sep), N.sep, '°'), kaRow('Knee flexion at load', R(P[1].kB), N.kn, '°'), kaRow('Arm elevation', R(P[2].re), N.arm, '°'), kaRow('Elbow extension', R(180 - P[2].rf), N.elb, '°')]};
+      const rows = this.efRows(s.pl, st);
+      out.ef = rows.map((r, i) => ({metric: r[2], sides: [0, 1].map(k => { const key = st + i + k, on = s.grp && s.grp.key === key, nn = Math.max(1, R(r[6 + k] * nF));
+        return {label: r[k], v: this.fmtV(r[4 + k], r[3]), n: 'n = ' + nn, bg: on ? '#F1F5F9' : 'transparent', open: () => this.setState({grp: on ? null : {key, label: r[k], n: nn, mod: r[8 + k], v: this.fmtV(r[4 + k], r[3]), u: r[3], base: r[4 + k]}, gi: 0})}; })}));
+      if (s.grp) { const G = s.grp, jit = G.u === 'km/h' ? R(G.base + (h32('v' + s.gi) - .5) * 10) + ' km/h' : '';
+        out.hasGrp = true; out.grp = {label: G.label, pos: (s.gi + 1) + ' of ' + G.n, v: jit, prev: () => this.setState({gi: (s.gi - 1 + G.n) % G.n}), next: () => this.setState({gi: (s.gi + 1) % G.n}), close: () => this.setState({grp: null, gi: 0})}; }
+      const SH = {sh: [[58, 62, 12, 10]], el: [[40, 112, 9, 9]], lb: [[80, 126, 19, 8]], kn: [[66, 206, 10, 10], [94, 206, 10, 10]], ca: [[64, 248, 8, 17], [96, 248, 8, 17]]};
+      const pickR = rg => () => this.setState({reg: s.reg === rg ? null : rg});
+      out.bm = {shapes: [], rows: [], strokes: [], hasSel: !!s.reg, selL: ''};
+      RG.forEach(([rg, lab]) => { const v = this.regLoad(s.pl, st, rg), hi = v > 115, sel = s.reg === rg;
+        SH[rg].forEach(([cx, cy, rx, ry]) => out.bm.shapes.push({cx, cy, rx, ry, fill: hi ? 'rgba(229,134,0,.88)' : 'rgba(255,255,255,.92)', stroke: sel ? '#111827' : hi ? WTXT : '#CBD5E1', sw: sel ? 2.5 : 1.5, pick: pickR(rg)}));
+        out.bm.rows.push({label: lab, v, c: hi ? WTXT : '#111827', sw: hi ? WARN : '#FFFFFF', swb: hi ? WARN : '#CBD5E1', bg: sel ? '#F1F5F9' : 'transparent', pick: pickR(rg)}); });
+      if (s.reg) { const lab = RG.find(x => x[0] === s.reg)[1]; out.bm.selL = lab + ' · strokes behind it';
+        out.bm.strokes = STK.map(x => ({x, v: this.regLoad(s.pl, x, s.reg)})).sort((a, b) => b.v - a.v).slice(0, 4).map(({x, v}) => { const nn = R(NS[s.pl][x] * nF), cnt = Math.max(1, R(nn * (v > 115 ? (v - 100) / 80 : Math.max(.02, (v - 90) / 200))));
+          return {label: x, v: cnt + ' of ' + nn + ' above range', c: v > 115 ? WTXT : '#6B7280', pick: () => { const ph = 2; this.t = KT[ph]; this.setState({view: x, ph, playing: false, reg: null, gi: 0, grp: {key: 'reg' + s.reg + x, label: lab + ' above range', n: cnt, mod: null, u: ''}}); }}; }); }
+      const r0 = rows[0], best = lat ? '0.74 s' : R(SPD[s.pl][st] * 1.14) + ' km/h', worst = lat ? '1.02 s' : R(SPD[s.pl][st] * .84) + ' km/h';
+      const L = this.loadData(), m1 = L.ms[R(h32(s.pl + st + 'b') * (L.ms.length - 1))] || {}, m2 = L.ms[R(h32(s.pl + st + 'w') * (L.ms.length - 1))] || {};
+      out.clips = [{ref: this.clipRefs[0], tag: 'Best mechanics', label: r0[0], v: best, sub: m1.ev + ' · ' + m1.rd + ' · ' + m1.date}, {ref: this.clipRefs[1], tag: 'Worst mechanics', label: r0[1], v: worst, sub: m2.ev + ' · ' + m2.rd + ' · ' + m2.date}];
+    }
+
+    if (isFat) {
+      const F = this.fat(), full = s.pl === 'a' ? nm.a : nm.b;
+      out.hd = {eyebrow: full, title: 'Fatigue', stats: [{v: F.n[0], u: '', l: 'Set 1 overheads'}, {v: F.n[1], u: '', l: 'Set 3 overheads'}]};
+      out.ovSegs = Object.keys(FTT).map(k => ({label: k, ...seg(s.ovT === k), pick: () => this.setState({ovT: k})}));
+      out.tags = [{label: 'Set 1', sw: '#A3C9FF', swd: 'block'}, {label: 'Set 3', sw: WARN, swd: 'block'}];
+      out.wt = {...wtBand(F.N.wt), lines: [wtLine(F.P1, '#1C3FCA'), wtLine(F.P3, WARN)], v: F.wt[0] + '% → ' + F.wt[1] + '%', sub: 'by contact', c: out1(F.wt[1], F.N.wt) ? WARN : '#111827', norm: 'Normal ' + F.N.wt.m + ' ± ' + F.N.wt.sd + '%'};
+      const b3 = ooo(F.c3);
+      out.ch = {sub: 'Set 1 · set 3', zero, rows: CHL.map((l, i) => { const w = b3[i] >= 0; return {label: l, note: w ? 'Set 3 before ' + CHL[b3[i]].toLowerCase() : 'In order', nc: w ? WTXT : '#6B7280', lc: w ? WTXT : '#111827', ms: F.c1[i] + ' / ' + F.c3[i], dots: [{l: chL(F.c1[i]), c: '#1C3FCA'}, {l: chL(F.c3[i]), c: WARN}]}; })};
+      out.ka = {title: 'Knee flexion at load', rows: [kaRow('Set 1', F.kn[0], F.N.kn, '°'), kaRow('Set 3', F.kn[1], F.N.kn, '°')]};
+    }
+
+    if (isLoad) {
+      const L = this.loadData(), sel = this.ldSel(), names = {a: nm.a, b: nm.b}, short = {a: nm.sa, b: nm.sb};
+      out.hd = {eyebrow: nm.solo ? nm.a : nm.sa + ' and ' + nm.sb, title: 'Body load', stats: [{v: L.ms.length, u: '', l: 'Matches'}, {v: '85–115', u: '', l: 'Own range'}]};
+      const sm0 = L.ms[sel.mi], st = s.ldStroke || LB[sel.rg][0];
+      out.tags = [{label: short[sel.pl] + ' · ' + st + ' · ' + sm0.ev + ' · ' + sm0.rd, sw: 'transparent', swd: 'none'}];
+      const dom = [60, 150], hpct = v => ((v - dom[0]) / (dom[1] - dom[0]) * 100).toFixed(1);
+      const pls = nm.solo ? [nm.solo] : ['a', 'b'];
+      out.ld = {heads: nm.solo ? [nm.a] : [names.a, names.b], cols: nm.solo ? '104px minmax(0,1fr)' : '104px minmax(0,1fr) minmax(0,1fr)', bandB: hpct(85), bandH: ((30) / (dom[1] - dom[0]) * 100).toFixed(1), rows: [], axes: []};
+      const groupsFor = (pl, rg) => { const G = []; L.evs.forEach((e, ei) => { if (ei) { const gap = e.wk - L.evs[ei - 1].wk - 1; if (gap > 0) G.push({f: Math.min(4, gap * .5).toFixed(2), bg: 'transparent', bars: []}); }
+        G.push({f: e.ms.length, bg: 'rgba(2,123,252,.06)', bars: pl ? e.ms.map(m => { const mi = L.ms.indexOf(m), v = L.ser[pl][rg][mi], on = sel.pl === pl && sel.rg === rg && sel.mi === mi;
+          return {h: hpct(v), c: v > 115 ? WARN : '#9CA3AF', ol: on ? '2px solid #111827' : 'none', t: m.ev + ' · ' + m.rd + ' · ' + v, pick: () => this.setState({ldSel: {pl, rg, mi}, ldStroke: null})}; }) : [], l1: 'Wk ' + e.wk, l2: e.ev.replace(/ City's Cup$/, '').split(' ').slice(0, 2).join(' ')}); }); return G; };
+      out.ld.rows = RG.map(([rg, lab]) => ({label: lab, cells: pls.map(pl => ({groups: groupsFor(pl, rg)}))}));
+      const ax = groupsFor(null).map(g => ({f: g.f, l1: g.l1 || '', l2: g.l2 || ''})); out.ld.axes = pls.map(() => ax);
+      const v = L.ser[sel.pl][sel.rg][sel.mi], hi = v > 115, lab = RG.find(x => x[0] === sel.rg)[1];
+      out.ls = {eyebrow: short[sel.pl] + ' · ' + lab, match: sm0.ev + ' · ' + sm0.rd, date: sm0.date, v, c: hi ? WARN : '#111827', norm: 'Own range 85–115', bl: ((85 - 60) / 90 * 100).toFixed(1), bw: (30 / 90 * 100).toFixed(1), ml: Math.max(0, Math.min(100, (v - 60) / 90 * 100)).toFixed(1),
+        rows: LB[sel.rg].map((x, i) => { const c = 4 + Math.floor(h32(sel.pl + sel.rg + sel.mi + x) * 14), n = x === 'Lateral movement' ? c * 6 : c, on = st === x;
+          return {label: x, n: n + (x === 'Lateral movement' ? ' movements' : ' strokes'), bg: on ? '#F1F5F9' : 'transparent', pick: () => this.setState({ldStroke: x})}; })};
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>

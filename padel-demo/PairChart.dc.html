@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div class="pcard" style="margin-top:0;padding:0;padding:14px 16px 12px;display:flex;flex-direction:column;gap:8px;font-family:'Inter Display',Inter,system-ui,sans-serif;color:#111827;height:100%;box-sizing:border-box;font-variant-numeric:tabular-nums">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 10px;min-height:22px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B7280;min-width:0">{{ c.title }}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+      <sc-if value="{{ c.src }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;font-weight:600;color:#4B5563;border:1px solid #E5E7EB;border-radius:999px;padding:2px 8px;white-space:nowrap">{{ c.src }}</div></sc-if>
+      <sc-if value="{{ c.watch }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#1C3FCA;cursor:pointer;white-space:nowrap" style-hover="color:#1C6EF0" onClick="{{ c.onWatch }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="flex:none;display:block"><path d="M8 5v14l11-7z"></path></svg>{{ c.watch }}</div></sc-if>
+    </div>
+  </div>
+  <div style="font-size:15px;font-weight:600;letter-spacing:-0.005em;text-wrap:pretty">{{ c.head }}</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;font-weight:600;color:#6B7280">
+    <sc-for list="{{ c.legend }}" as="lg" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:6px;white-space:nowrap"><div style="width:{{ lg.lw }}px;height:{{ lg.lh }}px;border-radius:50%;corner-shape:round;background:{{ lg.c }}"></div>{{ lg.label }}</div></sc-for>
+  </div>
+  <div style="position:relative;margin:6px 0 0 36px;padding-bottom:22px;margin-top:auto">
+    <svg viewBox="{{ c.vb }}" preserveAspectRatio="none" style="width:100%;height:{{ c.h }}px;display:block;overflow:visible">
+      <sc-for list="{{ c.bands }}" as="b" hint-placeholder-count="0"><rect x="0" y="{{ b.y }}" width="1000" height="{{ b.hh }}" fill="{{ b.c }}"></rect></sc-for>
+      <sc-for list="{{ c.grid }}" as="g" hint-placeholder-count="0"><line x1="0" y1="{{ g.y }}" x2="1000" y2="{{ g.y }}" stroke="#EEF2F6" stroke-width="1" vector-effect="non-scaling-stroke"></line></sc-for>
+      <sc-for list="{{ c.vlines }}" as="v" hint-placeholder-count="0"><line x1="{{ v.x }}" y1="0" x2="{{ v.x }}" y2="{{ v.y2 }}" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"></line></sc-for>
+      <sc-for list="{{ c.refs }}" as="r" hint-placeholder-count="0"><line x1="0" y1="{{ r.y }}" x2="1000" y2="{{ r.y }}" stroke="#AFAFBB" stroke-width="1.5" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"></line></sc-for>
+      <sc-for list="{{ c.rects }}" as="r" hint-placeholder-count="0"><rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.w }}" height="{{ r.hh }}" fill="{{ r.c }}"></rect></sc-for>
+      <sc-for list="{{ c.series }}" as="s" hint-placeholder-count="0"><polyline points="{{ s.pts }}" fill="none" stroke="{{ s.c }}" stroke-width="{{ s.w }}" stroke-dasharray="{{ s.dash }}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline></sc-for>
+    </svg>
+    <sc-for list="{{ c.grid }}" as="g" hint-placeholder-count="0"><div style="position:absolute;left:-42px;width:34px;text-align:right;top:{{ g.y }}px;transform:translateY(-50%);font-size:11px;color:#9CA3AF;white-space:nowrap">{{ g.label }}</div></sc-for>
+    <sc-for list="{{ c.xl }}" as="x" hint-placeholder-count="0"><div style="position:absolute;bottom:0;transform:translateX(-50%);font-size:11px;color:#6B7280;white-space:nowrap;left:{{ x.l }}%">{{ x.label }}</div></sc-for>
+    <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="0"><div title="{{ d.title }}" onClick="{{ d.open }}" style="position:absolute;transform:translate(-50%,-50%);border-radius:50%;corner-shape:round;border:2px solid #FFFFFF;cursor:pointer;width:{{ d.sz }}px;height:{{ d.sz }}px;left:{{ d.l }}%;top:{{ d.y }}px;background:{{ d.c }}" style-hover="box-shadow:0 0 0 2px #1C3FCA"></div></sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:520,&quot;height&quot;:300},&quot;c&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}"></script>
+</body>
+</html>
