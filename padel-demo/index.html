@@ -295,8 +295,10 @@ body.padel-standalone [data-el="topbar"]{display:none!important}
       <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
         <sc-for list="{{ clips }}" as="k" hint-placeholder-count="8">
           <div style="border:1px solid #E5E7EB;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:{{ k.bg }}" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
-            <div style="aspect-ratio:16/9;background:#0F172A;border-radius:8px;position:relative;display:grid;place-items:center">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#6B7280">{{ k.type }}</div>
+            <div style="aspect-ratio:16/9;background:#0F172A;border-radius:8px;position:relative;display:grid;place-items:center;overflow:hidden">
+              <img src="{{ k.still }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+              <div style="position:absolute;inset:0;background:rgba(11,19,34,.34)"></div>
+              <div style="position:relative;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#E5E7EB;text-shadow:0 1px 3px rgba(0,0,0,.5)">{{ k.type }}</div>
               <div style="position:absolute;left:9px;top:8px;display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:#FFFFFF"><div style="width:7px;height:7px;border-radius:50%;corner-shape:round;background:{{ k.ofill }};box-shadow:0 0 0 1.5px #FFFFFF"></div>{{ k.outcome }}</div>
               <div style="position:absolute;left:8px;bottom:8px;width:24px;height:24px;border-radius:50%;corner-shape:round;background:#FFFFFF;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="#111827"><path d="M8 5v14l11-7z"></path></svg></div>
               <div style="position:absolute;right:9px;bottom:10px;font-size:11.5px;font-weight:500;color:#D1D5DB;white-space:nowrap">{{ k.len }} s</div>
@@ -545,8 +547,10 @@ body.padel-standalone [data-el="topbar"]{display:none!important}
     <div style="display:flex;gap:12px;overflow-x:auto;min-width:0;scrollbar-width:none;padding-bottom:2px">
       <sc-for list="{{ scClips }}" as="k" hint-placeholder-count="6">
           <div style="flex:none;width:232px;box-sizing:border-box;border:1px solid #E5E7EB;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:{{ k.bg }}" style-hover="background:#F9FAFB" onClick="{{ k.open }}">
-            <div style="aspect-ratio:16/9;background:#0F172A;border-radius:8px;position:relative;display:grid;place-items:center">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#6B7280">{{ k.type }}</div>
+            <div style="aspect-ratio:16/9;background:#0F172A;border-radius:8px;position:relative;display:grid;place-items:center;overflow:hidden">
+              <img src="{{ k.still }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+              <div style="position:absolute;inset:0;background:rgba(11,19,34,.34)"></div>
+              <div style="position:relative;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#E5E7EB;text-shadow:0 1px 3px rgba(0,0,0,.5)">{{ k.type }}</div>
               <div style="position:absolute;left:9px;top:8px;display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:#FFFFFF"><div style="width:7px;height:7px;border-radius:50%;corner-shape:round;background:{{ k.ofill }};box-shadow:0 0 0 1.5px #FFFFFF"></div>{{ k.outcome }}</div>
               <div style="position:absolute;left:8px;bottom:8px;width:24px;height:24px;border-radius:50%;corner-shape:round;background:#FFFFFF;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="#111827"><path d="M8 5v14l11-7z"></path></svg></div>
               <div style="position:absolute;right:9px;bottom:10px;font-size:11.5px;font-weight:500;color:#D1D5DB;white-space:nowrap">{{ k.len }} s</div>
@@ -2516,7 +2520,7 @@ class Component extends DCLogic {
       patterns: pats.map((p, i) => ({label: p.label, freq: p.freq, won: p.won, w: Math.round(p.freq / mx * 100), bg: i === sel ? '#DDE9FF' : 'transparent', pick: () => this.setState({scPat: i === sel ? -1 : i})})),
       dirs: [dir('Serve direction', 'serves', ['T','Body','Wide'], sv), dir('Return target', 'returns', ['Lob','Chiquita','Drive'], rt)],
       clipSub: (sel >= 0 ? pats[sel].label : 'All patterns') + ' · ' + oppName};
-    out.scClips = clips.map(x => ({type: x.type, outcome: x.outcome, ofill: OUT_FILL[x.outcome], who: pFull(x.pl.name), ctx: PP_EVENTS[x.m.ei] ? (x.m.event + ' · ' + x.m.round + ' · Set ' + x.set) : x.m.round, speed: x.speed, len: x.len, bg: s.drawer === 'clip' && s.clip && s.clip.id === x.id ? '#F9FAFB' : '#FFFFFF', open: () => this.setState({drawer:'clip', clip:x})}));
+    out.scClips = clips.map(x => ({type: x.type, outcome: x.outcome, ofill: OUT_FILL[x.outcome], who: pFull(x.pl.name), ctx: PP_EVENTS[x.m.ei] ? (x.m.event + ' · ' + x.m.round + ' · Set ' + x.set) : x.m.round, speed: x.speed, len: x.len, still: window.MV.clip(x.id), bg: s.drawer === 'clip' && s.clip && s.clip.id === x.id ? '#F9FAFB' : '#FFFFFF', open: () => this.setState({drawer:'clip', clip:x})}));
     out.scItems = items; out.scOpen = s.tMenu === 'sc'; out.scToggle = () => this.setState({tMenu: s.tMenu === 'sc' ? null : 'sc'});
     out.showScout = true;
   }
@@ -2801,7 +2805,7 @@ class Component extends DCLogic {
     const zonesSingle = sA.zones.map(z => ({...z, w: Math.round(z.c / zmax * 100)}));
     const zonesCmp = ZONES.map((label, i) => ({label, c1: sA.zones[i].c, p1: sA.zones[i].pw, w1: Math.round(sA.zones[i].c / zmax * 100), c2: sB.zones[i].c, p2: sB.zones[i].pw, w2: Math.round(sB.zones[i].c / zmax * 100)}));
     const src = ex.compare && ex.clipP === 1 ? B : A;
-    const clips = src.slice().sort((a, b) => b.speed - a.speed).slice(0, 12).map(x => ({type:x.type, outcome:x.outcome, ofill:OUT_FILL[x.outcome], opp: x.m.p1 === x.pl.pair ? x.m.p2 : x.m.p1, event:x.m.event, round:x.m.round, set:x.set, games:x.games, pts:x.pts, speed:x.speed, len:x.len, bg: s.drawer === 'clip' && k && k.id === x.id ? '#F9FAFB' : '#FFFFFF', open: () => this.setState({drawer:'clip', clip:x})}));
+    const clips = src.slice().sort((a, b) => b.speed - a.speed).slice(0, 12).map(x => ({type:x.type, outcome:x.outcome, ofill:OUT_FILL[x.outcome], opp: x.m.p1 === x.pl.pair ? x.m.p2 : x.m.p1, event:x.m.event, round:x.m.round, set:x.set, games:x.games, pts:x.pts, speed:x.speed, len:x.len, still: window.MV.clip(x.id), bg: s.drawer === 'clip' && k && k.id === x.id ? '#F9FAFB' : '#FFFFFF', open: () => this.setState({drawer:'clip', clip:x})}));
     const empty = A.length === 0 && (!ex.compare || B.length === 0);
     return {...base, exFilters, exPlayerF: exFilters[0], exTypeF: exFilters[1], exOutcomeF: exFilters[2], exSitF: exFilters[3], exEventF: exFilters[4], exSeasonVal: ex.season, exTypeVal: ex.type, exOutcomeVal: ex.outcome, exInitial: (ex.player || '?').trim().charAt(0), exMorePanel: ['more','sit','event'].includes(ex.menu), exMoreToggle: () => setEx({menu: ['more','sit','event'].includes(ex.menu) ? null : 'more'}), cmpF, anyMenu: !!ex.menu, closeMenus: () => setEx({menu:null}), isCompare: ex.compare, notCompare: !ex.compare, isSingle: !ex.compare,
       startCompare: () => setEx({compare:true, menu:null, clipP:0}), endCompare: () => setEx({compare:false, menu:null, clipP:0}),
